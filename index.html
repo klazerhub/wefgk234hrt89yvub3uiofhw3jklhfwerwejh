@@ -17,47 +17,56 @@
     button,summary{cursor:pointer}
     button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
     [hidden]{display:none!important}
-    .app{max-width:1280px;margin:0 auto;padding:44px 28px 32px}
-    .page-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:26px}
-    h1{margin:0;font-size:26px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;line-height:1.3}
+    .app{max-width:1120px;margin:0 auto;padding:22px 20px}
+    .page-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+    h1{margin:0;font-size:23px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;line-height:1.3}
     .subtitle{margin:7px 0 0;color:var(--muted);font-size:14px}
     .reset{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;min-height:44px;padding:10px 16px;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);background:rgba(255,255,255,.04);font-size:14px;font-weight:600;transition:background .15s,border-color .15s}
     .reset:hover{background:rgba(79,140,255,.1);border-color:var(--accent)}
     .reset svg{width:16px;height:16px;flex-shrink:0}
-    .blocks{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);align-items:start;gap:20px}
-    .card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
-    .card-header{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px}
+    .blocks{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);align-items:start;gap:16px}
+    .card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
+    .card-header{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
     .section-number{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border:1px solid rgba(79,140,255,.3);border-radius:8px;color:var(--accent);background:rgba(79,140,255,.07);font-size:13px;font-weight:600}
     h2{font-size:18px;font-weight:600;line-height:1.45;margin:1px 0 0}
-    .input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px}
-    .field{min-width:0}
-    .field-wide{grid-column:1/-1}
-    .field label{display:flex;justify-content:space-between;gap:8px;color:var(--text);font-size:14px;line-height:1.45;margin-bottom:7px}
-    .symbol{color:var(--muted);font-style:italic;font-weight:500;flex-shrink:0}
-    input,select{width:100%;min-width:0;min-height:48px;background:var(--bg);border:1px solid #343a49;border-radius:8px;padding:10px 12px;font-size:16px;color:var(--text);font-variant-numeric:tabular-nums;outline:none;transition:border-color .15s,box-shadow .15s}
-    input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.15)}
-    input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger)}
+    .input-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+    .field{display:grid;grid-template-columns:minmax(0,1fr) 180px;align-items:center;column-gap:14px;min-width:0}
+    .field-copy{min-width:0}
+    .field label{display:block;color:var(--text);font-size:14px;line-height:1.4}
+    .step-control{display:grid;grid-template-columns:44px minmax(0,1fr) 24px 44px;align-items:center;min-width:0;min-height:46px;border:1px solid #343a49;border-radius:8px;background:var(--bg);transition:border-color .15s,box-shadow .15s}
+    .step-control:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.15)}
+    .step-control[data-invalid="true"]{border-color:var(--danger)}
+    input,select{width:100%;min-width:0;min-height:44px;border:0;background:transparent;color:var(--text);font-size:16px;padding:8px 2px;text-align:center;font-variant-numeric:tabular-nums;outline:none}
     input::placeholder{color:#768094}
-    .select-wrap{position:relative}
-    select{appearance:none;cursor:pointer;padding-right:34px}
-    .select-wrap::after{content:"";position:absolute;right:16px;top:19px;width:7px;height:7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg);pointer-events:none}
-    .hint,.field-error{font-size:13px;line-height:1.45;margin:6px 0 0}
+    select{appearance:none;cursor:pointer}
+    select option{background:var(--card);color:var(--text)}
+    .input-unit{font-size:12px;color:var(--muted);text-align:center;pointer-events:none}
+    .step-button{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0;border:0;background:rgba(255,255,255,.025);color:var(--muted);font-size:21px;line-height:1;user-select:none}
+    .step-button:first-child{border-right:1px solid var(--line);border-radius:7px 0 0 7px}
+    .step-button:last-child{border-left:1px solid var(--line);border-radius:0 7px 7px 0}
+    .step-button:hover:not(:disabled){color:var(--accent);background:rgba(79,140,255,.1)}
+    .step-button:active:not(:disabled){background:rgba(79,140,255,.18)}
+    .step-button:disabled{opacity:.32;cursor:default}
+    .step-button:focus-visible{outline-offset:-3px;border-radius:6px}
+    .hint,.field-error{font-size:12px;line-height:1.4;margin:3px 0 0}
     .hint{color:var(--muted)}
-    .field-error{color:var(--danger)}
-    .results{border-top:1px solid var(--line);margin-top:24px;padding-top:18px}
-    .section-label{margin:0 0 12px;color:var(--muted);font-size:12px;letter-spacing:1.15px;font-weight:600;text-transform:uppercase}
-    .result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .result{min-width:0;border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:linear-gradient(180deg,#10131a,#0d1015)}
-    .result-main{grid-column:1/-1;border-color:rgba(79,140,255,.3);padding-top:16px;padding-bottom:16px}
-    .result-label{color:var(--muted);font-size:14px;line-height:1.45;display:block;margin-bottom:6px}
-    .result-value{color:var(--text);font-size:26px;font-weight:600;line-height:1.25;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-    .result-main .result-value{font-size:38px;color:var(--accent)}
-    .result-unit{font-size:20px;color:var(--muted);font-weight:400;margin-left:5px}
-    .coverage-track{height:4px;border-radius:2px;background:var(--line);margin-top:12px;overflow:hidden}
+    .field-error{color:var(--danger);grid-column:1/-1;margin:4px 0 0}
+    .results{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+    .section-label{margin:0 0 8px;color:var(--muted);font-size:12px;letter-spacing:1.15px;font-weight:600;text-transform:uppercase}
+    .result-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+    .result{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:5px;min-width:0;min-height:46px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:linear-gradient(180deg,#10131a,#0d1015)}
+    .result-main{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.055)}
+    .result-label{color:var(--muted);font-size:14px;line-height:1.35;display:block;padding-right:8px}
+    .result-value{color:var(--text);font-size:22px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;min-width:0;max-width:180px}
+    .result-main .result-value{font-size:24px;color:var(--accent)}
+    .result-angle{border-color:rgba(53,208,127,.3);background:rgba(53,208,127,.045)}
+    .result-angle .result-value,.result-angle .result-unit{color:var(--ok)}
+    .result-unit{font-size:16px;color:var(--muted);font-weight:400}
+    .coverage-track{grid-column:1/-1;height:3px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
     .coverage-fill{height:100%;width:0;background:var(--accent)}
     .notice{margin:14px 0 0;border:1px solid rgba(240,180,41,.27);border-radius:8px;background:rgba(240,180,41,.06);padding:12px 14px;font-size:14px;line-height:1.55;color:#f6cf72;overflow-wrap:anywhere}
     .notice.error{border-color:rgba(255,92,108,.3);background:rgba(255,92,108,.05);color:#ff96a1}
-    .help{border-top:1px solid var(--line);margin-top:18px;padding-top:5px}
+    .help{border-top:1px solid var(--line);margin-top:10px;padding-top:0}
     .help summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;color:var(--muted);font-size:14px}
     .help summary::-webkit-details-marker{display:none}
     .help summary::after{content:"+";display:flex;align-items:center;justify-content:center;font-size:21px;color:var(--accent);flex:0 0 24px}
@@ -71,33 +80,45 @@
     .table-wrap{min-width:0}
     .materials{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
     .materials col:nth-child(1){width:22%}.materials col:nth-child(2){width:29%}.materials col:nth-child(3){width:31%}.materials col:nth-child(4){width:18%}
-    .materials th{padding:0 8px 14px;font-size:13px;font-weight:400;text-align:right;color:var(--muted);vertical-align:bottom;line-height:1.45}
+    .materials th{padding:0 8px 10px;font-size:13px;font-weight:400;text-align:right;color:var(--muted);vertical-align:bottom;line-height:1.45}
     .materials th:first-child{padding-left:0;text-align:left}
     .materials th:last-child{padding-right:0}
-    .materials td{padding:22px 8px;border-top:1px solid var(--line);text-align:right;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .materials td{padding:14px 8px;border-top:1px solid var(--line);text-align:right;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
     .materials td:first-child{padding-left:0;text-align:left;font-size:16px;font-weight:600}
     .materials td:last-child{padding-right:0}
-    .mass{font-size:25px;font-weight:600;color:var(--accent);line-height:1.25}
+    .mass{font-size:22px;font-weight:600;color:var(--accent);line-height:1.25}
     .mobile-label{display:none}
-    .kpp-panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:20px}
+    .kpp-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:14px}
     .kpp-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
     .kpp-title{font-size:14px;color:var(--text);margin:0;font-weight:600;line-height:1.5}
     .kpp-value{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);flex-shrink:0}
-    .kpp-copy{font-size:13px;color:var(--muted);margin:10px 0 0;line-height:1.55}
+    .kpp-copy{font-size:13px;color:var(--muted);margin:6px 0 0;line-height:1.45}
     .rule-list{padding:0;margin:0;list-style:none;display:grid;gap:10px}
     .rule-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;font-variant-numeric:tabular-nums}
     .rule-list li[data-active="true"]{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.07);color:#b7d0ff}
-    .footnote{margin:16px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
-    .page-footer{display:flex;justify-content:space-between;gap:12px;margin-top:18px;color:var(--muted);font-size:13px}
+    .footnote{margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+    .page-footer{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:var(--muted);font-size:13px}
     #calculation-status[data-state="ok"]{color:var(--ok)}
     #calculation-status[data-state="warning"]{color:#f6cf72}
     #calculation-status[data-state="error"]{color:#ff96a1}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     noscript p{margin:20px;padding:16px;background:var(--panel);color:var(--warn)}
-    @media(min-width:901px){.input-grid .field:not(.field-wide) label{min-height:41px}}
-    @media(max-width:1100px) and (min-width:901px){.app{padding:28px 20px}.card{padding:20px}.blocks{gap:16px;grid-template-columns:repeat(2,minmax(0,1fr))}.materials th{padding-left:4px;padding-right:4px;font-size:12px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:22px}}
-    @media(max-width:900px){.app{max-width:700px;padding:28px 20px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:22px}.input-grid{grid-template-columns:minmax(0,1fr)}.field-wide{grid-column:auto}.result-grid{grid-template-columns:minmax(0,1fr)}.result-main{grid-column:auto}.page-header{align-items:flex-start}h1{font-size:23px}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:14px}.materials tr{display:block;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#10131a,#0d1015);padding:16px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:14px;text-align:right;border:0;padding:9px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 12px;margin-bottom:6px;border-bottom:1px solid var(--line);font-size:18px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.5}.materials td output{min-width:0}.mass{font-size:28px}.kpp-panel{margin-top:16px}}
-    @media(max-width:480px){.app{padding:22px 12px}.page-header{flex-wrap:wrap;gap:16px;margin-bottom:18px}h1{font-size:22px}.reset{width:100%}.card{padding:18px 16px}.card-header{gap:10px}h2{font-size:17px}.section-number{flex-basis:28px;height:28px}.result-main .result-value{font-size:36px}.result{padding:14px}.kpp-panel{padding:14px}.kpp-head{flex-wrap:wrap}.page-footer{flex-direction:column;gap:5px}.materials tr{padding:14px}.mass{font-size:25px}}
+    .kpp-panel[data-band="high"]{border-color:rgba(53,208,127,.4);background:rgba(53,208,127,.07)}
+    .kpp-panel[data-band="high"] .kpp-value,.material-kpp[data-band="high"]{color:var(--ok)}
+    .kpp-panel[data-band="low"]{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.07)}
+    .kpp-panel[data-band="low"] .kpp-value,.material-kpp[data-band="low"]{color:var(--accent)}
+    .material-kpp[data-band="high"],.material-kpp[data-band="low"]{font-weight:600}
+    #rule-high[data-active="true"]{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.07)}
+    .kpp-panel[data-band="estimated"]{border-color:rgba(240,180,41,.4);background:rgba(240,180,41,.06)}
+    .kpp-panel[data-band="estimated"] .kpp-value,.material-kpp[data-band="estimated"]{color:var(--warn)}
+    .kpp-panel[data-band="interpolated"]{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.07)}
+    .kpp-panel[data-band="interpolated"] .kpp-value,.material-kpp[data-band="interpolated"]{color:var(--accent)}
+    #rule-estimated[data-active="true"]{color:var(--warn);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.06)}
+    .rule-list strong{flex-shrink:0}.rule-list small{font-size:12px;color:var(--muted)}
+    .source-link{color:var(--accent);text-underline-offset:3px}
+    @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}.field{grid-template-columns:minmax(0,1fr) 162px;column-gap:10px}.materials th{padding-left:4px;padding-right:4px;font-size:12px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
+    @media(max-width:900px){.app{max-width:640px;padding:20px 16px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:16px}.page-header{align-items:center}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:10px}.materials tr{display:block;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#10131a,#0d1015);padding:12px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:right;border:0;padding:6px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line);font-size:17px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.4}.materials td output{min-width:0}.mass{font-size:24px}.kpp-panel{margin-top:12px}}
+    @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 154px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:44px minmax(0,1fr) 20px 44px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.page-footer{flex-direction:column;gap:4px}.materials tr{padding:12px}.mass{font-size:23px}}
     @media(prefers-reduced-motion:reduce){*{transition:none!important}}
   </style>
 </head>
@@ -106,7 +127,7 @@
 <main class="app">
   <header class="page-header">
     <div><h1>Расчёт оплётки</h1><p class="subtitle">Проволочная оплётка кабеля</p></div>
-    <button class="reset" id="reset" type="button" title="Вернуть исходные значения из Excel">
+    <button class="reset" id="reset" type="button" title="Вернуть значения по умолчанию">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7a6.5 6.5 0 1 1-.3 5M4 2v5h5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Сбросить
     </button>
@@ -116,29 +137,49 @@
       <header class="card-header"><span class="section-number" aria-hidden="true">01</span><h2 id="geometry-title">Параметры и геометрия оплётки</h2></header>
       <form id="parameters" novalidate autocomplete="off">
         <div class="input-grid">
-          <div class="field field-wide">
-            <label for="D"><span>Диаметр оплетаемой заготовки, мм</span><span class="symbol" aria-hidden="true">D</span></label>
-            <input id="D" name="D" type="text" inputmode="decimal" value="16,3" required spellcheck="false" aria-describedby="D-error">
+          <div class="field">
+            <div class="field-copy"><label for="D">Диаметр оплетаемой заготовки<span class="sr-only">, мм</span></label></div>
+            <div class="step-control" id="D-control">
+              <button class="step-button" id="D-minus" type="button" aria-label="Уменьшить: диаметр оплетаемой заготовки" title="Шаг 0,1 мм">−</button>
+              <input id="D" name="D" type="text" inputmode="decimal" value="10" required spellcheck="false" aria-describedby="D-error" title="Шаг 0,1 мм"><span class="input-unit" aria-hidden="true">мм</span>
+              <button class="step-button" id="D-plus" type="button" aria-label="Увеличить: диаметр оплетаемой заготовки" title="Шаг 0,1 мм">+</button>
+            </div>
             <p id="D-error" class="field-error" hidden></p>
           </div>
           <div class="field">
-            <label for="n"><span>Количество проволок, шт.</span><span class="symbol" aria-hidden="true">n</span></label>
-            <input id="n" name="n" type="text" inputmode="numeric" value="5" required spellcheck="false" aria-describedby="n-hint n-error">
-            <p class="hint" id="n-hint">Количество проволок на одной катушке</p><p id="n-error" class="field-error" hidden></p>
+            <div class="field-copy"><label for="n">Количество проволок<span class="sr-only">, шт.</span></label><p class="hint" id="n-hint">Количество проволок на одной катушке</p></div>
+            <div class="step-control" id="n-control">
+              <button class="step-button" id="n-minus" type="button" aria-label="Уменьшить: количество проволок" title="Шаг 1 шт.">−</button>
+              <input id="n" name="n" type="text" inputmode="numeric" value="4" required spellcheck="false" aria-describedby="n-hint n-error" title="Шаг 1 шт."><span class="input-unit" aria-hidden="true">шт.</span>
+              <button class="step-button" id="n-plus" type="button" aria-label="Увеличить: количество проволок" title="Шаг 1 шт.">+</button>
+            </div>
+            <p id="n-error" class="field-error" hidden></p>
           </div>
           <div class="field">
-            <label for="d"><span>Диаметр проволоки, мм</span><span class="symbol" aria-hidden="true">d</span></label>
-            <input id="d" name="d" type="text" inputmode="decimal" value="0,29" required spellcheck="false" aria-describedby="d-error">
+            <div class="field-copy"><label for="d">Диаметр проволоки<span class="sr-only">, мм</span></label></div>
+            <div class="step-control" id="d-control">
+              <button class="step-button" id="d-minus" type="button" aria-label="Уменьшить: диаметр проволоки" title="Шаг 0,01 мм">−</button>
+              <input id="d" name="d" type="text" inputmode="decimal" value="0,15" required spellcheck="false" aria-describedby="d-error" title="Шаг 0,01 мм"><span class="input-unit" aria-hidden="true">мм</span>
+              <button class="step-button" id="d-plus" type="button" aria-label="Увеличить: диаметр проволоки" title="Шаг 0,01 мм">+</button>
+            </div>
             <p id="d-error" class="field-error" hidden></p>
           </div>
           <div class="field">
-            <label for="s"><span>Шаг оплётки, мм</span><span class="symbol" aria-hidden="true">s</span></label>
-            <input id="s" name="s" type="text" inputmode="decimal" value="20" required spellcheck="false" aria-describedby="s-error">
+            <div class="field-copy"><label for="s">Шаг оплётки<span class="sr-only">, мм</span></label></div>
+            <div class="step-control" id="s-control">
+              <button class="step-button" id="s-minus" type="button" aria-label="Уменьшить: шаг оплётки" title="Шаг 0,01 мм">−</button>
+              <input id="s" name="s" type="text" inputmode="decimal" value="50" required spellcheck="false" aria-describedby="s-error" title="Шаг 0,01 мм"><span class="input-unit" aria-hidden="true">мм</span>
+              <button class="step-button" id="s-plus" type="button" aria-label="Увеличить: шаг оплётки" title="Шаг 0,01 мм">+</button>
+            </div>
             <p id="s-error" class="field-error" hidden></p>
           </div>
           <div class="field">
-            <label for="N"><span>Количество катушек, шт.</span><span class="symbol" aria-hidden="true">N</span></label>
-            <div class="select-wrap"><select id="N" name="N" aria-describedby="N-error"><option value="36">36</option><option value="24" selected>24</option><option value="16">16</option></select></div>
+            <div class="field-copy"><label for="N">Количество катушек<span class="sr-only">, шт.</span></label></div>
+            <div class="step-control" id="N-control">
+              <button class="step-button" id="N-minus" type="button" aria-label="Уменьшить: количество катушек" title="Допустимые значения: 16, 24, 36">−</button>
+              <select id="N" name="N" aria-describedby="N-error" title="Допустимые значения: 16, 24, 36"><option value="16">16</option><option value="24" selected>24</option><option value="36">36</option></select><span class="input-unit" aria-hidden="true">шт.</span>
+              <button class="step-button" id="N-plus" type="button" aria-label="Увеличить: количество катушек" title="Допустимые значения: 16, 24, 36">+</button>
+            </div>
             <p id="N-error" class="field-error" hidden></p>
           </div>
         </div>
@@ -147,7 +188,7 @@
         <p class="section-label">Результаты расчёта</p>
         <div class="result-grid">
           <div class="result result-main"><span class="result-label" id="density-label">Плотность оплётки, %</span><output id="density" class="result-value" aria-labelledby="density-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">%</span><div class="coverage-track" aria-hidden="true"><div class="coverage-fill" id="coverage"></div></div></div>
-          <div class="result"><span class="result-label" id="angle-label">Угол оплётки, °</span><output id="angle" class="result-value" aria-labelledby="angle-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">°</span></div>
+          <div class="result result-angle"><span class="result-label" id="angle-label">Угол оплётки, °</span><output id="angle" class="result-value" aria-labelledby="angle-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">°</span></div>
           <div class="result"><span class="result-label" id="fill-label">Коэффициент заполнения (Пл)</span><output id="fill" class="result-value" aria-labelledby="fill-label" aria-live="off">—</output></div>
         </div>
         <p class="notice error" id="geometry-notice" hidden></p>
@@ -168,14 +209,22 @@
           <tbody id="material-rows" role="rowgroup"></tbody>
         </table>
       </div>
-      <div class="kpp-panel">
-        <div class="kpp-head"><p class="kpp-title">Кпп — коэффициент<br>площади перекрытия</p><output class="kpp-value" id="kpp" aria-label="Коэффициент площади перекрытия" aria-live="off">—</output></div>
+      <div class="kpp-panel" id="kpp-panel" data-band="none">
+        <div class="kpp-head"><p class="kpp-title">Кпп — коэффициент площади перекрытия</p><output class="kpp-value" id="kpp" aria-label="Коэффициент площади перекрытия" aria-live="off">—</output></div>
         <p class="kpp-copy" id="kpp-context">Выбирается автоматически по плотности оплётки.</p>
       </div>
       <p class="notice" id="material-notice" hidden></p>
       <details class="help"><summary>Правила выбора Кпп</summary><div class="help-content">
-        <ul class="rule-list"><li id="rule-high"><span>96–100 % включительно</span><strong>1,035</strong></li><li id="rule-low"><span>70–80 % включительно</span><strong>1,030</strong></li></ul>
-        <p style="margin-top:14px">Кпп — безразмерный показатель, одинаковый для обоих материалов. Выбор выполняется по неокруглённой плотности. Для остальных значений правило не задано.</p>
+        <ul class="rule-list">
+          <li id="rule-estimated"><span>От 0 % до 70 %, не включая 70 %<br><small>Допущение для оценки</small></span><strong>≈ 1,030</strong></li>
+          <li id="rule-low"><span>70–80 % включительно</span><strong>1,030</strong></li>
+          <li id="rule-interpolated"><span>Выше 80 % и ниже 96 %<br><small>Линейная интерполяция</small></span><strong>1,030–1,035</strong></li>
+          <li id="rule-high"><span>96–100 % включительно</span><strong>1,035</strong></li>
+        </ul>
+        <p style="margin-top:14px">В промежутке 80–96 %: <span class="formula">Кпп = 1,030 + (P − 80) × 0,005 / 16</span>Здесь P — плотность оплётки в процентах. Например, при 88 % Кпп = 1,0325.</p>
+        <p>Таблица 25 СТБ 2194-2011 задаёт значения для 70–80 % и 96–100 % и предусматривает интерполяцию между ними. Ниже 70 % в калькуляторе условно принят Кпп = 1,030: это допущение, не значение из стандарта; расход обозначен знаком ≈.</p>
+        <p>Кпп — безразмерный показатель, учитывающий увеличение массы из-за пересечения прядей. Одинаковый для обоих материалов. Расчёт использует неокруглённые плотность и Кпп.</p>
+        <p><a class="source-link" href="https://www.ruscable.ru/interactive/forum/upload/files/adaf5ab20e218d288242850a01eb9a41===0dLBIDIxOTQucGRm.pdf#page=33" target="_blank" rel="noopener noreferrer">СТБ 2194-2011, таблица 25, страница 28 (PDF)</a></p>
       </div></details>
       <details class="help"><summary>Как рассчитывается расход</summary><div class="help-content">
         <p class="formula">M = [N × n × π × (d × 0,001)² × ρ × Кпп × 1000] / [4 × sin(α)]</p>
@@ -191,13 +240,16 @@
 'use strict';
 // Source: «Расчет оплетки(2).xls», sheet «фольга, оплётка».
 // User-specified automatic Kpp rules replace the manually stored coefficients.
-const DEFAULTS = Object.freeze({D:'16,3', n:'5', d:'0,29', s:'20', N:'24'});
+const DEFAULTS = Object.freeze({D:'10', n:'4', d:'0,15', s:'50', N:'24'});
+const STEPS = Object.freeze({D:0.1,n:1,d:0.01,s:0.01});
+const MIN_VALUES = Object.freeze({D:0.01,n:1,d:0.01,s:0.01});
+const COIL_COUNTS = Object.freeze([16,24,36]);
 const MATERIALS = Object.freeze([
   Object.freeze({id:'copper', name:'Медь', density:8890}),
   Object.freeze({id:'steel', name:'Сталь', density:7800})
 ]);
 const EXCESS_FILL = 'Коэффициент заполнения превышает 1. Проверьте исходные параметры: расчёт плотности по этой формуле выходит за допустимую область';
-const NO_KPP = 'Для этой плотности оплётки правило выбора Кпп не задано';
+const ESTIMATED_KPP = 'При плотности ниже 70 % Кпп = 1,030 принят как допущение. Расход приближённый: таблица 25 СТБ 2194-2011 не задаёт коэффициент для этого диапазона.';
 const NUMERIC_LIMIT = 'Не удалось выполнить расчёт для такого сочетания значений. Проверьте величины исходных параметров.';
 function parseField(raw, key) {
   const text = String(raw == null ? '' : raw).trim();
@@ -211,11 +263,20 @@ function parseField(raw, key) {
   if (key === 'N' && ![16,24,36].includes(value)) return {error:'Выберите 16, 24 или 36 катушек.'};
   return {value};
 }
+// STB 2194-2011, table 25: fixed bands and interpolation between them.
+// Below 70%: explicit provisional assumption, NOT a tabulated or derived value.
 function selectKpp(P) {
-  if (!Number.isFinite(P)) return null;
-  if (P >= 96 && P <= 100) return 1.035;
-  if (P >= 70 && P <= 80) return 1.03;
-  return null;
+  if (!Number.isFinite(P) || P < 0 || P > 100) return null;
+  if (P <= 80) return 1.03;
+  if (P < 96) return 1.03 + (P - 80) * (1.035 - 1.03) / (96 - 80);
+  return 1.035;
+}
+function kppMethod(P) {
+  if (!Number.isFinite(P) || P < 0 || P > 100) return 'none';
+  if (P < 70) return 'estimated';
+  if (P <= 80) return 'low';
+  if (P < 96) return 'interpolated';
+  return 'high';
 }
 function calculate(raw) {
   const values = {}, errors = {};
@@ -224,7 +285,7 @@ function calculate(raw) {
     if (parsed.error) errors[key] = parsed.error;
     else values[key] = parsed.value;
   }
-  const result = {values, errors, alpha:null, angle:null, fill:null, P:null, kpp:null, masses:{copper:null,steel:null}, geometryMessage:'', materialMessage:'', state:'error'};
+  const result = {values, errors, alpha:null, angle:null, fill:null, P:null, kpp:null, kppMethod:'none', masses:{copper:null,steel:null}, geometryMessage:'', materialMessage:'', state:'error'};
   // The angle does not depend on n or N, so retain it when only those inputs fail.
   if (!errors.D && !errors.d && !errors.s) {
     const circumference = Math.PI * (values.D + 2 * values.d);
@@ -260,10 +321,10 @@ function calculate(raw) {
   result.P = (2 * fill - fill * fill) * 100;
   result.kpp = selectKpp(result.P); // Never round before choosing the interval.
   if (result.kpp === null) {
-    result.materialMessage = NO_KPP;
-    result.state = 'warning';
+    result.materialMessage = NUMERIC_LIMIT;
     return result;
   }
+  result.kppMethod = kppMethod(result.P);
   for (const material of MATERIALS) {
     const M = (N * n * Math.PI * Math.pow(d * 0.001, 2) * material.density * result.kpp * 1000) / (4 * Math.sin(result.alpha));
     if (!Number.isFinite(M) || M <= 0) {
@@ -273,7 +334,8 @@ function calculate(raw) {
     }
     result.masses[material.id] = M;
   }
-  result.state = 'ok';
+  result.state = result.kppMethod === 'estimated' ? 'warning' : 'ok';
+  if (result.kppMethod === 'estimated') result.materialMessage = ESTIMATED_KPP;
   return result;
 }
 const formatters = new Map([0,2,3,4].map(digits => [digits,new Intl.NumberFormat('ru-RU',{minimumFractionDigits:digits,maximumFractionDigits:digits})]));
@@ -286,39 +348,90 @@ function render(result) {
   for (const key of Object.keys(DEFAULTS)) {
     $(key).setAttribute('aria-invalid',result.errors[key] ? 'true' : 'false');
     notice(key+'-error',result.errors[key] || '');
+    $(key+'-control').dataset.invalid = String(Boolean(result.errors[key]));
+    const value = result.values[key];
+    $(key+'-minus').disabled = Number.isFinite(value) && value <= (key === 'N' ? 16 : MIN_VALUES[key]);
+    $(key+'-plus').disabled = Number.isFinite(value) && (key === 'N' ? value >= 36 : !Number.isFinite(value + STEPS[key]) || value + STEPS[key] === value);
   }
   $('density').textContent = format(result.P,2);
   $('angle').textContent = format(result.angle,2);
   $('fill').textContent = format(result.fill,4);
   $('coverage').style.width = result.P === null ? '0%' : result.P+'%';
   $('coverage').parentElement.hidden = result.P === null;
-  $('kpp').textContent = format(result.kpp,3);
+  const estimatePrefix = result.kppMethod === 'estimated' ? '≈ ' : '';
+  $('kpp').textContent = estimatePrefix + format(result.kpp,3);
+  const kppBand = result.kppMethod;
+  $('kpp-panel').dataset.band = kppBand;
   for (const material of MATERIALS) {
-    $(material.id+'-mass').textContent = format(result.masses[material.id],2);
-    $(material.id+'-kpp').textContent = format(result.kpp,3);
+    $(material.id+'-mass').textContent = (Number.isFinite(result.masses[material.id]) ? estimatePrefix : '') + format(result.masses[material.id],2);
+    $(material.id+'-kpp').textContent = estimatePrefix + format(result.kpp,3);
+    $(material.id+'-kpp').dataset.band = kppBand;
   }
   notice('geometry-notice',result.geometryMessage);
   notice('material-notice',result.materialMessage);
-  $('kpp-context').textContent = result.kpp === null
-    ? 'Выбирается по неокруглённой плотности оплётки. Одинаковый для обоих материалов.'
-    : 'Плотность входит в диапазон '+(result.kpp === 1.035 ? '96–100 %' : '70–80 %')+'. Коэффициент одинаковый для обоих материалов.';
-  $('rule-high').dataset.active = String(result.kpp === 1.035);
-  $('rule-low').dataset.active = String(result.kpp === 1.03);
+  const kppDescriptions = {
+    none:'Выбирается по неокруглённой плотности оплётки. Одинаковый для обоих материалов.',
+    estimated:'Плотность ниже 70 %. Кпп принят для приближённой оценки расхода.',
+    low:'Плотность 70–80 %. Кпп = 1,030 по таблице 25 СТБ 2194-2011.',
+    interpolated:'Плотность выше 80 % и ниже 96 %. Кпп вычислен линейной интерполяцией; расход учитывает его полное значение.',
+    high:'Плотность 96–100 %. Кпп = 1,035 по таблице 25 СТБ 2194-2011.'
+  };
+  $('kpp-context').textContent = kppDescriptions[kppBand];
+  for (const method of ['high','low','interpolated','estimated']) $('rule-'+method).dataset.active = String(kppBand === method);
   $('calculation-status').dataset.state = result.state;
-  $('calculation-status').textContent = result.state === 'ok' ? 'Расчёт выполнен' : result.state === 'warning' ? 'Для расхода не задан Кпп' : 'Проверьте исходные параметры';
+  $('calculation-status').textContent = result.state === 'ok' ? 'Расчёт выполнен' : result.state === 'warning' ? 'Приближённый расход' : 'Проверьте исходные параметры';
   clearTimeout(announcementTimer);
   announcementTimer = setTimeout(() => {
     const errors = Object.entries(result.errors).map(([key,message]) => key+': '+message).join(' ');
-    $('live-summary').textContent = result.state === 'ok'
-      ? 'Плотность '+format(result.P,2)+' процента. Расход меди '+format(result.masses.copper,2)+', стали '+format(result.masses.steel,2)+' килограммов на километр.'
+    $('live-summary').textContent = result.state !== 'error'
+      ? (result.kppMethod === 'estimated' ? 'Приближённый расчёт. ' : '')+'Плотность '+format(result.P,2)+' процента. Расход меди '+format(result.masses.copper,2)+', стали '+format(result.masses.steel,2)+' килограммов на километр.'
       : errors || result.geometryMessage || result.materialMessage;
   },500);
 }
 function readInputs() { return Object.fromEntries(Object.keys(DEFAULTS).map(key => [key,$(key).value])); }
 function update() { const result = calculate(readInputs()); render(result); return result; }
 function setInputs(raw) { for (const key of Object.keys(DEFAULTS)) $(key).value = String(raw[key]); return update(); }
+// Custom steppers preserve comma input and use exact decimal addition.
+function steppedValue(raw, key, direction) {
+  const parsed = parseField(raw,key);
+  if (key === 'N') {
+    if (parsed.error) return '16';
+    const index = COIL_COUNTS.indexOf(parsed.value);
+    return String(COIL_COUNTS[Math.max(0,Math.min(COIL_COUNTS.length-1,index+direction))]);
+  }
+  const step = STEPS[key];
+  const minimum = MIN_VALUES[key];
+  if (parsed.error) return String(minimum).replace('.',',');
+  if (!Number.isFinite(parsed.value+direction*step) || parsed.value+direction*step === parsed.value) return String(raw);
+  if (parsed.value+direction*step <= minimum) return String(minimum).replace('.',',');
+  // Convert the validated number's shortest decimal form to integer units.
+  const [mantissa, exponentText='0'] = String(parsed.value).toLowerCase().split('e');
+  const exponent = Number(exponentText);
+  const fractionDigits = (mantissa.split('.')[1] || '').length;
+  const stepDigits = (String(step).split('.')[1] || '').length;
+  const precision = Math.max(stepDigits,fractionDigits-exponent,0);
+  const digits = mantissa.replace('.','');
+  const scaled = BigInt(digits) * 10n ** BigInt(precision+exponent-fractionDigits);
+  const delta = BigInt(direction) * 10n ** BigInt(precision-stepDigits);
+  const answer = String(scaled+delta).padStart(precision+1,'0');
+  return precision ? (answer.slice(0,-precision)+','+answer.slice(-precision)).replace(/0+$/,'').replace(/,$/,'') : answer;
+}
+function stepInput(key,direction) {
+  $(key).value = steppedValue($(key).value,key,direction);
+  return update();
+}
 // Both material rows come from the embedded catalogue; no network is required.
-$('material-rows').innerHTML = MATERIALS.map(material => `<tr role="row"><td role="rowheader">${material.name}</td><td role="cell"><span class="mobile-label" aria-hidden="true">Расход оплётки,<br>кг/км</span><output class="mass" id="${material.id}-mass" aria-label="${material.name}: расход оплётки, кг/км" aria-live="off">—</output></td><td role="cell"><span class="mobile-label" aria-hidden="true">Плотность материала,<br>кг/м³</span><span>${format(material.density,0)}</span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Кпп</span><output id="${material.id}-kpp" aria-label="${material.name}: коэффициент площади перекрытия" aria-live="off">—</output></td></tr>`).join('');
+$('material-rows').innerHTML = MATERIALS.map(material => `<tr role="row"><td role="rowheader">${material.name}</td><td role="cell"><span class="mobile-label" aria-hidden="true">Расход оплётки,<br>кг/км</span><output class="mass" id="${material.id}-mass" aria-label="${material.name}: расход оплётки, кг/км" aria-live="off">—</output></td><td role="cell"><span class="mobile-label" aria-hidden="true">Плотность материала,<br>кг/м³</span><span>${format(material.density,0)}</span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Кпп</span><output class="material-kpp" id="${material.id}-kpp" aria-label="${material.name}: коэффициент площади перекрытия" aria-live="off">—</output></td></tr>`).join('');
+for (const key of Object.keys(DEFAULTS)) {
+  $(key+'-minus').addEventListener('click',() => stepInput(key,-1));
+  $(key+'-plus').addEventListener('click',() => stepInput(key,1));
+  if (key !== 'N') $(key).addEventListener('keydown',event => {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+      event.preventDefault();
+      stepInput(key,event.key === 'ArrowUp' ? 1 : -1);
+    }
+  });
+}
 $('parameters').addEventListener('submit',event => event.preventDefault());
 $('parameters').addEventListener('input',update);
 $('N').addEventListener('change',update);
@@ -337,7 +450,7 @@ if (document.modelContext && typeof document.modelContext.registerTool === 'func
       const checked = calculate(input);
       if (Object.keys(checked.errors).length) throw new Error(Object.values(checked.errors).join(' '));
       const result = setInputs(input);
-      return {angleDegrees:result.angle,fill:result.fill,coveragePercent:result.P,kpp:result.kpp,kgPerKm:result.masses,message:result.geometryMessage || result.materialMessage};
+      return {angleDegrees:result.angle,fill:result.fill,coveragePercent:result.P,kpp:result.kpp,kppMethod:result.kppMethod,approximate:result.kppMethod === 'estimated',kgPerKm:result.masses,message:result.geometryMessage || result.materialMessage};
     }
   };
   try { Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(() => {}); } catch (_) { /* UI remains available. */ }

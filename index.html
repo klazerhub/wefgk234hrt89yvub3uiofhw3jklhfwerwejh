@@ -27,13 +27,19 @@
     .blocks{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);align-items:start;gap:16px}
     .card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
     .card-header{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
-    .section-number{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border:1px solid rgba(79,140,255,.3);border-radius:8px;color:var(--accent);background:rgba(79,140,255,.07);font-size:13px;font-weight:600}
+     .section-number{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border:1px solid rgba(79,140,255,.3);border-radius:8px;color:var(--accent);background:rgba(79,140,255,.07);font-size:13px;font-weight:600}
+     .section-number--green{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.07)}
+     .section-number--orange{color:#ff9f43;border-color:rgba(255,159,67,.35);background:rgba(255,159,67,.07)}
+     .results-header{margin-bottom:12px;padding-bottom:10px}
+     /* Единое центрирование значений во всех полях, включая список катушек. */
+     .step-control input,.step-control select{text-align:center}
+     #N{text-align-last:center}
     h2{font-size:18px;font-weight:600;line-height:1.45;margin:1px 0 0}
     .input-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-    .field{display:grid;grid-template-columns:minmax(0,1fr) 180px;align-items:center;column-gap:14px;min-width:0}
+    .field{display:grid;grid-template-columns:minmax(0,1fr) 156px;align-items:center;column-gap:12px;min-width:0}
     .field-copy{min-width:0}
     .field label{display:block;color:var(--text);font-size:14px;line-height:1.4}
-    .step-control{display:grid;grid-template-columns:44px minmax(0,1fr) 24px 44px;align-items:center;min-width:0;min-height:46px;max-width:100%;overflow:hidden;border:1px solid #343a49;border-radius:8px;background:var(--bg);transition:border-color .15s,box-shadow .15s}
+    .step-control{display:grid;grid-template-columns:38px minmax(0,1fr) 22px 38px;align-items:center;min-width:0;min-height:46px;max-width:100%;overflow:hidden;border:1px solid #343a49;border-radius:8px;background:var(--bg);transition:border-color .15s,box-shadow .15s}
     .step-control:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.15)}
     .step-control[data-invalid="true"]{border-color:var(--danger)}
     input,select{width:100%;min-width:0;min-height:44px;border:0;background:transparent;color:var(--text);font-size:16px;padding:8px 6px;text-align:right;font-variant-numeric:tabular-nums;outline:none}
@@ -41,7 +47,7 @@
     select{appearance:none;cursor:pointer}
     select option{background:var(--card);color:var(--text)}
     .input-unit{font-size:12px;color:var(--muted);text-align:center;pointer-events:none}
-    .step-button{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0;border:0;background:rgba(255,255,255,.025);color:var(--muted);font-size:21px;line-height:1;user-select:none}
+    .step-button{display:flex;align-items:center;justify-content:center;min-width:38px;min-height:44px;padding:0;border:0;background:rgba(255,255,255,.025);color:var(--muted);font-size:21px;line-height:1;user-select:none}
     .step-button:first-child{border-right:1px solid var(--line);border-radius:7px 0 0 7px}
     .step-button:last-child{border-left:1px solid var(--line);border-radius:0 7px 7px 0}
     .step-button:hover:not(:disabled){color:var(--accent);background:rgba(79,140,255,.1)}
@@ -80,14 +86,16 @@
     .formula{display:block;color:#b7c9ed;margin-top:5px;font-variant-numeric:tabular-nums}
     .table-wrap{min-width:0}
     .materials{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
-    .materials col:nth-child(1){width:22%}.materials col:nth-child(2){width:29%}.materials col:nth-child(3){width:31%}.materials col:nth-child(4){width:18%}
-    .materials th{padding:0 8px 10px;font-size:13px;font-weight:400;text-align:right;color:var(--muted);vertical-align:bottom;line-height:1.45}
+    .materials col:nth-child(1){width:16%}.materials col:nth-child(2){width:32%}.materials col:nth-child(3){width:39%}.materials col:nth-child(4){width:13%}
+    .materials th{padding:0 4px 10px;font-size:12px;font-weight:400;text-align:right;color:var(--muted);vertical-align:bottom;line-height:1.45;white-space:nowrap;letter-spacing:-.25px}
     .materials th:first-child{padding-left:0;text-align:left}
     .materials th:last-child{padding-right:0}
-    .materials td{padding:14px 8px;border-top:1px solid var(--line);text-align:right;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .materials td{padding:14px 4px;border-top:1px solid var(--line);text-align:right;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
     .materials td:first-child{padding-left:0;text-align:left;font-size:16px;font-weight:600}
     .materials td:last-child{padding-right:0}
-    .mass{font-size:22px;font-weight:600;color:var(--accent);line-height:1.25}
+     .mass{font-size:22px;font-weight:600;color:var(--accent);line-height:1.25}
+     .material-unit{font-size:13px;font-weight:400;color:var(--muted);white-space:nowrap}
+     .material-value{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:4px;flex-wrap:wrap}
     .mobile-label{display:none}
     .kpp-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:14px}
     .kpp-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
@@ -113,9 +121,9 @@
     #rule-estimated[data-active="true"]{color:var(--warn);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.06)}
     .rule-list strong{flex-shrink:0}.rule-list small{font-size:12px;color:var(--muted)}
     .source-link{color:var(--accent);text-underline-offset:3px}
-    @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}.field{grid-template-columns:minmax(0,1fr) 162px;column-gap:10px}.materials th{padding-left:4px;padding-right:4px;font-size:12px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
-    @media(max-width:900px){.app{max-width:640px;padding:20px 16px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:16px}.page-header{align-items:center}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:10px}.materials tr{display:block;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#10131a,#0d1015);padding:12px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:right;border:0;padding:6px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line);font-size:17px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.4}.materials td output{min-width:0}.mass{font-size:24px}.kpp-panel{margin-top:12px}}
-    @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 174px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:44px minmax(0,1fr) 24px 44px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.materials tr{padding:12px}.mass{font-size:23px}}
+    @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}.field{grid-template-columns:minmax(0,1fr) 150px;column-gap:10px}.materials th{padding-left:2px;padding-right:2px;font-size:11px;letter-spacing:-.35px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
+    @media(max-width:900px){.app{max-width:640px;padding:20px 16px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:16px}.page-header{align-items:center}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:10px}.materials tr{display:block;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#10131a,#0d1015);padding:12px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:right;border:0;padding:6px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line);font-size:17px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.4;white-space:nowrap}.materials td output{min-width:0}.mass{font-size:24px}.kpp-panel{margin-top:12px}}
+    @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 148px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:38px minmax(0,1fr) 22px 38px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.materials tr{padding:12px}.mass{font-size:23px}}
     @media(prefers-reduced-motion:reduce){*{transition:none!important}}
   </style>
 </head>
@@ -182,7 +190,7 @@
         </div>
       </form>
       <div class="results">
-        <p class="section-label">Результаты</p>
+        <header class="card-header results-header"><span class="section-number section-number--green" aria-hidden="true">02</span><h2 id="results-title">Результаты</h2></header>
         <div class="result-grid">
           <div class="result result-main"><span class="result-label" id="density-label">Плотность оплётки, %</span><output id="density" class="result-value" aria-labelledby="density-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">%</span><div class="coverage-track" aria-hidden="true"><div class="coverage-fill" id="coverage"></div></div></div>
           <div class="result result-angle"><span class="result-label" id="angle-label">Угол оплётки, °</span><output id="angle" class="result-value" aria-labelledby="angle-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">°</span></div>
@@ -192,17 +200,17 @@
       </div>
       <details class="help"><summary>Что означают показатели</summary><div class="help-content">
         <p><strong>Плотность оплётки</strong> — расчётная доля поверхности заготовки, покрытая проволочной оплёткой.<span class="formula">P = (2 × Пл − Пл²) × 100</span></p>
-        <p><strong>Угол</strong> — угол проволок к плоскости, перпендикулярной оси кабеля, согласно формуле Excel.<span class="formula">α = atan(s / (π × (D + 2 × d)))<br>Угол в градусах = α × 180 / π</span></p>
+        <p><strong>Угол</strong> — угол проволок к плоскости, перпендикулярной оси кабеля, согласно формуле:<span class="formula">α = atan(s / (π × (D + 2 × d)))<br>Угол в градусах = α × 180 / π</span></p>
         <p><strong>Пл</strong> — безразмерный коэффициент заполнения оплётки в одном направлении. Используется для расчёта общей плотности покрытия.<span class="formula">Пл = (N × n × d) / (2 × s × cos(α))</span></p>
         <p>Размеры — в миллиметрах. В тригонометрических функциях угол α используется в радианах.</p>
       </div></details>
     </section>
     <section class="card" aria-labelledby="materials-title">
-      <header class="card-header"><span class="section-number" aria-hidden="true">02</span><h2 id="materials-title">Расходы</h2></header>
+      <header class="card-header"><span class="section-number section-number--orange" aria-hidden="true">03</span><h2 id="materials-title">Расходы</h2></header>
       <div class="table-wrap">
         <table class="materials" role="table" aria-label="Расход оплётки для меди и стали">
           <colgroup><col><col><col><col></colgroup>
-          <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Материал</th><th scope="col" role="columnheader">Расход оплётки,<br>кг/км</th><th scope="col" role="columnheader">Плотность материала,<br>кг/м³</th><th scope="col" role="columnheader">Кпп</th></tr></thead>
+          <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Материал</th><th scope="col" role="columnheader">Расход оплётки</th><th scope="col" role="columnheader">Плотность материала</th><th scope="col" role="columnheader">Кпп</th></tr></thead>
           <tbody id="material-rows" role="rowgroup"></tbody>
         </table>
       </div>
@@ -227,7 +235,7 @@
         <p class="formula">M = [N × n × π × (d × 0,001)² × ρ × Кпп × 1000] / [4 × sin(α)]</p>
         <p><strong>ρ</strong> — плотность материала: для меди 8890 кг/м³, для стали 7800 кг/м³. Коэффициент 0,001 переводит диаметр проволоки в метры, 1000 — расход в кг/км.</p>
       </div></details>
-      <p class="footnote">Расход указан на 1 км кабеля.<br>Округляются только отображаемые результаты.</p>
+      <p class="footnote">Расход указан на 1 км кабеля</p>
     </section>
   </div>
   <div id="live-summary" class="sr-only" aria-live="polite" aria-atomic="true"></div>
@@ -245,7 +253,7 @@ const MATERIALS = Object.freeze([
   Object.freeze({id:'steel', name:'Сталь', density:7800})
 ]);
 const EXCESS_FILL = 'Коэффициент заполнения превышает 1. Проверьте исходные параметры: расчёт плотности по этой формуле выходит за допустимую область';
-const ESTIMATED_KPP = 'При плотности ниже 70 % Кпп = 1,030 принят как допущение. Расход приближённый: таблица 25 СТБ 2194-2011 не задаёт коэффициент для этого диапазона.';
+const ESTIMATED_KPP = 'При плотности оплётки ниже 70 % Кпп = 1,030 принят как допущение. Расход приближённый: таблица 25 СТБ 2194-2011 не задаёт коэффициент для этого диапазона.';
 const NUMERIC_LIMIT = 'Не удалось выполнить расчёт для такого сочетания значений. Проверьте величины исходных параметров.';
 function parseField(raw, key) {
   const text = String(raw == null ? '' : raw).trim();
@@ -367,7 +375,7 @@ function render(result) {
   notice('material-notice',result.materialMessage);
   const kppDescriptions = {
     none:'Выбирается по неокруглённой плотности оплётки. Одинаковый для обоих материалов.',
-    estimated:'Плотность ниже 70 %. Кпп принят для приближённой оценки расхода.',
+    estimated:'Плотность оплётки ниже 70 %. Кпп принят для приближённой оценки расхода.',
     low:'Плотность 70–80 %. Кпп = 1,030 по таблице 25 СТБ 2194-2011.',
     interpolated:'Плотность выше 80 % и ниже 96 %. Кпп вычислен линейной интерполяцией; расход учитывает его полное значение.',
     high:'Плотность 96–100 %. Кпп = 1,035 по таблице 25 СТБ 2194-2011.'
@@ -415,7 +423,7 @@ function stepInput(key,direction) {
   return update();
 }
 // Both material rows come from the embedded catalogue; no network is required.
-$('material-rows').innerHTML = MATERIALS.map(material => `<tr role="row"><td role="rowheader">${material.name}</td><td role="cell"><span class="mobile-label" aria-hidden="true">Расход оплётки,<br>кг/км</span><output class="mass" id="${material.id}-mass" aria-label="${material.name}: расход оплётки, кг/км" aria-live="off">—</output></td><td role="cell"><span class="mobile-label" aria-hidden="true">Плотность материала,<br>кг/м³</span><span>${format(material.density,0)}</span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Кпп</span><output class="material-kpp" id="${material.id}-kpp" aria-label="${material.name}: коэффициент площади перекрытия" aria-live="off">—</output></td></tr>`).join('');
+$('material-rows').innerHTML = MATERIALS.map(material => `<tr role="row"><td role="rowheader">${material.name}</td><td role="cell"><span class="mobile-label" aria-hidden="true">Расход оплётки</span><span class="material-value"><output class="mass" id="${material.id}-mass" aria-label="${material.name}: расход оплётки, кг/км" aria-live="off">—</output><span class="material-unit" aria-hidden="true">кг/км</span></span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Плотность материала</span><span class="material-value"><span>${format(material.density,0)}</span><span class="material-unit" aria-hidden="true">кг/м³</span></span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Кпп</span><output class="material-kpp" id="${material.id}-kpp" aria-label="${material.name}: коэффициент площади перекрытия" aria-live="off">—</output></td></tr>`).join('');
 for (const key of Object.keys(DEFAULTS)) {
   $(key+'-minus').addEventListener('click',() => stepInput(key,-1));
   $(key+'-plus').addEventListener('click',() => stepInput(key,1));

@@ -6,10 +6,7 @@
   <meta name="theme-color" content="#0f1115">
   <meta name="description" content="Расчёт плотности и угла проволочной оплётки кабеля, коэффициента заполнения и расхода меди и стали.">
   <title>Расчёт оплётки</title>
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-  <link rel="manifest" href="./site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23171a21'/%3E%3Cg fill='none' stroke='%234f8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m8 5 16 22M8 16l8 11M16 5l8 11M24 5 8 27M16 5 8 16M24 16l-8 11'/%3E%3C/g%3E%3C/svg%3E">
   <style>
     *{box-sizing:border-box}
     :root{color-scheme:dark;--bg:#0f1115;--card:#171a21;--panel:#1b1f27;--line:#242833;--text:#e7eaf0;--muted:#9aa3b7;--accent:#4f8cff;--ok:#35d07f;--warn:#f0b429;--danger:#ff5c6c}
@@ -36,10 +33,10 @@
     .field{display:grid;grid-template-columns:minmax(0,1fr) 180px;align-items:center;column-gap:14px;min-width:0}
     .field-copy{min-width:0}
     .field label{display:block;color:var(--text);font-size:14px;line-height:1.4}
-    .step-control{display:grid;grid-template-columns:44px minmax(0,1fr) 24px 44px;align-items:center;min-width:0;min-height:46px;border:1px solid #343a49;border-radius:8px;background:var(--bg);transition:border-color .15s,box-shadow .15s}
+    .step-control{display:grid;grid-template-columns:44px minmax(0,1fr) 24px 44px;align-items:center;min-width:0;min-height:46px;max-width:100%;overflow:hidden;border:1px solid #343a49;border-radius:8px;background:var(--bg);transition:border-color .15s,box-shadow .15s}
     .step-control:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.15)}
     .step-control[data-invalid="true"]{border-color:var(--danger)}
-    input,select{width:100%;min-width:0;min-height:44px;border:0;background:transparent;color:var(--text);font-size:16px;padding:8px 2px;text-align:center;font-variant-numeric:tabular-nums;outline:none}
+    input,select{width:100%;min-width:0;min-height:44px;border:0;background:transparent;color:var(--text);font-size:16px;padding:8px 6px;text-align:right;font-variant-numeric:tabular-nums;outline:none}
     input::placeholder{color:#768094}
     select{appearance:none;cursor:pointer}
     select option{background:var(--card);color:var(--text)}
@@ -58,15 +55,16 @@
     .section-label{margin:0 0 8px;color:var(--muted);font-size:12px;letter-spacing:1.15px;font-weight:600;text-transform:uppercase}
     .result-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
     .result{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:5px;min-width:0;min-height:46px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:linear-gradient(180deg,#10131a,#0d1015)}
-    .result-main{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.055)}
+    .result-main{border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.055)}
     .result-label{color:var(--muted);font-size:14px;line-height:1.35;display:block;padding-right:8px}
     .result-value{color:var(--text);font-size:22px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;min-width:0;max-width:180px}
-    .result-main .result-value{font-size:24px;color:var(--accent)}
-    .result-angle{border-color:rgba(53,208,127,.3);background:rgba(53,208,127,.045)}
-    .result-angle .result-value,.result-angle .result-unit{color:var(--ok)}
+    .result-main .result-value{font-size:24px;color:var(--ok)}
+    .result-main .result-unit{color:var(--ok)}
+    .result-angle{border-color:rgba(79,140,255,.3);background:rgba(79,140,255,.045)}
+    .result-angle .result-value,.result-angle .result-unit{color:var(--accent)}
     .result-unit{font-size:16px;color:var(--muted);font-weight:400}
     .coverage-track{grid-column:1/-1;height:3px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
-    .coverage-fill{height:100%;width:0;background:var(--accent)}
+    .coverage-fill{height:100%;width:0;background:var(--ok)}
     .notice{margin:14px 0 0;border:1px solid rgba(240,180,41,.27);border-radius:8px;background:rgba(240,180,41,.06);padding:12px 14px;font-size:14px;line-height:1.55;color:#f6cf72;overflow-wrap:anywhere}
     .notice.error{border-color:rgba(255,92,108,.3);background:rgba(255,92,108,.05);color:#ff96a1}
     .help{border-top:1px solid var(--line);margin-top:10px;padding-top:0}
@@ -100,10 +98,6 @@
     .rule-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;font-variant-numeric:tabular-nums}
     .rule-list li[data-active="true"]{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.07);color:#b7d0ff}
     .footnote{margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
-    .page-footer{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:var(--muted);font-size:13px}
-    #calculation-status[data-state="ok"]{color:var(--ok)}
-    #calculation-status[data-state="warning"]{color:#f6cf72}
-    #calculation-status[data-state="error"]{color:#ff96a1}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     noscript p{margin:20px;padding:16px;background:var(--panel);color:var(--warn)}
     .kpp-panel[data-band="high"]{border-color:rgba(53,208,127,.4);background:rgba(53,208,127,.07)}
@@ -121,7 +115,7 @@
     .source-link{color:var(--accent);text-underline-offset:3px}
     @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}.field{grid-template-columns:minmax(0,1fr) 162px;column-gap:10px}.materials th{padding-left:4px;padding-right:4px;font-size:12px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
     @media(max-width:900px){.app{max-width:640px;padding:20px 16px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:16px}.page-header{align-items:center}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:10px}.materials tr{display:block;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#10131a,#0d1015);padding:12px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:right;border:0;padding:6px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line);font-size:17px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.4}.materials td output{min-width:0}.mass{font-size:24px}.kpp-panel{margin-top:12px}}
-    @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 154px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:44px minmax(0,1fr) 20px 44px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.page-footer{flex-direction:column;gap:4px}.materials tr{padding:12px}.mass{font-size:23px}}
+    @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 174px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:44px minmax(0,1fr) 24px 44px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.materials tr{padding:12px}.mass{font-size:23px}}
     @media(prefers-reduced-motion:reduce){*{transition:none!important}}
   </style>
 </head>
@@ -150,10 +144,10 @@
             <p id="D-error" class="field-error" hidden></p>
           </div>
           <div class="field">
-            <div class="field-copy"><label for="n">Количество проволок<span class="sr-only">, шт.</span></label><p class="hint" id="n-hint">Количество проволок на одной катушке</p></div>
+            <div class="field-copy"><label for="n">Количество проволок<span class="sr-only">, шт.</span></label></div>
             <div class="step-control" id="n-control">
               <button class="step-button" id="n-minus" type="button" aria-label="Уменьшить: количество проволок" title="Шаг 1 шт.">−</button>
-              <input id="n" name="n" type="text" inputmode="numeric" value="4" required spellcheck="false" aria-describedby="n-hint n-error" title="Шаг 1 шт."><span class="input-unit" aria-hidden="true">шт.</span>
+              <input id="n" name="n" type="text" inputmode="numeric" value="4" required spellcheck="false" aria-describedby="n-error" title="Шаг 1 шт."><span class="input-unit" aria-hidden="true">шт.</span>
               <button class="step-button" id="n-plus" type="button" aria-label="Увеличить: количество проволок" title="Шаг 1 шт.">+</button>
             </div>
             <p id="n-error" class="field-error" hidden></p>
@@ -170,9 +164,9 @@
           <div class="field">
             <div class="field-copy"><label for="s">Шаг оплётки<span class="sr-only">, мм</span></label></div>
             <div class="step-control" id="s-control">
-              <button class="step-button" id="s-minus" type="button" aria-label="Уменьшить: шаг оплётки" title="Шаг 0,01 мм">−</button>
-              <input id="s" name="s" type="text" inputmode="decimal" value="50" required spellcheck="false" aria-describedby="s-error" title="Шаг 0,01 мм"><span class="input-unit" aria-hidden="true">мм</span>
-              <button class="step-button" id="s-plus" type="button" aria-label="Увеличить: шаг оплётки" title="Шаг 0,01 мм">+</button>
+              <button class="step-button" id="s-minus" type="button" aria-label="Уменьшить: шаг оплётки" title="Шаг 1 мм">−</button>
+              <input id="s" name="s" type="text" inputmode="decimal" value="50" required spellcheck="false" aria-describedby="s-error" title="Шаг 1 мм"><span class="input-unit" aria-hidden="true">мм</span>
+              <button class="step-button" id="s-plus" type="button" aria-label="Увеличить: шаг оплётки" title="Шаг 1 мм">+</button>
             </div>
             <p id="s-error" class="field-error" hidden></p>
           </div>
@@ -236,7 +230,6 @@
       <p class="footnote">Расход указан на 1 км кабеля.<br>Округляются только отображаемые результаты.</p>
     </section>
   </div>
-  <footer class="page-footer"><span>Пересчёт при изменении параметров</span><span id="calculation-status" role="status" aria-live="polite"></span></footer>
   <div id="live-summary" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 </main>
 <script>
@@ -244,7 +237,7 @@
 // Source: «Расчет оплетки(2).xls», sheet «фольга, оплётка».
 // User-specified automatic Kpp rules replace the manually stored coefficients.
 const DEFAULTS = Object.freeze({D:'10', n:'4', d:'0,15', s:'50', N:'24'});
-const STEPS = Object.freeze({D:0.1,n:1,d:0.01,s:0.01});
+const STEPS = Object.freeze({D:0.1,n:1,d:0.01,s:1});
 const MIN_VALUES = Object.freeze({D:0.01,n:1,d:0.01,s:0.01});
 const COIL_COUNTS = Object.freeze([16,24,36]);
 const MATERIALS = Object.freeze([
@@ -381,8 +374,6 @@ function render(result) {
   };
   $('kpp-context').textContent = kppDescriptions[kppBand];
   for (const method of ['high','low','interpolated','estimated']) $('rule-'+method).dataset.active = String(kppBand === method);
-  $('calculation-status').dataset.state = result.state;
-  $('calculation-status').textContent = result.state === 'ok' ? 'Расчёт выполнен' : result.state === 'warning' ? 'Приближённый расход' : 'Проверьте исходные параметры';
   clearTimeout(announcementTimer);
   announcementTimer = setTimeout(() => {
     const errors = Object.entries(result.errors).map(([key,message]) => key+': '+message).join(' ');
@@ -428,6 +419,12 @@ $('material-rows').innerHTML = MATERIALS.map(material => `<tr role="row"><td rol
 for (const key of Object.keys(DEFAULTS)) {
   $(key+'-minus').addEventListener('click',() => stepInput(key,-1));
   $(key+'-plus').addEventListener('click',() => stepInput(key,1));
+  if (key !== 'N') {
+    // Select the current value for typing, mouse clicks and touchscreen taps.
+    const input = $(key);
+    input.addEventListener('focus',() => input.select());
+    input.addEventListener('click',() => input.select());
+  }
   if (key !== 'N') $(key).addEventListener('keydown',event => {
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
       event.preventDefault();

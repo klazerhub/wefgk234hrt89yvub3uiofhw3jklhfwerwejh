@@ -22,8 +22,17 @@
     h1{margin:0;font-size:23px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;line-height:1.3}
     .subtitle{margin:7px 0 0;color:var(--muted);font-size:14px}
     .reset{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;min-height:44px;padding:10px 16px;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);background:rgba(255,255,255,.04);font-size:14px;font-weight:600;transition:background .15s,border-color .15s}
-    .reset:hover{background:rgba(79,140,255,.1);border-color:var(--accent)}
-    .reset svg{width:16px;height:16px;flex-shrink:0}
+    @media(hover:hover) and (pointer:fine){.reset:hover{background:rgba(79,140,255,.065)}}
+    .reset svg{width:16px;height:16px;flex-shrink:0;transform-origin:50% 50%}
+    .reset.is-resetting{animation:reset-border-flash 850ms ease-out both}
+    .reset.is-resetting svg{animation:reset-icon-spin 650ms cubic-bezier(.24,.76,.30,1) both}
+    @keyframes reset-icon-spin{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+    @keyframes reset-border-flash{
+      0%{border-color:var(--accent);box-shadow:0 0 0 2px rgba(79,140,255,.38);background:rgba(79,140,255,.13)}
+      35%{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.20);background:rgba(79,140,255,.10)}
+      100%{border-color:rgba(255,255,255,.12);box-shadow:0 0 0 0 rgba(79,140,255,0);background:rgba(255,255,255,.04)}
+    }
+    @media(prefers-reduced-motion:reduce){.reset.is-resetting,.reset.is-resetting svg{animation:none!important}}
     .blocks{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);align-items:start;gap:16px}
     .card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
     .card-header{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
@@ -443,7 +452,20 @@ for (const key of Object.keys(DEFAULTS)) {
 $('parameters').addEventListener('submit',event => event.preventDefault());
 $('parameters').addEventListener('input',update);
 $('N').addEventListener('change',update);
-$('reset').addEventListener('click',() => setInputs(DEFAULTS));
+const resetButton = $('reset');
+resetButton.addEventListener('click',event => {
+  setInputs(DEFAULTS);
+  // Restart both animations even when the user presses the button repeatedly.
+  resetButton.classList.remove('is-resetting');
+  void resetButton.offsetWidth;
+  resetButton.classList.add('is-resetting');
+  // Touch/mouse activation should not leave a persistent focus outline on mobile.
+  if (event.detail > 0) resetButton.blur();
+});
+resetButton.addEventListener('animationend',event => {
+  if (event.target === resetButton && event.animationName === 'reset-border-flash')
+    resetButton.classList.remove('is-resetting');
+});
 update();
 // Progressive enhancement for browsers supporting page-scoped WebMCP.
 if (document.modelContext && typeof document.modelContext.registerTool === 'function') {

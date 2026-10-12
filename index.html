@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0f1115">
   <meta name="description" content="Расчёт плотности и угла проволочной оплётки кабеля, коэффициента заполнения и расхода меди и стали.">
-  <title>Расчёт оплётки</title>
+  <title>Оплётка</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23171a21'/%3E%3Cg fill='none' stroke='%234f8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m8 5 16 22M8 16l8 11M16 5l8 11M24 5 8 27M16 5 8 16M24 16l-8 11'/%3E%3C/g%3E%3C/svg%3E">
   <style>
     *{box-sizing:border-box}
@@ -17,7 +17,7 @@
     button,summary{cursor:pointer}
     button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
     [hidden]{display:none!important}
-    .app{max-width:1120px;margin:0 auto;padding:22px 20px}
+    .app{max-width:680px;margin:0 auto;padding:22px 20px}
     .page-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
     h1{margin:0;font-size:23px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;line-height:1.3}
     .subtitle{margin:7px 0 0;color:var(--muted);font-size:14px}
@@ -33,7 +33,7 @@
       100%{border-color:rgba(255,255,255,.12);box-shadow:0 0 0 0 rgba(79,140,255,0);background:rgba(255,255,255,.04)}
     }
     @media(prefers-reduced-motion:reduce){.reset.is-resetting,.reset.is-resetting svg{animation:none!important}}
-    .blocks{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);align-items:start;gap:16px}
+    .blocks{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:16px}
     .card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
     .card-header{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
      .section-number{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border:1px solid rgba(79,140,255,.3);border-radius:8px;color:var(--accent);background:rgba(79,140,255,.07);font-size:13px;font-weight:600}
@@ -114,7 +114,7 @@
     .rule-list{padding:0;margin:0;list-style:none;display:grid;gap:10px}
     .rule-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;font-variant-numeric:tabular-nums}
     .rule-list li[data-active="true"]{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.07);color:#b7d0ff}
-    .footnote{margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+    .footnote{margin:10px 0 0;color:#ff9f43;font-size:13px;line-height:1.6}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     noscript p{margin:20px;padding:16px;background:var(--panel);color:var(--warn)}
     .kpp-panel[data-band="high"]{border-color:rgba(53,208,127,.4);background:rgba(53,208,127,.07)}
@@ -130,7 +130,7 @@
     #rule-estimated[data-active="true"]{color:var(--warn);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.06)}
     .rule-list strong{flex-shrink:0}.rule-list small{font-size:12px;color:var(--muted)}
     .source-link{color:var(--accent);text-underline-offset:3px}
-    @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}.field{grid-template-columns:minmax(0,1fr) 150px;column-gap:10px}.materials th{padding-left:2px;padding-right:2px;font-size:11px;letter-spacing:-.35px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
+    @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:minmax(0,1fr)}.field{grid-template-columns:minmax(0,1fr) 150px;column-gap:10px}.materials th{padding-left:2px;padding-right:2px;font-size:11px;letter-spacing:-.35px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
     @media(max-width:900px){.app{max-width:640px;padding:20px 16px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:16px}.page-header{align-items:center}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:10px}.materials tr{display:block;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#10131a,#0d1015);padding:12px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:right;border:0;padding:6px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line);font-size:17px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.4;white-space:nowrap}.materials td output{min-width:0}.mass{font-size:24px}.kpp-panel{margin-top:12px}}
     @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 148px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:38px minmax(0,1fr) 22px 38px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.materials tr{padding:12px}.mass{font-size:23px}}
     @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -149,13 +149,36 @@
     .info-content .help:first-child{border-top:0;margin-top:0}
     body:has(.info-dialog[open]){overflow:hidden}
     @media(max-width:480px){.info-header{padding:10px 12px}.info-content{padding:4px 12px 12px}.info-dialog{max-height:calc(100dvh - 24px)}}
+    .materials-header{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+    .result-fill{border-color:#fff}
+    .result-fill .result-value{color:#fff}
+    .help[open]>summary{color:#fff}
+    .quiet-btn.is-info-active{animation:info-border-flash 850ms ease-out both}
+    .quiet-btn.is-info-active .ui-icon{animation:info-icon-shake 650ms ease-in-out both}
+    .info-close.is-closing{animation:close-border-flash 850ms ease-out both}
+    @keyframes info-icon-shake{
+      0%,100%{transform:translateX(0) rotate(0deg)}
+      15%,45%,75%{transform:translateX(-2px) rotate(-8deg)}
+      30%,60%,90%{transform:translateX(2px) rotate(8deg)}
+    }
+    @keyframes info-border-flash{
+      0%{border-color:#35d07f;box-shadow:0 0 0 2px rgba(53,208,127,.38);background:rgba(53,208,127,.13)}
+      35%{border-color:#35d07f;box-shadow:0 0 0 3px rgba(53,208,127,.20);background:rgba(53,208,127,.10)}
+      100%{border-color:rgba(255,255,255,.12);box-shadow:0 0 0 0 rgba(53,208,127,0);background:rgba(255,255,255,.04)}
+    }
+    @keyframes close-border-flash{
+      0%{border-color:var(--danger);box-shadow:0 0 0 2px rgba(255,92,108,.38);background:rgba(255,92,108,.13)}
+      35%{border-color:var(--danger);box-shadow:0 0 0 3px rgba(255,92,108,.20);background:rgba(255,92,108,.10)}
+      100%{border-color:var(--line);box-shadow:0 0 0 0 rgba(255,92,108,0);background:transparent}
+    }
+    @media(prefers-reduced-motion:reduce){.quiet-btn.is-info-active,.quiet-btn.is-info-active .ui-icon,.info-close.is-closing{animation:none!important}}
   </style>
 </head>
 <body>
 <noscript><p>Для расчётов включите JavaScript в настройках браузера.</p></noscript>
 <main class="app">
   <header class="page-header">
-    <div><h1>Расчёт оплётки</h1></div>
+    <div><h1>Оплётка</h1></div>
     <div class="header-actions">
       <button type="button" class="quiet-btn" id="catalogButton" aria-haspopup="dialog" aria-controls="infoDialog"><svg class="ui-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v15M3 4h5a4 4 0 0 1 4 2 4 4 0 0 1 4-2h5v15h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3z"/></svg>Инфо</button>
     <button class="reset" id="reset" type="button" title="Вернуть значения по умолчанию">
@@ -165,7 +188,7 @@
     </div>
   </header>
   <div class="blocks">
-    <section class="card" aria-labelledby="geometry-title">
+    <section class="card" aria-labelledby="geometry-title results-title materials-title">
       <header class="card-header"><span class="section-number" aria-hidden="true">01</span><h2 id="geometry-title">Параметры</h2></header>
       <form id="parameters" novalidate autocomplete="off">
         <div class="input-grid">
@@ -221,14 +244,12 @@
         <div class="result-grid">
           <div class="result result-main"><span class="result-label" id="density-label">Плотность оплётки, %</span><output id="density" class="result-value" aria-labelledby="density-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">%</span><div class="coverage-track" aria-hidden="true"><div class="coverage-fill" id="coverage"></div></div></div>
           <div class="result result-angle"><span class="result-label" id="angle-label">Угол оплётки, °</span><output id="angle" class="result-value" aria-labelledby="angle-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">°</span></div>
-          <div class="result"><span class="result-label" id="fill-label">Коэффициент заполнения (Пл)</span><output id="fill" class="result-value" aria-labelledby="fill-label" aria-live="off">—</output></div>
+          <div class="result result-angle result-fill"><span class="result-label" id="fill-label">Коэффициент заполнения (Пл)</span><output id="fill" class="result-value" aria-labelledby="fill-label" aria-live="off">—</output></div>
         </div>
         <p class="notice error" id="geometry-notice" hidden></p>
       </div>
 
-    </section>
-    <section class="card" aria-labelledby="materials-title">
-      <header class="card-header"><span class="section-number section-number--orange" aria-hidden="true">03</span><h2 id="materials-title">Расходы</h2></header>
+      <header class="card-header materials-header"><span class="section-number section-number--orange" aria-hidden="true">03</span><h2 id="materials-title">Расходы</h2></header>
       <div class="table-wrap">
         <table class="materials" role="table" aria-label="Расход оплётки для меди и стали">
           <colgroup><col><col><col><col></colgroup>
@@ -483,10 +504,89 @@ for (const key of Object.keys(DEFAULTS)) {
 }
 // Native dialog supports keyboard focus trapping and Escape to close.
 const infoDialog = $('infoDialog');
-$('catalogButton').addEventListener('click',() => {
+const infoButton = $('catalogButton');
+const infoCloseButton = $('infoClose');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let infoCloseTimer;
+function flashButton(button,className,event) {
+  button.classList.remove(className);
+  void button.offsetWidth;
+  button.classList.add(className);
+  if (event.detail > 0) button.blur();
+}
+infoButton.addEventListener('click',event => {
+  flashButton(infoButton,'is-info-active',event);
   if (!infoDialog.open) infoDialog.showModal();
 });
-$('infoClose').addEventListener('click',() => infoDialog.close());
+infoButton.addEventListener('animationend',event => {
+  if (event.target === infoButton && event.animationName === 'info-border-flash')
+    infoButton.classList.remove('is-info-active');
+});
+infoCloseButton.addEventListener('click',event => {
+  if (infoCloseTimer) return;
+  flashButton(infoCloseButton,'is-closing',event);
+  if (reducedMotion.matches) {infoDialog.close();return;}
+  // Keep the close button visible until its red border has faded.
+  infoCloseTimer = setTimeout(() => infoDialog.close(),850);
+});
+infoDialog.addEventListener('close',() => {
+  clearTimeout(infoCloseTimer);
+  infoCloseTimer = null;
+  infoCloseButton.classList.remove('is-closing');
+});
+// Serialize transitions so no two explanation sections are expanded together.
+const explanationDetails = [...document.querySelectorAll('details.help')];
+let requestedDetail = explanationDetails.find(detail => detail.open) || null;
+let detailsTransitionRunning = false;
+async function animateDetail(detail,expand) {
+  if (detail.open === expand) return;
+  if (reducedMotion.matches || !detail.getClientRects().length || typeof detail.animate !== 'function') {
+    detail.open = expand;
+    return;
+  }
+  const startHeight = detail.getBoundingClientRect().height;
+  if (expand) detail.open = true;
+  const endHeight = expand ? detail.getBoundingClientRect().height
+    : detail.querySelector('summary').getBoundingClientRect().height
+      + parseFloat(getComputedStyle(detail).borderTopWidth || 0)
+      + parseFloat(getComputedStyle(detail).borderBottomWidth || 0);
+  detail.style.overflow = 'hidden';
+  const animation = detail.animate([{height:startHeight+'px'},{height:endHeight+'px'}],{
+    duration:320,easing:'cubic-bezier(.22,.61,.36,1)',fill:'forwards'
+  });
+  const content = detail.querySelector('.expense-details-content, .help-content');
+  const fade = content && typeof content.animate === 'function' ? content.animate(
+    expand ? [{opacity:0},{opacity:1}] : [{opacity:1},{opacity:0}],
+    {duration:320,easing:'ease-in-out',fill:'forwards'}
+  ) : null;
+  try {await animation.finished;} catch (_) { /* Finish in the requested state. */ }
+  detail.open = expand;
+  animation.cancel();
+  if (fade) fade.cancel();
+  detail.style.removeProperty('overflow');
+}
+async function reconcileDetails() {
+  if (detailsTransitionRunning) return;
+  detailsTransitionRunning = true;
+  try {
+    while (true) {
+      const target = requestedDetail;
+      for (const detail of explanationDetails) {
+        if (detail !== target && detail.open) await animateDetail(detail,false);
+      }
+      if (target !== requestedDetail) continue;
+      if (target && !target.open) await animateDetail(target,true);
+      if (target === requestedDetail) break;
+    }
+  } finally {detailsTransitionRunning = false;}
+}
+for (const detail of explanationDetails) {
+  detail.querySelector('summary').addEventListener('click',event => {
+    event.preventDefault();
+    requestedDetail = requestedDetail === detail ? null : detail;
+    void reconcileDetails();
+  });
+}
 infoDialog.addEventListener('click',event => {
   if (event.target !== infoDialog) return;
   const bounds = infoDialog.getBoundingClientRect();

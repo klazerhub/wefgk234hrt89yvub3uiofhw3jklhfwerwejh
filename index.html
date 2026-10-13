@@ -8,154 +8,104 @@
   <title>Оплётка</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23171a21'/%3E%3Cg fill='none' stroke='%234f8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m8 5 16 22M8 16l8 11M16 5l8 11M24 5 8 27M16 5 8 16M24 16l-8 11'/%3E%3C/g%3E%3C/svg%3E">
   <style>
+    /* ==========================================================================
+       1. ТЕМА И ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+       --------------------------------------------------------------------------
+       Чтобы быстро поменять оформление — правьте значения в :root.
+       Ключевые «ручки»:
+         --bg / --card / --panel / --line  — фон и разделители;
+         --text / --muted                  — основной и приглушённый текст;
+         --accent / --ok / --warn / --danger — акценты и статусы;
+         --section-title-font-size         — размер плашек «Параметры/Результаты/Расходы».
+       ========================================================================== */
     *{box-sizing:border-box}
-    :root{color-scheme:dark;--bg:#0f1115;--card:#171a21;--panel:#1b1f27;--line:#242833;--text:#e7eaf0;--muted:#9aa3b7;--accent:#4f8cff;--ok:#35d07f;--warn:#f0b429;--danger:#ff5c6c}
+    :root{
+      --section-title-font-size:20px;
+      color-scheme:dark;
+      --bg:#0f1115;
+      --card:#171a21;
+      --panel:#1b1f27;
+      --line:#242833;
+      --text:#e7eaf0;
+      --muted:#9aa3b7;
+      --accent:#4f8cff;
+      --ok:#35d07f;
+      --warn:#f0b429;
+      --danger:#ff5c6c;
+
+      /* --- Настройки контролов «подпись + поле ввода» ---
+         --unit-column      — ширина колонки под единицу измерения («мм», «шт.»);
+         --unit-padding     — внутренний отступ текста единицы от краёв колонки.
+         Увеличьте --unit-column, если текст единицы обрезается. */
+      --unit-column:38px;
+      --unit-padding:0 3px;
+    }
+
+    /* ==========================================================================
+       2. БАЗОВЫЕ СТИЛИ
+       ========================================================================== */
     html{min-width:320px;min-height:100%;font-size:16px}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      line-height:1.45;
+      -webkit-font-smoothing:antialiased;
+    }
     button,input,select{font:inherit}
     button,summary,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
     button,summary{cursor:pointer}
     button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
     [hidden]{display:none!important}
+
+    /* ==========================================================================
+       3. КАРКАС СТРАНИЦЫ
+       ========================================================================== */
     .app{max-width:680px;margin:0 auto;padding:22px 20px}
+    .blocks{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:16px}
+
+    /* ==========================================================================
+       4. ШАПКА СТРАНИЦЫ
+       ========================================================================== */
     .page-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
     h1{margin:0;font-size:23px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;line-height:1.3}
     .subtitle{margin:7px 0 0;color:var(--muted);font-size:14px}
-    .reset{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;min-height:44px;padding:10px 16px;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);background:rgba(255,255,255,.04);font-size:14px;font-weight:600;transition:background .15s,border-color .15s}
+    .header-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;max-width:100%}
+
+    /* --- 4a. Кнопка «Сбросить» ------------------------------------------------- */
+    .reset{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      flex-shrink:0;min-height:44px;padding:10px 16px;
+      border:1px solid rgba(255,255,255,.12);border-radius:10px;
+      color:var(--text);background:rgba(255,255,255,.04);
+      font-size:14px;font-weight:600;
+      transition:background .15s,border-color .15s;
+    }
     @media(hover:hover) and (pointer:fine){.reset:hover{background:rgba(79,140,255,.065)}}
     .reset svg{width:16px;height:16px;flex-shrink:0;transform-origin:50% 50%}
     .reset.is-resetting{animation:reset-border-flash 850ms ease-out both}
     .reset.is-resetting svg{animation:reset-icon-spin 650ms cubic-bezier(.24,.76,.30,1) both}
+
+    /* --- 4b. Кнопка «Инфо» и иконка ------------------------------------------- */
+    .quiet-btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      min-height:44px;padding:10px 16px;
+      border:1px solid rgba(255,255,255,.12);border-radius:10px;
+      color:var(--text);background:rgba(255,255,255,.04);
+      font-size:14px;font-weight:600;white-space:nowrap;
+      transition:background .15s,border-color .15s;
+    }
+    .ui-icon{width:18px;height:18px;flex-shrink:0}
+    @media(hover:hover) and (pointer:fine){.quiet-btn:hover{background:rgba(79,140,255,.065)}}
+
+    /* --- 4c. Анимации шапки --------------------------------------------------- */
     @keyframes reset-icon-spin{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
     @keyframes reset-border-flash{
       0%{border-color:var(--accent);box-shadow:0 0 0 2px rgba(79,140,255,.38);background:rgba(79,140,255,.13)}
       35%{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.20);background:rgba(79,140,255,.10)}
       100%{border-color:rgba(255,255,255,.12);box-shadow:0 0 0 0 rgba(79,140,255,0);background:rgba(255,255,255,.04)}
     }
-    @media(prefers-reduced-motion:reduce){.reset.is-resetting,.reset.is-resetting svg{animation:none!important}}
-    .blocks{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:16px}
-    .card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
-    .card-header{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
-     .section-number{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border:1px solid rgba(79,140,255,.3);border-radius:8px;color:var(--accent);background:rgba(79,140,255,.07);font-size:13px;font-weight:600}
-     .section-number--green{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.07)}
-     .section-number--orange{color:#ff9f43;border-color:rgba(255,159,67,.35);background:rgba(255,159,67,.07)}
-     .results-header{margin-bottom:12px;padding-bottom:10px}
-     /* Единое центрирование значений во всех полях, включая список катушек. */
-     .step-control input,.step-control select{text-align:center}
-     #N{text-align-last:center}
-    h2{font-size:18px;font-weight:600;line-height:1.45;margin:1px 0 0}
-    .input-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-    .field{display:grid;grid-template-columns:minmax(0,1fr) 156px;align-items:center;column-gap:12px;min-width:0}
-    .field-copy{min-width:0}
-    .field label{display:block;color:var(--text);font-size:14px;line-height:1.4}
-    .step-control{display:grid;grid-template-columns:38px minmax(0,1fr) 22px 38px;align-items:center;min-width:0;min-height:46px;max-width:100%;overflow:hidden;border:1px solid #343a49;border-radius:8px;background:var(--bg);transition:border-color .15s,box-shadow .15s}
-    .step-control:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.15)}
-    .step-control[data-invalid="true"]{border-color:var(--danger)}
-    input,select{width:100%;min-width:0;min-height:44px;border:0;background:transparent;color:var(--text);font-size:16px;padding:8px 6px;text-align:right;font-variant-numeric:tabular-nums;outline:none}
-    input::placeholder{color:#768094}
-    select{appearance:none;cursor:pointer}
-    select option{background:var(--card);color:var(--text)}
-    .input-unit{font-size:12px;color:var(--muted);text-align:center;pointer-events:none}
-    .step-button{display:flex;align-items:center;justify-content:center;min-width:38px;min-height:44px;padding:0;border:0;background:rgba(255,255,255,.025);color:var(--muted);font-size:21px;line-height:1;user-select:none}
-    .step-button:first-child{border-right:1px solid var(--line);border-radius:7px 0 0 7px}
-    .step-button:last-child{border-left:1px solid var(--line);border-radius:0 7px 7px 0}
-    .step-button:hover:not(:disabled){color:var(--accent);background:rgba(79,140,255,.1)}
-    .step-button:active:not(:disabled){background:rgba(79,140,255,.18)}
-    .step-button:disabled{opacity:.32;cursor:default}
-    .step-button:focus-visible{outline-offset:-3px;border-radius:6px}
-    .hint,.field-error{font-size:12px;line-height:1.4;margin:3px 0 0}
-    .hint{color:var(--muted)}
-    .field-error{color:var(--danger);grid-column:1/-1;margin:4px 0 0}
-    .results{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
-    .section-label{margin:0 0 8px;color:var(--muted);font-size:12px;letter-spacing:1.15px;font-weight:600;text-transform:uppercase}
-    .result-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
-    .result{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:5px;min-width:0;min-height:46px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:linear-gradient(180deg,#10131a,#0d1015)}
-    .result-main{border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.055)}
-    .result-label{color:var(--muted);font-size:14px;line-height:1.35;display:block;padding-right:8px}
-    .result-value{color:var(--text);font-size:22px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;min-width:0;max-width:180px}
-    .result-main .result-value{font-size:24px;color:var(--ok)}
-    .result-main .result-unit{color:var(--ok)}
-    .result-angle{border-color:rgba(79,140,255,.3);background:rgba(79,140,255,.045)}
-    .result-angle .result-value,.result-angle .result-unit{color:var(--accent)}
-    .result-unit{font-size:16px;color:var(--muted);font-weight:400}
-    .coverage-track{grid-column:1/-1;height:3px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
-    .coverage-fill{height:100%;width:0;background:var(--ok)}
-    .notice{margin:14px 0 0;border:1px solid rgba(240,180,41,.27);border-radius:8px;background:rgba(240,180,41,.06);padding:12px 14px;font-size:14px;line-height:1.55;color:#f6cf72;overflow-wrap:anywhere}
-    .notice.error{border-color:rgba(255,92,108,.3);background:rgba(255,92,108,.05);color:#ff96a1}
-    .help{border-top:1px solid var(--line);margin-top:10px;padding-top:0}
-    .help summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;color:var(--muted);font-size:14px}
-    .help summary::-webkit-details-marker{display:none}
-    .help summary::after{content:"+";display:flex;align-items:center;justify-content:center;font-size:21px;color:var(--accent);flex:0 0 24px}
-    .help[open] summary::after{content:"−"}
-    .help summary:hover{color:var(--text)}
-    .help-content{padding:6px 0 4px;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
-    .help-content p{margin:0 0 14px}
-    .help-content p:last-child{margin-bottom:0}
-    .help-content strong{color:var(--text);font-weight:600}
-    .formula{display:block;color:#b7c9ed;margin-top:5px;font-variant-numeric:tabular-nums}
-    .table-wrap{min-width:0}
-    .materials{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
-    .materials col:nth-child(1){width:16%}.materials col:nth-child(2){width:32%}.materials col:nth-child(3){width:39%}.materials col:nth-child(4){width:13%}
-    .materials th{padding:0 4px 10px;font-size:12px;font-weight:400;text-align:right;color:var(--muted);vertical-align:bottom;line-height:1.45;white-space:nowrap;letter-spacing:-.25px}
-    .materials th:first-child{padding-left:0;text-align:left}
-    .materials th:last-child{padding-right:0}
-    .materials td{padding:14px 4px;border-top:1px solid var(--line);text-align:right;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-    .materials td:first-child{padding-left:0;text-align:left;font-size:16px;font-weight:600}
-    .materials td:last-child{padding-right:0}
-     .mass{font-size:22px;font-weight:600;color:var(--accent);line-height:1.25}
-     .material-unit{font-size:13px;font-weight:400;color:var(--muted);white-space:nowrap}
-     .material-value{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:4px;flex-wrap:wrap}
-    .mobile-label{display:none}
-    .kpp-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:14px}
-    .kpp-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-    .kpp-title{font-size:14px;color:var(--text);margin:0;font-weight:600;line-height:1.5}
-    .kpp-value{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);flex-shrink:0}
-    .kpp-copy{font-size:13px;color:var(--muted);margin:6px 0 0;line-height:1.45}
-    .rule-list{padding:0;margin:0;list-style:none;display:grid;gap:10px}
-    .rule-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;font-variant-numeric:tabular-nums}
-    .rule-list li[data-active="true"]{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.07);color:#b7d0ff}
-    .footnote{margin:10px 0 0;color:#ff9f43;font-size:13px;line-height:1.6}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    noscript p{margin:20px;padding:16px;background:var(--panel);color:var(--warn)}
-    .kpp-panel[data-band="high"]{border-color:rgba(53,208,127,.4);background:rgba(53,208,127,.07)}
-    .kpp-panel[data-band="high"] .kpp-value,.material-kpp[data-band="high"]{color:var(--ok)}
-    .kpp-panel[data-band="low"]{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.07)}
-    .kpp-panel[data-band="low"] .kpp-value,.material-kpp[data-band="low"]{color:var(--accent)}
-    .material-kpp[data-band="high"],.material-kpp[data-band="low"]{font-weight:600}
-    #rule-high[data-active="true"]{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.07)}
-    .kpp-panel[data-band="estimated"]{border-color:rgba(240,180,41,.4);background:rgba(240,180,41,.06)}
-    .kpp-panel[data-band="estimated"] .kpp-value,.material-kpp[data-band="estimated"]{color:var(--warn)}
-    .kpp-panel[data-band="interpolated"]{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.07)}
-    .kpp-panel[data-band="interpolated"] .kpp-value,.material-kpp[data-band="interpolated"]{color:var(--accent)}
-    #rule-estimated[data-active="true"]{color:var(--warn);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.06)}
-    .rule-list strong{flex-shrink:0}.rule-list small{font-size:12px;color:var(--muted)}
-    .source-link{color:var(--accent);text-underline-offset:3px}
-    @media(max-width:1100px) and (min-width:901px){.app{padding:20px 16px}.card{padding:16px}.blocks{gap:14px;grid-template-columns:minmax(0,1fr)}.field{grid-template-columns:minmax(0,1fr) 150px;column-gap:10px}.materials th{padding-left:2px;padding-right:2px;font-size:11px;letter-spacing:-.35px}.materials td{padding-left:4px;padding-right:4px;font-size:14px}.mass{font-size:21px}}
-    @media(max-width:900px){.app{max-width:640px;padding:20px 16px}.blocks{grid-template-columns:minmax(0,1fr)}.card{padding:16px}.page-header{align-items:center}.materials,.materials tbody{display:block;width:100%}.materials colgroup,.materials thead{display:none}.materials tbody{display:grid;gap:10px}.materials tr{display:block;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#10131a,#0d1015);padding:12px}.materials td{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:right;border:0;padding:6px 0;font-size:16px}.materials td:first-child{display:block;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line);font-size:17px}.materials td:last-child{padding-bottom:0}.mobile-label{display:block;text-align:left;color:var(--muted);font-size:14px;max-width:65%;line-height:1.4;white-space:nowrap}.materials td output{min-width:0}.mass{font-size:24px}.kpp-panel{margin-top:12px}}
-    @media(max-width:480px){.app{padding:16px 10px}.page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}h1{font-size:21px}.subtitle{font-size:13px;margin-top:4px}.reset{padding:8px 12px}.card{padding:14px 12px}.card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}h2{font-size:16px}.section-number{flex-basis:26px;height:26px}.field{grid-template-columns:minmax(0,1fr) 148px;column-gap:8px}.field label{font-size:14px}.hint{font-size:12px}.step-control{grid-template-columns:38px minmax(0,1fr) 22px 38px}.result{padding:8px 10px}.result-label{font-size:13px}.result-value,.result-main .result-value{font-size:22px;max-width:130px}.kpp-panel{padding:10px}.kpp-head{align-items:center}.kpp-title{font-size:13px}.materials tr{padding:12px}.mass{font-size:23px}}
-    @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-    .header-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;max-width:100%}
-    .quiet-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);background:rgba(255,255,255,.04);font-size:14px;font-weight:600;white-space:nowrap;transition:background .15s,border-color .15s}
-    .ui-icon{width:18px;height:18px;flex-shrink:0}
-    @media(hover:hover) and (pointer:fine){.quiet-btn:hover{background:rgba(79,140,255,.065)}}
-    @media(max-width:480px){.header-actions{margin-left:auto}.quiet-btn{padding:8px 12px}}
-    .expense-details-content{padding:0 0 4px}
-    .expense-details-content .kpp-panel{margin-top:4px}
-    .info-dialog{width:min(620px,calc(100% - 24px));max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);box-shadow:0 24px 80px rgba(0,0,0,.5);overflow:auto;overscroll-behavior:contain}
-    .info-dialog::backdrop{background:rgba(0,0,0,.65)}
-    .info-header{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--line)}
-    .info-close{display:flex;align-items:center;justify-content:center;flex:0 0 44px;height:44px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--text);font-size:26px;line-height:1}
-    .info-content{padding:6px 16px 16px}
-    .info-content .help:first-child{border-top:0;margin-top:0}
-    body:has(.info-dialog[open]){overflow:hidden}
-    @media(max-width:480px){.info-header{padding:10px 12px}.info-content{padding:4px 12px 12px}.info-dialog{max-height:calc(100dvh - 24px)}}
-    .materials-header{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
-    .result-fill{border-color:#afafaf;background:rgba(175,175,175,.045)}
-    .result-fill .result-label,.result-fill .result-value{color:#afafaf}
-    .help[open]>summary{color:#fff}
-    .quiet-btn.is-info-active{animation:info-border-flash 850ms ease-out both}
-    .quiet-btn.is-info-active .ui-icon{animation:info-icon-shake 650ms ease-in-out both}
-    .info-close.is-closing{animation:close-border-flash 850ms ease-out both}
     @keyframes info-icon-shake{
       0%,100%{transform:translateX(0) rotate(0deg)}
       15%,45%,75%{transform:translateX(-2px) rotate(-8deg)}
@@ -171,13 +121,389 @@
       35%{border-color:var(--danger);box-shadow:0 0 0 3px rgba(255,92,108,.20);background:rgba(255,92,108,.10)}
       100%{border-color:var(--line);box-shadow:0 0 0 0 rgba(255,92,108,0);background:transparent}
     }
-    @media(prefers-reduced-motion:reduce){.quiet-btn.is-info-active,.quiet-btn.is-info-active .ui-icon,.info-close.is-closing{animation:none!important}}
+    .quiet-btn.is-info-active{animation:info-border-flash 850ms ease-out both}
+    .quiet-btn.is-info-active .ui-icon{animation:info-icon-shake 650ms ease-in-out both}
+    .info-close.is-closing{animation:close-border-flash 850ms ease-out both}
+
+    /* ==========================================================================
+       5. КАРТОЧКИ И ЗАГОЛОВКИ СЕКЦИЙ
+       ========================================================================== */
+    .card{
+      min-width:0;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 20px 50px rgba(0,0,0,.22);
+    }
+    .card-header{
+      display:flex;gap:12px;align-items:flex-start;
+      border-bottom:1px solid var(--line);
+      padding-bottom:12px;margin-bottom:12px;
+    }
+    .section-number{
+      display:flex;align-items:center;justify-content:center;
+      flex:0 1 auto;min-width:0;min-height:40px;
+      padding:6px 12px;line-height:1.3;
+      overflow-wrap:anywhere;
+      border:1px solid rgba(79,140,255,.3);border-radius:8px;
+      color:var(--accent);background:rgba(79,140,255,.07);
+      font-size:var(--section-title-font-size);font-weight:600;
+    }
+    .section-number--green{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.07)}
+    .section-number--orange{color:#ff9f43;border-color:rgba(255,159,67,.35);background:rgba(255,159,67,.07)}
+    .results-header{margin-bottom:12px;padding-bottom:10px}
+    h2{font-size:18px;font-weight:600;line-height:1.45;margin:1px 0 0}
+
+    /* ==========================================================================
+       6. ФОРМА: ПОЛЯ ВВОДА И СТЕППЕРЫ
+       --------------------------------------------------------------------------
+       .field        — строка «подпись + контрол»;
+       .step-control — коробка с кнопками «−»/«+» и полем ввода/селектом.
+
+       Сетка внутри контрола (4 колонки):
+         48px              — кнопка «−»
+         minmax(0,1fr)     — поле ввода / селект
+         var(--unit-column) — единица измерения («мм», «шт.»)
+         48px              — кнопка «+»
+
+       Чтобы увеличить/уменьшить отступ вокруг единицы измерения:
+         • измените --unit-column в :root (ширина колонки);
+         • измените --unit-padding в :root (внутренний padding текста).
+       ========================================================================== */
+    .input-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+    .field{display:grid;grid-template-columns:minmax(0,1fr) 192px;align-items:center;column-gap:12px;min-width:0}
+    .field-copy{min-width:0}
+    .field label{overflow-wrap:anywhere;display:block;color:var(--text);font-size:14px;line-height:1.4}
+
+    .step-control{
+      display:grid;
+      grid-template-columns:48px minmax(0,1fr) var(--unit-column) 48px;
+      align-items:center;min-width:0;min-height:46px;max-width:100%;
+      overflow:hidden;
+      border:1px solid #343a49;border-radius:8px;background:var(--bg);
+      transition:border-color .15s,box-shadow .15s;
+    }
+    .step-control:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,140,255,.15)}
+    .step-control[data-invalid="true"]{border-color:var(--danger)}
+
+    input,select{
+      width:100%;min-width:0;min-height:44px;
+      border:0;background:transparent;color:var(--text);
+      font-size:20px;padding:8px 6px;
+      text-align:right;font-variant-numeric:tabular-nums;outline:none;
+    }
+    input::placeholder{color:#768094}
+    select{appearance:none;cursor:pointer}
+    select option{background:var(--card);color:var(--text)}
+
+    /* Единое центрирование значений во всех полях, включая список катушек. */
+    .step-control input,.step-control select{text-align:center}
+    #N{text-align-last:center}
+
+    /* Единица измерения внутри контрола.
+       padding задаётся через --unit-padding, ширина колонки — --unit-column. */
+    .input-unit{
+      font-size:16px;
+      color:var(--muted);
+      text-align:center;
+      pointer-events:none;
+      padding:var(--unit-padding);
+    }
+
+    .step-button{
+      display:flex;align-items:center;justify-content:center;
+      min-width:50px;min-height:44px;padding:0;
+      border:0;background:rgba(255,255,255,.025);
+      color:var(--muted);font-size:21px;line-height:1;user-select:none;
+    }
+    .step-button:first-child{border-right:1px solid var(--line);border-radius:7px 0 0 7px}
+    .step-button:last-child{border-left:1px solid var(--line);border-radius:0 7px 7px 0}
+    .step-button:hover:not(:disabled){color:var(--accent);background:rgba(79,140,255,.1)}
+    .step-button:active:not(:disabled){background:rgba(79,140,255,.18)}
+    .step-button:disabled{opacity:.32;cursor:default}
+    .step-button:focus-visible{outline-offset:-3px;border-radius:6px}
+
+    .hint,.field-error{font-size:12px;line-height:1.4;margin:3px 0 0}
+    .hint{color:var(--muted)}
+    .field-error{color:var(--danger);grid-column:1/-1;margin:4px 0 0}
+
+    /* ==========================================================================
+       7. РЕЗУЛЬТАТЫ
+       --------------------------------------------------------------------------
+       Цвет карточки результата задаётся через переменные --result-color и
+       --result-rgb; JS перекрашивает их по диапазонам плотности/угла.
+       ========================================================================== */
+    .results{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+    .section-label{
+      margin:0 0 8px;color:var(--muted);
+      font-size:12px;letter-spacing:1.15px;font-weight:600;text-transform:uppercase;
+    }
+    .result-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+    .result{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto auto;
+      align-items:center;column-gap:5px;
+      min-width:0;min-height:46px;
+      border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+      background:linear-gradient(180deg,#10131a,#0d1015);
+    }
+    .result-label{color:var(--muted);font-size:14px;line-height:1.35;display:block;padding-right:8px}
+    .result-value{
+      color:var(--text);font-size:22px;font-weight:600;line-height:1.2;
+      font-variant-numeric:tabular-nums;overflow-wrap:anywhere;min-width:0;max-width:180px;
+    }
+    .result-unit{font-size:16px;color:var(--muted);font-weight:400}
+
+    /* Приоритетные карточки: цвет задаётся через --result-color/--result-rgb. */
     .result-main,.result-angle:not(.result-fill){border-color:var(--result-color);background:rgba(var(--result-rgb),.065)}
     .result-main{--result-color:#afafaf;--result-rgb:175,175,175}
     .result-angle:not(.result-fill){--result-color:#4f8cff;--result-rgb:79,140,255}
     .result-main .result-label,.result-main .result-value,.result-main .result-unit,
-    .result-angle:not(.result-fill) .result-label,.result-angle:not(.result-fill) .result-value,.result-angle:not(.result-fill) .result-unit{color:var(--result-color)}
+    .result-angle:not(.result-fill) .result-label,
+    .result-angle:not(.result-fill) .result-value,
+    .result-angle:not(.result-fill) .result-unit{color:var(--result-color)}
+    .result-main .result-value{font-size:24px}
     .result-main .coverage-fill{background:var(--result-color)}
+
+    /* Отдельная карточка «Коэффициент заполнения (Пл)» — нейтральный серый. */
+    .result-fill{border-color:#afafaf;background:rgba(175,175,175,.045)}
+    .result-fill .result-label,.result-fill .result-value{color:#afafaf}
+
+    /* Полоска покрытия под плотностью. */
+    .coverage-track{grid-column:1/-1;height:3px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
+    .coverage-fill{height:100%;width:0;background:var(--ok)}
+
+    /* Информационные плашки (жёлтая — предупреждение, красная — ошибка). */
+    .notice{
+      margin:14px 0 0;
+      border:1px solid rgba(240,180,41,.27);border-radius:8px;
+      background:rgba(240,180,41,.06);
+      padding:12px 14px;font-size:14px;line-height:1.55;color:#f6cf72;
+      overflow-wrap:anywhere;
+    }
+    .notice.error{border-color:rgba(255,92,108,.3);background:rgba(255,92,108,.05);color:#ff96a1}
+
+    /* ==========================================================================
+       8. ТАБЛИЦА «РАСХОДЫ»
+       --------------------------------------------------------------------------
+       Ширины колонок задаются через <colgroup> в разметке (16 / 32 / 39 / 13 %).
+       На мобильных таблица перестраивается в карточки (см. медиа-запросы).
+       ========================================================================== */
+    .materials-header{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+    .table-wrap{min-width:0}
+    .materials{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+    .materials col:nth-child(1){width:16%}
+    .materials col:nth-child(2){width:32%}
+    .materials col:nth-child(3){width:39%}
+    .materials col:nth-child(4){width:13%}
+    .materials th{
+      padding:0 4px 10px;font-size:12px;font-weight:400;
+      text-align:right;color:var(--muted);vertical-align:bottom;
+      line-height:1.45;white-space:nowrap;letter-spacing:-.25px;
+    }
+    .materials th:first-child{padding-left:0;text-align:left}
+    .materials th:last-child{padding-right:0}
+    .materials td{
+      padding:14px 4px;border-top:1px solid var(--line);
+      text-align:right;font-size:16px;font-variant-numeric:tabular-nums;
+      overflow-wrap:anywhere;
+    }
+    .materials td:first-child{padding-left:0;text-align:left;font-size:16px;font-weight:600}
+    .materials td:last-child{padding-right:0}
+    .mass{font-size:22px;font-weight:600;color:var(--accent);line-height:1.25}
+    .material-unit{font-size:13px;font-weight:400;color:var(--muted);white-space:nowrap}
+    .material-value{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:4px;flex-wrap:wrap}
+    /* Подпись, которая появляется только в мобильной раскладке таблицы. */
+    .mobile-label{display:none}
+
+    /* ==========================================================================
+       9. ПАНЕЛЬ Кпп И ПРАВИЛА ВЫБОРА
+       --------------------------------------------------------------------------
+       data-band задаёт цвет панели: low / high / estimated / interpolated.
+       ========================================================================== */
+    .kpp-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:14px}
+    .kpp-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .kpp-title{font-size:14px;color:var(--text);margin:0;font-weight:600;line-height:1.5}
+    .kpp-value{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);flex-shrink:0}
+    .kpp-copy{font-size:13px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+
+    .rule-list{padding:0;margin:0;list-style:none;display:grid;gap:10px}
+    .rule-list li{
+      display:flex;justify-content:space-between;gap:12px;
+      padding:10px 12px;border:1px solid var(--line);border-radius:7px;
+      font-variant-numeric:tabular-nums;
+    }
+    .rule-list li[data-active="true"]{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.07);color:#b7d0ff}
+    .rule-list strong{flex-shrink:0}
+    .rule-list small{font-size:12px;color:var(--muted)}
+
+    .kpp-panel[data-band="high"]{border-color:rgba(53,208,127,.4);background:rgba(53,208,127,.07)}
+    .kpp-panel[data-band="high"] .kpp-value,
+    .material-kpp[data-band="high"]{color:var(--ok)}
+    .kpp-panel[data-band="low"]{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.07)}
+    .kpp-panel[data-band="low"] .kpp-value,
+    .material-kpp[data-band="low"]{color:var(--accent)}
+    .material-kpp[data-band="high"],.material-kpp[data-band="low"]{font-weight:600}
+    .kpp-panel[data-band="estimated"]{border-color:rgba(240,180,41,.4);background:rgba(240,180,41,.06)}
+    .kpp-panel[data-band="estimated"] .kpp-value,
+    .material-kpp[data-band="estimated"]{color:var(--warn)}
+    .kpp-panel[data-band="interpolated"]{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.07)}
+    .kpp-panel[data-band="interpolated"] .kpp-value,
+    .material-kpp[data-band="interpolated"]{color:var(--accent)}
+    #rule-high[data-active="true"]{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.07)}
+    #rule-estimated[data-active="true"]{color:var(--warn);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.06)}
+
+    /* ==========================================================================
+       10. DETAILS/SUMMARY ДЛЯ РАСКРЫВАЮЩИХСЯ БЛОКОВ
+       ========================================================================== */
+    .help{border-top:1px solid var(--line);margin-top:10px;padding-top:0}
+    .help summary{
+      min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      list-style:none;color:var(--muted);font-size:14px;
+    }
+    .help summary::-webkit-details-marker{display:none}
+    .help summary::after{
+      content:"+";display:flex;align-items:center;justify-content:center;
+      font-size:21px;color:var(--accent);flex:0 0 24px;
+    }
+    .help[open] summary::after{content:"−"}
+    .help summary:hover{color:var(--text)}
+    .help[open]>summary{color:#fff}
+    .help-content{padding:6px 0 4px;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+    .help-content p{margin:0 0 14px}
+    .help-content p:last-child{margin-bottom:0}
+    .help-content strong{color:var(--text);font-weight:600}
+    .formula{display:block;color:#b7c9ed;margin-top:5px;font-variant-numeric:tabular-nums}
+    .source-link{color:var(--accent);text-underline-offset:3px}
+
+    /* Оболочка раскрывающегося блока «Подробнее о расходах». */
+    .expense-details-content{padding:0 0 4px}
+    .expense-details-content .kpp-panel{margin-top:4px}
+
+    /* ==========================================================================
+       11. ДИАЛОГ «ИНФО»
+       ========================================================================== */
+    .info-dialog{
+      width:min(620px,calc(100% - 24px));
+      max-height:calc(100dvh - 32px);
+      margin:auto;padding:0;
+      border:1px solid var(--line);border-radius:14px;
+      background:var(--card);color:var(--text);
+      box-shadow:0 24px 80px rgba(0,0,0,.5);
+      overflow:auto;overscroll-behavior:contain;
+    }
+    .info-dialog::backdrop{background:rgba(0,0,0,.65)}
+    .info-header{
+      position:sticky;top:0;z-index:1;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 16px;background:var(--card);border-bottom:1px solid var(--line);
+    }
+    .info-close{
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 44px;height:44px;
+      border:1px solid var(--line);border-radius:8px;background:transparent;
+      color:var(--text);font-size:26px;line-height:1;
+    }
+    .info-content{padding:6px 16px 16px}
+    .info-content .help:first-child{border-top:0;margin-top:0}
+    /* Блокируем прокрутку body, когда открыт модальный диалог. */
+    body:has(.info-dialog[open]){overflow:hidden}
+
+    /* ==========================================================================
+       12. ВСПОМОГАТЕЛЬНОЕ И СНОСКИ
+       ========================================================================== */
+    .footnote{margin:10px 0 0;color:#ff9f43;font-size:13px;line-height:1.6}
+    .sr-only{
+      position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+    noscript p{margin:20px;padding:16px;background:var(--panel);color:var(--warn)}
+
+    /* ==========================================================================
+       13. МЕДИА-ЗАПРОСЫ
+       --------------------------------------------------------------------------
+       Точки переключения:
+         ≤1100px и ≥901px — «планшет», чуть меньше отступы;
+         ≤900px            — таблица расходов превращается в карточки;
+         ≤480px            — компактная раскладка шапки, полей и результатов.
+       ВАЖНО: если меняете --unit-column в :root, проверьте, что здесь
+       сетка .step-control переопределяется без явного значения колонки.
+       ========================================================================== */
+    @media(max-width:1100px) and (min-width:901px){
+      .app{padding:20px 16px}
+      .card{padding:16px}
+      .blocks{gap:14px;grid-template-columns:minmax(0,1fr)}
+      .field{grid-template-columns:minmax(0,1fr) 192px;column-gap:10px}
+      .materials th{padding-left:2px;padding-right:2px;font-size:11px;letter-spacing:-.35px}
+      .materials td{padding-left:4px;padding-right:4px;font-size:14px}
+      .mass{font-size:21px}
+    }
+    @media(max-width:900px){
+      .app{max-width:640px;padding:20px 16px}
+      .blocks{grid-template-columns:minmax(0,1fr)}
+      .card{padding:16px}
+      .page-header{align-items:center}
+
+      /* Таблица → карточки. */
+      .materials,.materials tbody{display:block;width:100%}
+      .materials colgroup,.materials thead{display:none}
+      .materials tbody{display:grid;gap:10px}
+      .materials tr{
+        display:block;border:1px solid var(--line);border-radius:8px;
+        background:linear-gradient(180deg,#10131a,#0d1015);padding:12px;
+      }
+      .materials td{
+        display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+        text-align:right;border:0;padding:6px 0;font-size:16px;
+      }
+      .materials td:first-child{
+        display:block;padding:0 0 8px;margin-bottom:4px;
+        border-bottom:1px solid var(--line);font-size:17px;
+      }
+      .materials td:last-child{padding-bottom:0}
+      .mobile-label{
+        display:block;text-align:left;color:var(--muted);
+        font-size:14px;max-width:65%;line-height:1.4;white-space:nowrap;
+      }
+      .materials td output{min-width:0}
+      .mass{font-size:24px}
+      .kpp-panel{margin-top:12px}
+    }
+    @media(max-width:480px){
+      .app{padding:16px 10px}
+      .page-header{flex-wrap:wrap;gap:10px;margin-bottom:12px}
+      h1{font-size:21px}
+      .subtitle{font-size:13px;margin-top:4px}
+      .reset{padding:8px 12px}
+      .header-actions{margin-left:auto}
+      .quiet-btn{padding:8px 12px}
+      .card{padding:14px 12px}
+      .card-header{gap:8px;padding-bottom:10px;margin-bottom:10px}
+      h2{font-size:16px}
+      .field{grid-template-columns:minmax(0,1fr) 184px;column-gap:8px}
+      .field label{font-size:14px}
+      .hint{font-size:12px}
+      /* Сетку контрола не переопределяем — колонка единицы берётся из
+         --unit-column в :root, чтобы менять отступ в одном месте. */
+      .result{padding:8px 10px}
+      .result-label{font-size:13px}
+      .result-value,.result-main .result-value{font-size:22px;max-width:130px}
+      .kpp-panel{padding:10px}
+      .kpp-head{align-items:center}
+      .kpp-title{font-size:13px}
+      .materials tr{padding:12px}
+      .mass{font-size:23px}
+      .info-header{padding:10px 12px}
+      .info-content{padding:4px 12px 12px}
+      .info-dialog{max-height:calc(100dvh - 24px)}
+    }
+    /* Уважаем системную настройку «уменьшить движение». */
+    @media(prefers-reduced-motion:reduce){
+      *{transition:none!important}
+      .reset.is-resetting,.reset.is-resetting svg{animation:none!important}
+      .quiet-btn.is-info-active,.quiet-btn.is-info-active .ui-icon,.info-close.is-closing{animation:none!important}
+    }
   </style>
 </head>
 <body>
@@ -194,8 +520,8 @@
     </div>
   </header>
   <div class="blocks">
-    <section class="card" aria-labelledby="geometry-title results-title materials-title">
-      <header class="card-header"><span class="section-number" aria-hidden="true">01</span><h2 id="geometry-title">Параметры</h2></header>
+    <section class="card" aria-label="Параметры, результаты и расходы">
+      <header class="card-header" role="heading" aria-level="2" aria-label="Параметры"><span class="section-number" aria-hidden="true">Параметры</span></header>
       <form id="parameters" novalidate autocomplete="off">
         <div class="input-grid">
           <div class="field">
@@ -246,7 +572,7 @@
         </div>
       </form>
       <div class="results">
-        <header class="card-header results-header"><span class="section-number section-number--green" aria-hidden="true">02</span><h2 id="results-title">Результаты</h2></header>
+        <header class="card-header results-header" role="heading" aria-level="2" aria-label="Результаты"><span class="section-number section-number--green" aria-hidden="true">Результаты</span></header>
         <div class="result-grid">
           <div class="result result-main"><span class="result-label" id="density-label">Плотность оплётки, %</span><output id="density" class="result-value" aria-labelledby="density-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">%</span><div class="coverage-track" aria-hidden="true"><div class="coverage-fill" id="coverage"></div></div></div>
           <div class="result result-angle"><span class="result-label" id="angle-label">Угол оплётки, °</span><output id="angle" class="result-value" aria-labelledby="angle-label" aria-live="off">—</output><span class="result-unit" aria-hidden="true">°</span></div>
@@ -255,7 +581,7 @@
         <p class="notice error" id="geometry-notice" hidden></p>
       </div>
 
-      <header class="card-header materials-header"><span class="section-number section-number--orange" aria-hidden="true">03</span><h2 id="materials-title">Расходы</h2></header>
+      <header class="card-header materials-header" role="heading" aria-level="2" aria-label="Расходы"><span class="section-number section-number--orange" aria-hidden="true">Расходы</span></header>
       <div class="table-wrap">
         <table class="materials" role="table" aria-label="Расход оплётки для меди и стали">
           <colgroup><col><col><col><col></colgroup>
@@ -310,8 +636,15 @@
 
 <script>
 'use strict';
-// Source: «Расчет оплетки(2).xls», sheet «фольга, оплётка».
-// User-specified automatic Kpp rules replace the manually stored coefficients.
+/* ============================================================================
+   КОНСТАНТЫ И ДАННЫЕ
+   ============================================================================
+   DEFAULTS  — значения по умолчанию для всех полей;
+   STEPS     — шаг кнопок «+»/«−»;
+   MIN_VALUES — нижние границы полей;
+   COIL_COUNTS — допустимые значения селекта «Количество катушек»;
+   MATERIALS — справочник материалов (плотность, кг/м³).
+   ============================================================================ */
 const DEFAULTS = Object.freeze({D:'10', n:'4', d:'0,15', s:'50', N:'24'});
 const STEPS = Object.freeze({D:0.1,n:1,d:0.01,s:1});
 const MIN_VALUES = Object.freeze({D:0.01,n:1,d:0.01,s:0.01});
@@ -323,6 +656,10 @@ const MATERIALS = Object.freeze([
 const EXCESS_FILL = 'Коэффициент заполнения превышает 1. Проверьте исходные параметры: расчёт плотности по этой формуле выходит за допустимую область';
 const ESTIMATED_KPP = 'При плотности оплётки ниже 70 % Кпп = 1,030 принят как допущение. Расход приближённый: таблица 25 СТБ 2194-2011 не задаёт коэффициент для этого диапазона.';
 const NUMERIC_LIMIT = 'Не удалось выполнить расчёт для такого сочетания значений. Проверьте величины исходных параметров.';
+
+/* ============================================================================
+   ПАРСИНГ И ВАЛИДАЦИЯ
+   ============================================================================ */
 function parseField(raw, key) {
   const text = String(raw == null ? '' : raw).trim();
   if (!text) return {error:'Заполните поле.'};
@@ -335,8 +672,9 @@ function parseField(raw, key) {
   if (key === 'N' && ![16,24,36].includes(value)) return {error:'Выберите 16, 24 или 36 катушек.'};
   return {value};
 }
-// STB 2194-2011, table 25: fixed bands and interpolation between them.
-// Below 70%: explicit provisional assumption, NOT a tabulated or derived value.
+
+/* STB 2194-2011, таблица 25: фиксированные диапазоны + интерполяция между ними.
+   Ниже 70 % — явное допущение, а не табличное/расчётное значение. */
 function selectKpp(P) {
   if (!Number.isFinite(P) || P < 0 || P > 100) return null;
   if (P <= 80) return 1.03;
@@ -350,6 +688,10 @@ function kppMethod(P) {
   if (P < 96) return 'interpolated';
   return 'high';
 }
+
+/* ============================================================================
+   ОСНОВНОЙ РАСЧЁТ
+   ============================================================================ */
 function calculate(raw) {
   const values = {}, errors = {};
   for (const key of Object.keys(DEFAULTS)) {
@@ -358,7 +700,7 @@ function calculate(raw) {
     else values[key] = parsed.value;
   }
   const result = {values, errors, alpha:null, angle:null, fill:null, P:null, kpp:null, kppMethod:'none', masses:{copper:null,steel:null}, geometryMessage:'', materialMessage:'', state:'error'};
-  // The angle does not depend on n or N, so retain it when only those inputs fail.
+  // Угол не зависит от n и N — сохраняем его, даже если только эти поля невалидны.
   if (!errors.D && !errors.d && !errors.s) {
     const circumference = Math.PI * (values.D + 2 * values.d);
     const ratio = values.s / circumference;
@@ -391,7 +733,7 @@ function calculate(raw) {
     return result;
   }
   result.P = (2 * fill - fill * fill) * 100;
-  result.kpp = selectKpp(result.P); // Never round before choosing the interval.
+  result.kpp = selectKpp(result.P); // Не округлять до выбора интервала.
   if (result.kpp === null) {
     result.materialMessage = NUMERIC_LIMIT;
     return result;
@@ -410,13 +752,18 @@ function calculate(raw) {
   if (result.kppMethod === 'estimated') result.materialMessage = ESTIMATED_KPP;
   return result;
 }
+
+/* ============================================================================
+   ФОРМАТИРОВАНИЕ ЧИСЕЛ
+   ============================================================================ */
 const formatters = new Map([0,2,3,4].map(digits => [digits,new Intl.NumberFormat('ru-RU',{minimumFractionDigits:digits,maximumFractionDigits:digits})]));
 function format(value, digits) { return Number.isFinite(value) ? formatters.get(digits).format(value) : '—'; }
 const $ = id => document.getElementById(id);
 let currentResult, announcementTimer;
 function notice(id, message) { const element = $(id); element.textContent = message; element.hidden = !message; }
-// Color bands use the same two-decimal values that the user sees.
-// Geometry, Kpp selection and material consumption retain full precision.
+
+/* Цветовые диапазоны используют те же два знака после запятой, что видит
+   пользователь. Геометрия, выбор Кпп и расход считаются с полной точностью. */
 function resultColors(P,angle) {
   const displayed = value => Number.isFinite(value)
     ? Number(format(value,2).replace(/\s/g,'').replace(',','.')) : null;
@@ -444,6 +791,10 @@ function applyResultColor(element,color) {
   const hex = color.slice(1);
   element.style.setProperty('--result-rgb',[0,2,4].map(offset => parseInt(hex.slice(offset,offset+2),16)).join(','));
 }
+
+/* ============================================================================
+   ОТРИСОВКА РЕЗУЛЬТАТОВ
+   ============================================================================ */
 function render(result) {
   currentResult = result;
   for (const key of Object.keys(DEFAULTS)) {
@@ -490,10 +841,16 @@ function render(result) {
       : errors || result.geometryMessage || result.materialMessage;
   },500);
 }
+
+/* ============================================================================
+   ВВОД/ВЫВОД И СТЕППЕРЫ
+   ============================================================================ */
 function readInputs() { return Object.fromEntries(Object.keys(DEFAULTS).map(key => [key,$(key).value])); }
 function update() { const result = calculate(readInputs()); render(result); return result; }
 function setInputs(raw) { for (const key of Object.keys(DEFAULTS)) $(key).value = String(raw[key]); return update(); }
-// Custom steppers preserve comma input and use exact decimal addition.
+
+/* Собственные степперы сохраняют ввод с запятой и используют точное
+   десятичное сложение (BigInt), а не плавающую точку. */
 function steppedValue(raw, key, direction) {
   const parsed = parseField(raw,key);
   if (key === 'N') {
@@ -506,7 +863,6 @@ function steppedValue(raw, key, direction) {
   if (parsed.error) return String(minimum).replace('.',',');
   if (!Number.isFinite(parsed.value+direction*step) || parsed.value+direction*step === parsed.value) return String(raw);
   if (parsed.value+direction*step <= minimum) return String(minimum).replace('.',',');
-  // Convert the validated number's shortest decimal form to integer units.
   const [mantissa, exponentText='0'] = String(parsed.value).toLowerCase().split('e');
   const exponent = Number(exponentText);
   const fractionDigits = (mantissa.split('.')[1] || '').length;
@@ -522,25 +878,35 @@ function stepInput(key,direction) {
   $(key).value = steppedValue($(key).value,key,direction);
   return update();
 }
-// Both material rows come from the embedded catalogue; no network is required.
+
+/* ============================================================================
+   РАЗМЕТКА СТРОК ТАБЛИЦЫ МАТЕРИАЛОВ
+   ============================================================================ */
 $('material-rows').innerHTML = MATERIALS.map(material => `<tr role="row"><td role="rowheader">${material.name}</td><td role="cell"><span class="mobile-label" aria-hidden="true">Расход оплётки</span><span class="material-value"><output class="mass" id="${material.id}-mass" aria-label="${material.name}: расход оплётки, кг/км" aria-live="off">—</output><span class="material-unit" aria-hidden="true">кг/км</span></span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Плотность материала</span><span class="material-value"><span>${format(material.density,0)}</span><span class="material-unit" aria-hidden="true">кг/м³</span></span></td><td role="cell"><span class="mobile-label" aria-hidden="true">Кпп</span><output class="material-kpp" id="${material.id}-kpp" aria-label="${material.name}: коэффициент площади перекрытия" aria-live="off">—</output></td></tr>`).join('');
+
+/* ============================================================================
+   ОБРАБОТЧИКИ ПОЛЕЙ
+   ============================================================================ */
 for (const key of Object.keys(DEFAULTS)) {
   $(key+'-minus').addEventListener('click',() => stepInput(key,-1));
   $(key+'-plus').addEventListener('click',() => stepInput(key,1));
   if (key !== 'N') {
-    // Select the current value for typing, mouse clicks and touchscreen taps.
+    // Выделять текущее значение при фокусе/клике/тапе по полю.
     const input = $(key);
     input.addEventListener('focus',() => input.select());
     input.addEventListener('click',() => input.select());
+    input.addEventListener('keydown',event => {
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        stepInput(key,event.key === 'ArrowUp' ? 1 : -1);
+      }
+    });
   }
-  if (key !== 'N') $(key).addEventListener('keydown',event => {
-    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-      event.preventDefault();
-      stepInput(key,event.key === 'ArrowUp' ? 1 : -1);
-    }
-  });
 }
-// Native dialog supports keyboard focus trapping and Escape to close.
+
+/* ============================================================================
+   ДИАЛОГ «ИНФО»
+   ============================================================================ */
 const infoDialog = $('infoDialog');
 const infoButton = $('catalogButton');
 const infoCloseButton = $('infoClose');
@@ -564,7 +930,6 @@ infoCloseButton.addEventListener('click',event => {
   if (infoCloseTimer) return;
   flashButton(infoCloseButton,'is-closing',event);
   if (reducedMotion.matches) {infoDialog.close();return;}
-  // Keep the close button visible until its red border has faded.
   infoCloseTimer = setTimeout(() => infoDialog.close(),850);
 });
 infoDialog.addEventListener('close',() => {
@@ -572,7 +937,15 @@ infoDialog.addEventListener('close',() => {
   infoCloseTimer = null;
   infoCloseButton.classList.remove('is-closing');
 });
-// Serialize transitions so no two explanation sections are expanded together.
+infoDialog.addEventListener('click',event => {
+  if (event.target !== infoDialog) return;
+  const bounds = infoDialog.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) infoDialog.close();
+});
+
+/* ============================================================================
+   ПЛАВНОЕ РАСКРЫТИЕ DETAILS (одновременно раскрыт только один блок)
+   ============================================================================ */
 const explanationDetails = [...document.querySelectorAll('details.help')];
 let requestedDetail = explanationDetails.find(detail => detail.open) || null;
 let detailsTransitionRunning = false;
@@ -597,7 +970,7 @@ async function animateDetail(detail,expand) {
     expand ? [{opacity:0},{opacity:1}] : [{opacity:1},{opacity:0}],
     {duration:320,easing:'ease-in-out',fill:'forwards'}
   ) : null;
-  try {await animation.finished;} catch (_) { /* Finish in the requested state. */ }
+  try {await animation.finished;} catch (_) { /* Завершить в запрошенном состоянии. */ }
   detail.open = expand;
   animation.cancel();
   if (fade) fade.cancel();
@@ -625,22 +998,21 @@ for (const detail of explanationDetails) {
     void reconcileDetails();
   });
 }
-infoDialog.addEventListener('click',event => {
-  if (event.target !== infoDialog) return;
-  const bounds = infoDialog.getBoundingClientRect();
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) infoDialog.close();
-});
+
+/* ============================================================================
+   ФОРМА И КНОПКА «СБРОСИТЬ»
+   ============================================================================ */
 $('parameters').addEventListener('submit',event => event.preventDefault());
 $('parameters').addEventListener('input',update);
 $('N').addEventListener('change',update);
 const resetButton = $('reset');
 resetButton.addEventListener('click',event => {
   setInputs(DEFAULTS);
-  // Restart both animations even when the user presses the button repeatedly.
+  // Перезапустить анимацию, даже если кнопку нажали повторно.
   resetButton.classList.remove('is-resetting');
   void resetButton.offsetWidth;
   resetButton.classList.add('is-resetting');
-  // Touch/mouse activation should not leave a persistent focus outline on mobile.
+  // При тапе/клике не оставлять контур фокуса на мобильных.
   if (event.detail > 0) resetButton.blur();
 });
 resetButton.addEventListener('animationend',event => {
@@ -648,7 +1020,10 @@ resetButton.addEventListener('animationend',event => {
     resetButton.classList.remove('is-resetting');
 });
 update();
-// Progressive enhancement for browsers supporting page-scoped WebMCP.
+
+/* ============================================================================
+   ПРОГРЕССИВНОЕ УЛУЧШЕНИЕ: WebMCP-инструмент (если поддерживается)
+   ============================================================================ */
 if (document.modelContext && typeof document.modelContext.registerTool === 'function') {
   const lifecycle = new AbortController();
   const tool = {
@@ -664,7 +1039,7 @@ if (document.modelContext && typeof document.modelContext.registerTool === 'func
       return {angleDegrees:result.angle,fill:result.fill,coveragePercent:result.P,kpp:result.kpp,kppMethod:result.kppMethod,approximate:result.kppMethod === 'estimated',kgPerKm:result.masses,message:result.geometryMessage || result.materialMessage};
     }
   };
-  try { Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(() => {}); } catch (_) { /* UI remains available. */ }
+  try { Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(() => {}); } catch (_) { /* UI остаётся доступным. */ }
   window.addEventListener('pagehide',event => {if (!event.persisted) lifecycle.abort();},{once:true});
 }
 </script>

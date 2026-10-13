@@ -150,8 +150,8 @@
     body:has(.info-dialog[open]){overflow:hidden}
     @media(max-width:480px){.info-header{padding:10px 12px}.info-content{padding:4px 12px 12px}.info-dialog{max-height:calc(100dvh - 24px)}}
     .materials-header{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
-    .result-fill{border-color:#fff}
-    .result-fill .result-value{color:#fff}
+    .result-fill{border-color:#afafaf;background:rgba(175,175,175,.045)}
+    .result-fill .result-label,.result-fill .result-value{color:#afafaf}
     .help[open]>summary{color:#fff}
     .quiet-btn.is-info-active{animation:info-border-flash 850ms ease-out both}
     .quiet-btn.is-info-active .ui-icon{animation:info-icon-shake 650ms ease-in-out both}
@@ -172,6 +172,12 @@
       100%{border-color:var(--line);box-shadow:0 0 0 0 rgba(255,92,108,0);background:transparent}
     }
     @media(prefers-reduced-motion:reduce){.quiet-btn.is-info-active,.quiet-btn.is-info-active .ui-icon,.info-close.is-closing{animation:none!important}}
+    .result-main,.result-angle:not(.result-fill){border-color:var(--result-color);background:rgba(var(--result-rgb),.065)}
+    .result-main{--result-color:#afafaf;--result-rgb:175,175,175}
+    .result-angle:not(.result-fill){--result-color:#4f8cff;--result-rgb:79,140,255}
+    .result-main .result-label,.result-main .result-value,.result-main .result-unit,
+    .result-angle:not(.result-fill) .result-label,.result-angle:not(.result-fill) .result-value,.result-angle:not(.result-fill) .result-unit{color:var(--result-color)}
+    .result-main .coverage-fill{background:var(--result-color)}
   </style>
 </head>
 <body>
@@ -409,6 +415,35 @@ function format(value, digits) { return Number.isFinite(value) ? formatters.get(
 const $ = id => document.getElementById(id);
 let currentResult, announcementTimer;
 function notice(id, message) { const element = $(id); element.textContent = message; element.hidden = !message; }
+// Color bands use the same two-decimal values that the user sees.
+// Geometry, Kpp selection and material consumption retain full precision.
+function resultColors(P,angle) {
+  const displayed = value => Number.isFinite(value)
+    ? Number(format(value,2).replace(/\s/g,'').replace(',','.')) : null;
+  const density = displayed(P), degrees = displayed(angle);
+  let densityColor = '#afafaf';
+  let angleColor = '#4f8cff';
+  if (density !== null && density >= 0 && density <= 100) {
+    if (density < 54) densityColor = '#ff96a1';
+    else if (density < 65) densityColor = '#35d07f';
+    else if (density < 70) densityColor = '#9eff00';
+    else if (density <= 87) densityColor = '#35d07f';
+    else if (density < 88) densityColor = '#ff96a1';
+    else if (density <= 92) densityColor = '#5a911b';
+    else if (density < 96) densityColor = '#ffff00';
+    else densityColor = '#ff96a1';
+    if (density >= 54 && density < 70 && degrees !== null && degrees >= 68 && degrees <= 74)
+      angleColor = densityColor;
+  }
+  if (degrees !== null && ((degrees >= 0 && degrees < 45) || (degrees >= 75 && degrees <= 100)))
+    angleColor = '#ff96a1';
+  return {densityColor,angleColor};
+}
+function applyResultColor(element,color) {
+  element.style.setProperty('--result-color',color);
+  const hex = color.slice(1);
+  element.style.setProperty('--result-rgb',[0,2,4].map(offset => parseInt(hex.slice(offset,offset+2),16)).join(','));
+}
 function render(result) {
   currentResult = result;
   for (const key of Object.keys(DEFAULTS)) {
@@ -421,6 +456,9 @@ function render(result) {
   }
   $('density').textContent = format(result.P,2);
   $('angle').textContent = format(result.angle,2);
+  const colors = resultColors(result.P,result.angle);
+  applyResultColor($('density').parentElement,colors.densityColor);
+  applyResultColor($('angle').parentElement,colors.angleColor);
   $('fill').textContent = format(result.fill,4);
   $('coverage').style.width = result.P === null ? '0%' : result.P+'%';
   $('coverage').parentElement.hidden = result.P === null;

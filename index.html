@@ -526,10 +526,16 @@
     .mesh-blob--blue{top:-20%;left:-10%;background:var(--mesh-color1,#7c5cff)}
     .mesh-blob--green{bottom:-25%;right:-10%;background:var(--mesh-color2,#00d4ff)}
     .mesh-blob--purple{top:40%;left:40%;background:var(--mesh-color3,#ff5c8a)}
+    .mesh-blob--amber{top:12%;right:-12%;background:var(--mesh-color4,#ffb84d)}
+    .mesh-blob--mint{bottom:5%;left:-15%;background:var(--mesh-color5,#35d07f)}
     .mesh-enabled .mesh-blob{will-change:transform}
     .mesh-enabled .mesh-blob--blue{animation:mesh-1 var(--mesh-duration1,12s) ease-in-out -3s infinite alternate}
     .mesh-enabled .mesh-blob--green{animation:mesh-2 var(--mesh-duration2,14s) ease-in-out -5s infinite alternate}
     .mesh-enabled .mesh-blob--purple{animation:mesh-3 var(--mesh-duration3,16s) ease-in-out -7s infinite alternate}
+    .mesh-enabled .mesh-blob--amber{animation:mesh-4 var(--mesh-duration4,18s) ease-in-out -9s infinite alternate}
+    .mesh-enabled .mesh-blob--mint{animation:mesh-5 var(--mesh-duration5,20s) ease-in-out -11s infinite alternate}
+    @keyframes mesh-4{from{transform:translate(0,0) scale(.9)}to{transform:translate(-65%,45%) scale(1.15)}}
+    @keyframes mesh-5{from{transform:translate(0,0) scale(1.1)}to{transform:translate(55%,-50%) scale(.95)}}
     @keyframes mesh-1{from{transform:translate(0,0) scale(1)}to{transform:translate(60%,30%) scale(1.2)}}
     @keyframes mesh-2{from{transform:translate(0,0) scale(1)}to{transform:translate(-50%,-25%) scale(1.1)}}
     @keyframes mesh-3{from{transform:translate(0,0) scale(1)}to{transform:translate(20%,-40%) scale(.9)}}
@@ -547,10 +553,14 @@
     body[data-mesh-shape="cloud"] .mesh-blob--blue{border-radius:62% 38% 70% 30% / 32% 65% 35% 68%;aspect-ratio:1.3}
     body[data-mesh-shape="cloud"] .mesh-blob--green{border-radius:35% 65% 28% 72% / 62% 35% 65% 38%;aspect-ratio:.85}
     body[data-mesh-shape="cloud"] .mesh-blob--purple{border-radius:72% 28% 58% 42% / 38% 72% 28% 62%;aspect-ratio:1.2}
+    body[data-mesh-shape="cloud"] .mesh-blob--amber{border-radius:38% 62% 70% 30% / 60% 28% 72% 40%;aspect-ratio:1.15}
+    body[data-mesh-shape="cloud"] .mesh-blob--mint{border-radius:68% 32% 35% 65% / 42% 70% 30% 58%;aspect-ratio:.9}
     .mesh-tilt-active .mesh-blob{animation:none;transform:translate3d(var(--mesh-tilt-x,0px),var(--mesh-tilt-y,0px),0)}
     .mesh-tilt-active .mesh-blob--blue{top:3%;left:2%}
     .mesh-tilt-active .mesh-blob--green{bottom:8%;right:3%}
     .mesh-tilt-active .mesh-blob--purple{top:35%;left:30%}
+    .mesh-tilt-active .mesh-blob--amber{top:18%;right:4%}
+    .mesh-tilt-active .mesh-blob--mint{bottom:4%;left:2%}
     .mesh-control-group{border-top:1px solid var(--line);padding-top:12px;margin-top:8px;min-width:0}
     .mesh-slider-label{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--text)}
     .mesh-slider-label output{flex-shrink:0;font-variant-numeric:tabular-nums;color:var(--muted)}
@@ -559,15 +569,16 @@
     .mesh-select{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:8px;text-align:left;appearance:auto}
     .mesh-settings input:focus-visible,.mesh-settings select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .mesh-tilt-status{font-size:13px;color:var(--muted);line-height:1.45}
-    .liquid-glass .section-number,.liquid-glass .field,.liquid-glass .result{
+    .mesh-enabled .step-control,.mesh-enabled .materials{background:rgba(23,26,33,.22)}
+    .mesh-enabled .materials tr,.liquid-glass .materials tr{background:transparent}
+    .liquid-glass .section-number,.liquid-glass .step-control,.liquid-glass .result,.liquid-glass .materials{
       background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,0) 65%),rgba(23,26,33,var(--glass-alpha,.35));
       -webkit-backdrop-filter:blur(var(--glass-frost,12px)) saturate(150%);
       backdrop-filter:blur(var(--glass-frost,12px)) saturate(150%);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.06),0 6px 18px rgba(0,0,0,.12);
     }
-    .liquid-glass .field{border-radius:10px}
-    .liquid-glass .field-copy{padding-left:6px}
-    .liquid-glass .field .step-control{background:transparent}
+    .liquid-glass .materials{border-radius:8px}
+    .liquid-glass .step-control:focus-within{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 3px rgba(79,140,255,.15)}
   </style>
 </head>
 <body>
@@ -586,7 +597,7 @@
   </header>
   <div class="blocks">
     <section class="card" aria-label="Параметры, результаты и расходы">
-      <div class="mesh-background" aria-hidden="true"><span class="mesh-blob mesh-blob--blue"></span><span class="mesh-blob mesh-blob--green"></span><span class="mesh-blob mesh-blob--purple"></span></div>
+      <div class="mesh-background" aria-hidden="true"><span class="mesh-blob mesh-blob--blue"></span><span class="mesh-blob mesh-blob--green"></span><span class="mesh-blob mesh-blob--purple"></span><span class="mesh-blob mesh-blob--amber"></span><span class="mesh-blob mesh-blob--mint"></span></div>
       <header class="card-header" role="heading" aria-level="2" aria-label="Параметры"><span class="section-number" aria-hidden="true">Параметры</span></header>
       <form id="parameters" novalidate autocomplete="off">
         <div class="input-grid">
@@ -620,9 +631,9 @@
           <div class="field">
             <div class="field-copy"><label for="s">Шаг оплётки<span class="sr-only">, мм</span></label></div>
             <div class="step-control" id="s-control">
-              <button class="step-button" id="s-minus" type="button" aria-label="Уменьшить: шаг оплётки" title="Шаг 1 мм">−</button>
-              <input id="s" name="s" type="text" inputmode="decimal" value="50" required spellcheck="false" aria-describedby="s-error" title="Шаг 1 мм"><span class="input-unit" aria-hidden="true">мм</span>
-              <button class="step-button" id="s-plus" type="button" aria-label="Увеличить: шаг оплётки" title="Шаг 1 мм">+</button>
+              <button class="step-button" id="s-minus" type="button" aria-label="Уменьшить: шаг оплётки" title="Шаг 5 мм">−</button>
+              <input id="s" name="s" type="text" inputmode="decimal" value="50" required spellcheck="false" aria-describedby="s-error" title="Шаг 5 мм"><span class="input-unit" aria-hidden="true">мм</span>
+              <button class="step-button" id="s-plus" type="button" aria-label="Увеличить: шаг оплётки" title="Шаг 5 мм">+</button>
             </div>
             <p id="s-error" class="field-error" hidden></p>
           </div>
@@ -703,11 +714,15 @@
         <label class="mesh-color-row" for="meshColor1"><span>Пятно 1</span><input class="mesh-color-input" type="color" id="meshColor1" value="#7c5cff"><output class="mesh-color-code" id="meshColor1-code">#7c5cff</output></label>
         <label class="mesh-color-row" for="meshColor2"><span>Пятно 2</span><input class="mesh-color-input" type="color" id="meshColor2" value="#00d4ff"><output class="mesh-color-code" id="meshColor2-code">#00d4ff</output></label>
         <label class="mesh-color-row" for="meshColor3"><span>Пятно 3</span><input class="mesh-color-input" type="color" id="meshColor3" value="#ff5c8a"><output class="mesh-color-code" id="meshColor3-code">#ff5c8a</output></label>
+        <label class="mesh-color-row" for="meshColor4"><span>Пятно 4</span><input class="mesh-color-input" type="color" id="meshColor4" value="#ffb84d"><output class="mesh-color-code" id="meshColor4-code">#ffb84d</output></label>
+        <label class="mesh-color-row" for="meshColor5"><span>Пятно 5</span><input class="mesh-color-input" type="color" id="meshColor5" value="#35d07f"><output class="mesh-color-code" id="meshColor5-code">#35d07f</output></label>
         <div class="mesh-control-group">
+          <label class="mesh-slider-label" for="meshCount">Количество пятен<output id="meshCount-value" for="meshCount">5</output></label>
+          <input class="mesh-range" id="meshCount" type="range" min="1" max="5" step="1" value="5">
           <label class="mesh-slider-label" for="meshSize">Размер пятен<output id="meshSize-value" for="meshSize">100 %</output></label>
           <input class="mesh-range" id="meshSize" type="range" min="60" max="180" step="5" value="100">
           <label class="mesh-slider-label" for="meshSpeed">Скорость движения<output id="meshSpeed-value" for="meshSpeed">1×</output></label>
-          <input class="mesh-range" id="meshSpeed" type="range" min="25" max="200" step="5" value="100">
+          <input class="mesh-range" id="meshSpeed" type="range" min="25" max="300" step="5" value="100">
           <label class="mesh-shape-row" for="meshShape">Форма пятен<select class="mesh-select" id="meshShape"><option value="round">Круг</option><option value="cloud">Облако</option></select></label>
         </div>
         <div class="mesh-control-group" id="meshTiltPanel" hidden>
@@ -722,7 +737,7 @@
           <label class="mesh-slider-label" for="meshFrost">Матовость стекла<output id="meshFrost-value" for="meshFrost">12 px</output></label>
           <input class="mesh-range" id="meshFrost" type="range" min="0" max="30" step="1" value="12">
         </div>
-        <p id="mesh-save-status">Цвета и состояние фона сохраняются в этом браузере.</p>
+        <p id="mesh-save-status">Настройки сохраняются в этом браузере.</p>
       </div></details>
   </div>
 </dialog>
@@ -739,7 +754,7 @@
    MATERIALS — справочник материалов (плотность, кг/м³).
    ============================================================================ */
 const DEFAULTS = Object.freeze({D:'10', n:'4', d:'0,15', s:'50', N:'24'});
-const STEPS = Object.freeze({D:0.1,n:1,d:0.01,s:1});
+const STEPS = Object.freeze({D:0.1,n:1,d:0.01,s:5});
 const MIN_VALUES = Object.freeze({D:0.01,n:1,d:0.01,s:0.01});
 const COIL_COUNTS = Object.freeze([16,24,36]);
 const MATERIALS = Object.freeze([
@@ -963,7 +978,7 @@ function steppedValue(raw, key, direction) {
   const precision = Math.max(stepDigits,fractionDigits-exponent,0);
   const digits = mantissa.replace('.','');
   const scaled = BigInt(digits) * 10n ** BigInt(precision+exponent-fractionDigits);
-  const delta = BigInt(direction) * 10n ** BigInt(precision-stepDigits);
+  const delta = BigInt(direction) * BigInt(String(step).replace('.','')) * 10n ** BigInt(precision-stepDigits);
   const answer = String(scaled+delta).padStart(precision+1,'0');
   return precision ? (answer.slice(0,-precision)+','+answer.slice(-precision)).replace(/0+$/,'').replace(/,$/,'') : answer;
 }
@@ -1002,15 +1017,16 @@ for (const key of Object.keys(DEFAULTS)) {
    ============================================================================ */
 const meshButton = $('meshButton');
 const meshStorageKey = 'braid-calculator.mesh-settings.v1';
-const meshSettings = {enabled:false,base:'#08080f',color1:'#7c5cff',color2:'#00d4ff',color3:'#ff5c8a',size:100,speed:100,shape:'round',tilt:false,glass:false,transparency:65,frost:12};
-const meshColorFields = {base:'meshBase',color1:'meshColor1',color2:'meshColor2',color3:'meshColor3'};
-const meshRanges = {size:['meshSize',60,180],speed:['meshSpeed',25,200],transparency:['meshTransparency',0,100],frost:['meshFrost',0,30]};
+const meshSettings = {enabled:false,base:'#08080f',color1:'#7c5cff',color2:'#00d4ff',color3:'#ff5c8a',color4:'#ffb84d',color5:'#35d07f',count:5,size:100,speed:100,shape:'round',tilt:false,glass:false,transparency:65,frost:12};
+const meshColorFields = {base:'meshBase',color1:'meshColor1',color2:'meshColor2',color3:'meshColor3',color4:'meshColor4',color5:'meshColor5'};
+const meshRanges = {count:['meshCount',1,5],size:['meshSize',60,180],speed:['meshSpeed',25,300],transparency:['meshTransparency',0,100],frost:['meshFrost',0,30]};
 try {
   const saved = JSON.parse(localStorage.getItem(meshStorageKey));
   if (saved && typeof saved === 'object') {
     for (const key of ['enabled','tilt','glass']) if (typeof saved[key] === 'boolean') meshSettings[key] = saved[key];
     for (const key of Object.keys(meshColorFields)) if (typeof saved[key] === 'string' && /^#[0-9a-f]{6}$/i.test(saved[key])) meshSettings[key] = saved[key].toLowerCase();
     for (const [key,[,min,max]] of Object.entries(meshRanges)) if (typeof saved[key] === 'number' && Number.isFinite(saved[key])) meshSettings[key] = Math.max(min,Math.min(max,saved[key]));
+    meshSettings.count = Math.round(meshSettings.count);
     if (['round','cloud'].includes(saved.shape)) meshSettings.shape = saved.shape;
   }
 } catch (_) {}
@@ -1020,7 +1036,7 @@ const meshNeedsPermission = Boolean(meshOrientation && typeof meshOrientation.re
 let meshPermission = meshNeedsPermission ? 'prompt' : 'granted';
 let meshListening = false, meshPermissionPending = false, meshEpoch = 0, meshRaf = 0, meshWaitTimer = 0;
 let meshNeutral = null, meshTarget = {x:0,y:0}, meshLastFrame = 0;
-const meshPositions = [{x:0,y:0},{x:0,y:0},{x:0,y:0}];
+const meshPositions = Array.from({length:5},() => ({x:0,y:0}));
 const meshBlobs = [...document.querySelectorAll('.mesh-blob')];
 const meshCanvas = document.querySelector('.mesh-background');
 $('meshTiltPanel').hidden = !meshMobile;
@@ -1069,7 +1085,8 @@ function moveMeshByTilt(time) {
   const bounds = meshCanvas.getBoundingClientRect();
   let moving = false;
   meshPositions.forEach((point,index) => {
-    const depth = [1,.8,1.15][index];
+    if (meshBlobs[index].hidden) return;
+    const depth = [1,.8,1.15,.9,1.05][index];
     const x = meshTarget.x*Math.min(bounds.width*.32,190)*depth;
     const y = meshTarget.y*Math.min(bounds.height*.24,210)*depth;
     const blend = 1-Math.exp(-dt/(180+index*75)*(meshSettings.speed/100));
@@ -1114,6 +1131,11 @@ function applyMeshSettings() {
   body.classList.toggle('mesh-enabled',meshSettings.enabled);
   body.classList.toggle('liquid-glass',meshSettings.glass);
   body.dataset.meshShape = meshSettings.shape;
+  meshBlobs.forEach((blob,index) => {
+    blob.hidden = index >= meshSettings.count;
+    $('meshColor'+(index+1)).closest('.mesh-color-row').hidden = blob.hidden;
+  });
+  if (meshListening && document.body.classList.contains('mesh-tilt-active') && !meshRaf) meshRaf = requestAnimationFrame(moveMeshByTilt);
   meshButton.setAttribute('aria-pressed',String(meshSettings.enabled));
   const label = meshSettings.enabled ? 'Выключить анимированный фон' : 'Включить анимированный фон';
   meshButton.setAttribute('aria-label',label);meshButton.title = label;
@@ -1127,10 +1149,10 @@ function applyMeshSettings() {
   }
   for (const [key,[id]] of Object.entries(meshRanges)) {
     $(id).value = String(meshSettings[key]);
-    $(id+'-value').textContent = key === 'speed' ? (meshSettings[key]/100).toLocaleString('ru-RU')+'×' : meshSettings[key]+(key === 'frost' ? ' px' : ' %');
+    $(id+'-value').textContent = key === 'speed' ? (meshSettings[key]/100).toLocaleString('ru-RU')+'×' : meshSettings[key]+(key === 'count' ? '' : key === 'frost' ? ' px' : ' %');
   }
   body.style.setProperty('--mesh-size',String(meshSettings.size/100));
-  for (const [index,duration] of [12,14,16].entries()) body.style.setProperty('--mesh-duration'+(index+1),duration/(meshSettings.speed/100)+'s');
+  for (const [index,duration] of [12,14,16,18,20].entries()) body.style.setProperty('--mesh-duration'+(index+1),duration/(meshSettings.speed/100)+'s');
   body.style.setProperty('--glass-alpha',String(1-meshSettings.transparency/100));
   body.style.setProperty('--glass-frost',meshSettings.frost+'px');
   void startMeshTilt(false);
@@ -1154,7 +1176,7 @@ for (const [key,id] of Object.entries(meshColorFields)) $(id).addEventListener('
 });
 for (const [key,[id,min,max]] of Object.entries(meshRanges)) $(id).addEventListener('input',event => {
   const value = Number(event.target.value);
-  if (Number.isFinite(value)) updateMeshSetting(key,Math.max(min,Math.min(max,value)));
+  if (Number.isFinite(value)) updateMeshSetting(key,Math.max(min,Math.min(max,key === 'count' ? Math.round(value) : value)));
 });
 $('meshTilt').addEventListener('change',event => {
   meshSettings.tilt = event.target.checked;

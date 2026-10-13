@@ -522,14 +522,14 @@
     .card>:not(.mesh-background){position:relative;z-index:1}
     .mesh-background{display:none;position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:inherit;pointer-events:none;background:var(--mesh-base,#08080f);contain:paint}
     .mesh-enabled .mesh-background{display:block}
-    .mesh-blob{position:absolute;width:55%;aspect-ratio:1;border-radius:50%;filter:blur(60px);opacity:.7}
+    .mesh-blob{position:absolute;width:calc(55% * var(--mesh-size,1));aspect-ratio:1;border-radius:50%;filter:blur(60px);opacity:.7}
     .mesh-blob--blue{top:-20%;left:-10%;background:var(--mesh-color1,#7c5cff)}
     .mesh-blob--green{bottom:-25%;right:-10%;background:var(--mesh-color2,#00d4ff)}
     .mesh-blob--purple{top:40%;left:40%;background:var(--mesh-color3,#ff5c8a)}
     .mesh-enabled .mesh-blob{will-change:transform}
-    .mesh-enabled .mesh-blob--blue{animation:mesh-1 12s ease-in-out -3s infinite alternate}
-    .mesh-enabled .mesh-blob--green{animation:mesh-2 14s ease-in-out -5s infinite alternate}
-    .mesh-enabled .mesh-blob--purple{animation:mesh-3 16s ease-in-out -7s infinite alternate}
+    .mesh-enabled .mesh-blob--blue{animation:mesh-1 var(--mesh-duration1,12s) ease-in-out -3s infinite alternate}
+    .mesh-enabled .mesh-blob--green{animation:mesh-2 var(--mesh-duration2,14s) ease-in-out -5s infinite alternate}
+    .mesh-enabled .mesh-blob--purple{animation:mesh-3 var(--mesh-duration3,16s) ease-in-out -7s infinite alternate}
     @keyframes mesh-1{from{transform:translate(0,0) scale(1)}to{transform:translate(60%,30%) scale(1.2)}}
     @keyframes mesh-2{from{transform:translate(0,0) scale(1)}to{transform:translate(-50%,-25%) scale(1.1)}}
     @keyframes mesh-3{from{transform:translate(0,0) scale(1)}to{transform:translate(20%,-40%) scale(.9)}}
@@ -543,7 +543,31 @@
     .mesh-color-code{font-variant-numeric:tabular-nums}
     .mesh-enable-row{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--text);cursor:pointer}
     .mesh-checkbox{width:20px;height:20px;min-height:20px;flex:0 0 20px;padding:0;accent-color:var(--ok)}
-    @media(max-width:480px){.mesh-blob{width:70%;filter:blur(40px)}}
+    @media(max-width:480px){.mesh-blob{width:calc(70% * var(--mesh-size,1));filter:blur(40px)}}
+    body[data-mesh-shape="cloud"] .mesh-blob--blue{border-radius:62% 38% 70% 30% / 32% 65% 35% 68%;aspect-ratio:1.3}
+    body[data-mesh-shape="cloud"] .mesh-blob--green{border-radius:35% 65% 28% 72% / 62% 35% 65% 38%;aspect-ratio:.85}
+    body[data-mesh-shape="cloud"] .mesh-blob--purple{border-radius:72% 28% 58% 42% / 38% 72% 28% 62%;aspect-ratio:1.2}
+    .mesh-tilt-active .mesh-blob{animation:none;transform:translate3d(var(--mesh-tilt-x,0px),var(--mesh-tilt-y,0px),0)}
+    .mesh-tilt-active .mesh-blob--blue{top:3%;left:2%}
+    .mesh-tilt-active .mesh-blob--green{bottom:8%;right:3%}
+    .mesh-tilt-active .mesh-blob--purple{top:35%;left:30%}
+    .mesh-control-group{border-top:1px solid var(--line);padding-top:12px;margin-top:8px;min-width:0}
+    .mesh-slider-label{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--text)}
+    .mesh-slider-label output{flex-shrink:0;font-variant-numeric:tabular-nums;color:var(--muted)}
+    .mesh-range{width:100%;min-height:44px;padding:0;accent-color:var(--accent)}
+    .mesh-shape-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(110px,140px);gap:12px;align-items:center;color:var(--text)}
+    .mesh-select{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:8px;text-align:left;appearance:auto}
+    .mesh-settings input:focus-visible,.mesh-settings select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .mesh-tilt-status{font-size:13px;color:var(--muted);line-height:1.45}
+    .liquid-glass .section-number,.liquid-glass .field,.liquid-glass .result{
+      background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,0) 65%),rgba(23,26,33,var(--glass-alpha,.35));
+      -webkit-backdrop-filter:blur(var(--glass-frost,12px)) saturate(150%);
+      backdrop-filter:blur(var(--glass-frost,12px)) saturate(150%);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.06),0 6px 18px rgba(0,0,0,.12);
+    }
+    .liquid-glass .field{border-radius:10px}
+    .liquid-glass .field-copy{padding-left:6px}
+    .liquid-glass .field .step-control{background:transparent}
   </style>
 </head>
 <body>
@@ -679,6 +703,25 @@
         <label class="mesh-color-row" for="meshColor1"><span>Пятно 1</span><input class="mesh-color-input" type="color" id="meshColor1" value="#7c5cff"><output class="mesh-color-code" id="meshColor1-code">#7c5cff</output></label>
         <label class="mesh-color-row" for="meshColor2"><span>Пятно 2</span><input class="mesh-color-input" type="color" id="meshColor2" value="#00d4ff"><output class="mesh-color-code" id="meshColor2-code">#00d4ff</output></label>
         <label class="mesh-color-row" for="meshColor3"><span>Пятно 3</span><input class="mesh-color-input" type="color" id="meshColor3" value="#ff5c8a"><output class="mesh-color-code" id="meshColor3-code">#ff5c8a</output></label>
+        <div class="mesh-control-group">
+          <label class="mesh-slider-label" for="meshSize">Размер пятен<output id="meshSize-value" for="meshSize">100 %</output></label>
+          <input class="mesh-range" id="meshSize" type="range" min="60" max="180" step="5" value="100">
+          <label class="mesh-slider-label" for="meshSpeed">Скорость движения<output id="meshSpeed-value" for="meshSpeed">1×</output></label>
+          <input class="mesh-range" id="meshSpeed" type="range" min="25" max="200" step="5" value="100">
+          <label class="mesh-shape-row" for="meshShape">Форма пятен<select class="mesh-select" id="meshShape"><option value="round">Круг</option><option value="cloud">Облако</option></select></label>
+        </div>
+        <div class="mesh-control-group" id="meshTiltPanel" hidden>
+          <label class="mesh-enable-row"><input class="mesh-checkbox" id="meshTilt" type="checkbox">Перетекание при наклоне телефона</label>
+          <p class="mesh-tilt-status" id="meshTiltStatus" role="status" aria-live="polite"></p>
+          <button type="button" class="quiet-btn" id="meshTiltPermission" hidden>Подключить датчики</button>
+        </div>
+        <div class="mesh-control-group">
+          <label class="mesh-enable-row"><input class="mesh-checkbox" id="meshGlass" type="checkbox">Liquid Glass</label>
+          <label class="mesh-slider-label" for="meshTransparency">Прозрачность стекла<output id="meshTransparency-value" for="meshTransparency">65 %</output></label>
+          <input class="mesh-range" id="meshTransparency" type="range" min="0" max="100" step="5" value="65">
+          <label class="mesh-slider-label" for="meshFrost">Матовость стекла<output id="meshFrost-value" for="meshFrost">12 px</output></label>
+          <input class="mesh-range" id="meshFrost" type="range" min="0" max="30" step="1" value="12">
+        </div>
         <p id="mesh-save-status">Цвета и состояние фона сохраняются в этом браузере.</p>
       </div></details>
   </div>
@@ -959,59 +1002,171 @@ for (const key of Object.keys(DEFAULTS)) {
    ============================================================================ */
 const meshButton = $('meshButton');
 const meshStorageKey = 'braid-calculator.mesh-settings.v1';
-const meshSettings = {enabled:false,base:'#08080f',color1:'#7c5cff',color2:'#00d4ff',color3:'#ff5c8a'};
+const meshSettings = {enabled:false,base:'#08080f',color1:'#7c5cff',color2:'#00d4ff',color3:'#ff5c8a',size:100,speed:100,shape:'round',tilt:false,glass:false,transparency:65,frost:12};
 const meshColorFields = {base:'meshBase',color1:'meshColor1',color2:'meshColor2',color3:'meshColor3'};
+const meshRanges = {size:['meshSize',60,180],speed:['meshSpeed',25,200],transparency:['meshTransparency',0,100],frost:['meshFrost',0,30]};
 try {
   const saved = JSON.parse(localStorage.getItem(meshStorageKey));
   if (saved && typeof saved === 'object') {
-    if (typeof saved.enabled === 'boolean') meshSettings.enabled = saved.enabled;
-    for (const key of Object.keys(meshColorFields)) {
-      if (typeof saved[key] === 'string' && /^#[0-9a-f]{6}$/i.test(saved[key]))
-        meshSettings[key] = saved[key].toLowerCase();
-    }
+    for (const key of ['enabled','tilt','glass']) if (typeof saved[key] === 'boolean') meshSettings[key] = saved[key];
+    for (const key of Object.keys(meshColorFields)) if (typeof saved[key] === 'string' && /^#[0-9a-f]{6}$/i.test(saved[key])) meshSettings[key] = saved[key].toLowerCase();
+    for (const [key,[,min,max]] of Object.entries(meshRanges)) if (typeof saved[key] === 'number' && Number.isFinite(saved[key])) meshSettings[key] = Math.max(min,Math.min(max,saved[key]));
+    if (['round','cloud'].includes(saved.shape)) meshSettings.shape = saved.shape;
   }
 } catch (_) {}
+const meshMobile = Boolean((navigator.userAgentData && navigator.userAgentData.mobile) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+const meshOrientation = window.DeviceOrientationEvent;
+const meshNeedsPermission = Boolean(meshOrientation && typeof meshOrientation.requestPermission === 'function');
+let meshPermission = meshNeedsPermission ? 'prompt' : 'granted';
+let meshListening = false, meshPermissionPending = false, meshEpoch = 0, meshRaf = 0, meshWaitTimer = 0;
+let meshNeutral = null, meshTarget = {x:0,y:0}, meshLastFrame = 0;
+const meshPositions = [{x:0,y:0},{x:0,y:0},{x:0,y:0}];
+const meshBlobs = [...document.querySelectorAll('.mesh-blob')];
+const meshCanvas = document.querySelector('.mesh-background');
+$('meshTiltPanel').hidden = !meshMobile;
+function meshTiltStatus(text,retry=false) {
+  if ($('meshTiltStatus').textContent !== text) $('meshTiltStatus').textContent = text;
+  $('meshTiltPermission').hidden = !retry;
+  $('meshTiltPermission').disabled = meshPermissionPending;
+}
+function meshWantsTilt() { return meshMobile && meshSettings.enabled && meshSettings.tilt && !document.hidden; }
+function stopMeshTilt() {
+  meshEpoch++;
+  window.removeEventListener('deviceorientation',onMeshOrientation);
+  meshListening = false;
+  clearTimeout(meshWaitTimer);meshWaitTimer = 0;
+  cancelAnimationFrame(meshRaf);meshRaf = 0;meshLastFrame = 0;meshNeutral = null;
+  meshTarget = {x:0,y:0};
+  document.body.classList.remove('mesh-tilt-active');
+  meshPositions.forEach((point,index) => {
+    point.x = point.y = 0;
+    meshBlobs[index].style.removeProperty('--mesh-tilt-x');
+    meshBlobs[index].style.removeProperty('--mesh-tilt-y');
+  });
+}
+function meshScreenVector(beta,gamma,base,angle) {
+  const delta = (value,origin) => ((value-origin+540)%360)-180;
+  const x = delta(gamma,base.gamma), y = delta(beta,base.beta);
+  const radians = angle*Math.PI/180;
+  const clamp = value => Math.max(-1,Math.min(1,value/35));
+  return {x:clamp(x*Math.cos(radians)+y*Math.sin(radians)),y:clamp(y*Math.cos(radians)-x*Math.sin(radians))};
+}
+function onMeshOrientation(event) {
+  if (!meshWantsTilt() || !Number.isFinite(event.beta) || !Number.isFinite(event.gamma)) return;
+  if (!meshNeutral) meshNeutral = {beta:event.beta,gamma:event.gamma};
+  clearTimeout(meshWaitTimer);meshWaitTimer = 0;
+  document.body.classList.add('mesh-tilt-active');
+  const angle = (window.screen.orientation && window.screen.orientation.angle) || window.orientation || 0;
+  meshTarget = meshScreenVector(event.beta,event.gamma,meshNeutral,angle);
+  meshTiltStatus('Управление наклоном включено. Начальное положение телефона принято за нейтральное.');
+  if (!meshRaf) meshRaf = requestAnimationFrame(moveMeshByTilt);
+}
+function moveMeshByTilt(time) {
+  meshRaf = 0;
+  if (!meshWantsTilt() || !meshListening) return;
+  const dt = meshLastFrame ? Math.min(50,time-meshLastFrame) : 16;
+  meshLastFrame = time;
+  const bounds = meshCanvas.getBoundingClientRect();
+  let moving = false;
+  meshPositions.forEach((point,index) => {
+    const depth = [1,.8,1.15][index];
+    const x = meshTarget.x*Math.min(bounds.width*.32,190)*depth;
+    const y = meshTarget.y*Math.min(bounds.height*.24,210)*depth;
+    const blend = 1-Math.exp(-dt/(180+index*75)*(meshSettings.speed/100));
+    point.x += (x-point.x)*blend;point.y += (y-point.y)*blend;
+    if (Math.abs(x-point.x)+Math.abs(y-point.y)>.15) moving = true;
+    meshBlobs[index].style.setProperty('--mesh-tilt-x',point.x.toFixed(2)+'px');
+    meshBlobs[index].style.setProperty('--mesh-tilt-y',point.y.toFixed(2)+'px');
+  });
+  if (moving) meshRaf = requestAnimationFrame(moveMeshByTilt);else meshLastFrame = 0;
+}
+async function startMeshTilt(userGesture=false) {
+  if (!meshWantsTilt()) {
+    stopMeshTilt();
+    meshTiltStatus(meshSettings.tilt ? 'Включите анимированный фон, чтобы управлять им наклоном.' : 'При включении телефон может запросить доступ к датчикам.');
+    return;
+  }
+  if (!window.isSecureContext) {stopMeshTilt();meshTiltStatus('Для датчиков откройте приложение по HTTPS. Сейчас работает автоанимация.');return;}
+  if (!meshOrientation) {stopMeshTilt();meshTiltStatus('Браузер не поддерживает датчики наклона. Работает автоанимация.');return;}
+  if (meshListening || meshPermissionPending) return;
+  const epoch = ++meshEpoch;
+  if (meshNeedsPermission && meshPermission !== 'granted') {
+    if (!userGesture) {meshTiltStatus('Нажмите «Подключить датчики», чтобы разрешить управление наклоном.',true);return;}
+    meshPermissionPending = true;
+    meshTiltStatus('Ожидаем разрешение на датчики…');
+    try {meshPermission = await meshOrientation.requestPermission();} catch (_) {meshPermission = 'denied';}
+    meshPermissionPending = false;
+    if (epoch !== meshEpoch || !meshWantsTilt()) {void startMeshTilt(false);return;}
+    if (meshPermission !== 'granted') {meshTiltStatus('Доступ к датчикам не разрешён. Работает автоанимация.',true);return;}
+  }
+  if (!meshWantsTilt()) return;
+  meshNeutral = null;
+  meshListening = true;
+  window.addEventListener('deviceorientation',onMeshOrientation,{passive:true});
+  meshTiltStatus('Ожидаем датчики. Немного наклоните телефон.');
+  meshWaitTimer = setTimeout(() => {
+    stopMeshTilt();
+    meshTiltStatus('Датчики не передали данные. Работает автоанимация; можно повторить подключение.',true);
+  },3500);
+}
 function applyMeshSettings() {
-  document.body.classList.toggle('mesh-enabled',meshSettings.enabled);
+  const body = document.body;
+  body.classList.toggle('mesh-enabled',meshSettings.enabled);
+  body.classList.toggle('liquid-glass',meshSettings.glass);
+  body.dataset.meshShape = meshSettings.shape;
   meshButton.setAttribute('aria-pressed',String(meshSettings.enabled));
   const label = meshSettings.enabled ? 'Выключить анимированный фон' : 'Включить анимированный фон';
-  meshButton.setAttribute('aria-label',label);
-  meshButton.title = label;
+  meshButton.setAttribute('aria-label',label);meshButton.title = label;
   $('meshEnabled').checked = meshSettings.enabled;
+  $('meshTilt').checked = meshSettings.tilt;
+  $('meshGlass').checked = meshSettings.glass;
+  $('meshShape').value = meshSettings.shape;
   for (const [key,id] of Object.entries(meshColorFields)) {
-    document.body.style.setProperty('--mesh-'+key,meshSettings[key]);
-    $(id).value = meshSettings[key];
-    $(id+'-code').textContent = meshSettings[key];
+    body.style.setProperty('--mesh-'+key,meshSettings[key]);
+    $(id).value = meshSettings[key];$(id+'-code').textContent = meshSettings[key];
   }
+  for (const [key,[id]] of Object.entries(meshRanges)) {
+    $(id).value = String(meshSettings[key]);
+    $(id+'-value').textContent = key === 'speed' ? (meshSettings[key]/100).toLocaleString('ru-RU')+'×' : meshSettings[key]+(key === 'frost' ? ' px' : ' %');
+  }
+  body.style.setProperty('--mesh-size',String(meshSettings.size/100));
+  for (const [index,duration] of [12,14,16].entries()) body.style.setProperty('--mesh-duration'+(index+1),duration/(meshSettings.speed/100)+'s');
+  body.style.setProperty('--glass-alpha',String(1-meshSettings.transparency/100));
+  body.style.setProperty('--glass-frost',meshSettings.frost+'px');
+  void startMeshTilt(false);
 }
 function saveMeshSettings() {
   try {
     localStorage.setItem(meshStorageKey,JSON.stringify(meshSettings));
-    $('mesh-save-status').textContent = 'Цвета и состояние фона сохраняются в этом браузере.';
-  } catch (_) {
-    $('mesh-save-status').textContent = 'Браузер не разрешил сохранить настройки. Они будут действовать до закрытия страницы.';
-  }
+    $('mesh-save-status').textContent = 'Настройки сохраняются в этом браузере.';
+  } catch (_) {$('mesh-save-status').textContent = 'Браузер не разрешил сохранить настройки. Они действуют до закрытия страницы.';}
 }
+function updateMeshSetting(key,value) {meshSettings[key]=value;applyMeshSettings();saveMeshSettings();}
 meshButton.addEventListener('click',event => {
-  meshSettings.enabled = !meshSettings.enabled;
-  applyMeshSettings();
-  saveMeshSettings();
+  updateMeshSetting('enabled',!meshSettings.enabled);
   if (event.detail > 0) meshButton.blur();
 });
-$('meshEnabled').addEventListener('change',event => {
-  meshSettings.enabled = event.target.checked;
-  applyMeshSettings();
-  saveMeshSettings();
+$('meshEnabled').addEventListener('change',event => updateMeshSetting('enabled',event.target.checked));
+$('meshGlass').addEventListener('change',event => updateMeshSetting('glass',event.target.checked));
+$('meshShape').addEventListener('change',event => {if (['round','cloud'].includes(event.target.value)) updateMeshSetting('shape',event.target.value);});
+for (const [key,id] of Object.entries(meshColorFields)) $(id).addEventListener('input',event => {
+  if (/^#[0-9a-f]{6}$/i.test(event.target.value)) updateMeshSetting(key,event.target.value.toLowerCase());
 });
-for (const [key,id] of Object.entries(meshColorFields)) {
-  $(id).addEventListener('input',event => {
-    const value = event.target.value;
-    if (!/^#[0-9a-f]{6}$/i.test(value)) return;
-    meshSettings[key] = value.toLowerCase();
-    applyMeshSettings();
-    saveMeshSettings();
-  });
-}
+for (const [key,[id,min,max]] of Object.entries(meshRanges)) $(id).addEventListener('input',event => {
+  const value = Number(event.target.value);
+  if (Number.isFinite(value)) updateMeshSetting(key,Math.max(min,Math.min(max,value)));
+});
+$('meshTilt').addEventListener('change',event => {
+  meshSettings.tilt = event.target.checked;
+  saveMeshSettings();
+  void startMeshTilt(true);
+});
+$('meshTiltPermission').addEventListener('click',() => {void startMeshTilt(true);});
+window.addEventListener('orientationchange',() => {meshNeutral = null;});
+if (window.screen.orientation && typeof window.screen.orientation.addEventListener === 'function') window.screen.orientation.addEventListener('change',() => {meshNeutral = null;});
+document.addEventListener('visibilitychange',() => {if (document.hidden) stopMeshTilt();else void startMeshTilt(false);});
+window.addEventListener('pagehide',stopMeshTilt);
+window.addEventListener('pageshow',() => {void startMeshTilt(false);});
 applyMeshSettings();
 const infoDialog = $('infoDialog');
 const infoButton = $('catalogButton');

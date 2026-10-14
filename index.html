@@ -520,25 +520,15 @@
     .mesh-toggle[aria-pressed="true"]{border-color:#35d07f;background:rgba(53,208,127,.1)}
     .card{position:relative;isolation:isolate}
     .card>:not(.mesh-background){position:relative;z-index:1}
-    .mesh-background{display:none;position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:inherit;pointer-events:none;background:var(--mesh-base,#08080f);contain:paint}
+    .mesh-background{display:none;position:fixed;top:0;left:var(--mesh-left,0px);width:var(--mesh-width,100%);height:100vh;height:100lvh;z-index:0;overflow:hidden;pointer-events:none;background:var(--mesh-base,#08080f);contain:paint;clip-path:inset(var(--mesh-clip-top,0px) 0 var(--mesh-clip-bottom,0px) round var(--mesh-radius-top,14px) var(--mesh-radius-top,14px) var(--mesh-radius-bottom,14px) var(--mesh-radius-bottom,14px))}
     .mesh-enabled .mesh-background{display:block}
-    .mesh-blob{position:absolute;width:calc(55% * var(--mesh-size,1));aspect-ratio:1;border-radius:50%;filter:blur(60px);opacity:.7}
-    .mesh-blob--blue{top:-20%;left:-10%;background:var(--mesh-color1,#7c5cff)}
-    .mesh-blob--green{bottom:-25%;right:-10%;background:var(--mesh-color2,#00d4ff)}
-    .mesh-blob--purple{top:40%;left:40%;background:var(--mesh-color3,#ff5c8a)}
-    .mesh-blob--amber{top:12%;right:-12%;background:var(--mesh-color4,#ffb84d)}
-    .mesh-blob--mint{bottom:5%;left:-15%;background:var(--mesh-color5,#35d07f)}
+    .mesh-blob{position:absolute;width:calc(55% * var(--mesh-size,1));aspect-ratio:1;border-radius:50%;filter:blur(calc(var(--mesh-blur,50) * 1px));opacity:.7}
+    .mesh-blob--blue{top:8%;left:-10%;--blob-color:var(--mesh-color1,#7c5cff);background:var(--blob-color)}
+    .mesh-blob--green{bottom:-25%;right:-10%;--blob-color:var(--mesh-color2,#00d4ff);background:var(--blob-color)}
+    .mesh-blob--purple{top:40%;left:40%;--blob-color:var(--mesh-color3,#ff5c8a);background:var(--blob-color)}
+    .mesh-blob--amber{top:12%;right:-12%;--blob-color:var(--mesh-color4,#ffb84d);background:var(--blob-color)}
+    .mesh-blob--mint{bottom:5%;left:-15%;--blob-color:var(--mesh-color5,#35d07f);background:var(--blob-color)}
     .mesh-enabled .mesh-blob{will-change:transform}
-    .mesh-enabled .mesh-blob--blue{animation:mesh-1 var(--mesh-duration1,12s) ease-in-out -3s infinite alternate}
-    .mesh-enabled .mesh-blob--green{animation:mesh-2 var(--mesh-duration2,14s) ease-in-out -5s infinite alternate}
-    .mesh-enabled .mesh-blob--purple{animation:mesh-3 var(--mesh-duration3,16s) ease-in-out -7s infinite alternate}
-    .mesh-enabled .mesh-blob--amber{animation:mesh-4 var(--mesh-duration4,18s) ease-in-out -9s infinite alternate}
-    .mesh-enabled .mesh-blob--mint{animation:mesh-5 var(--mesh-duration5,20s) ease-in-out -11s infinite alternate}
-    @keyframes mesh-4{from{transform:translate(0,0) scale(.9)}to{transform:translate(-65%,45%) scale(1.15)}}
-    @keyframes mesh-5{from{transform:translate(0,0) scale(1.1)}to{transform:translate(55%,-50%) scale(.95)}}
-    @keyframes mesh-1{from{transform:translate(0,0) scale(1)}to{transform:translate(60%,30%) scale(1.2)}}
-    @keyframes mesh-2{from{transform:translate(0,0) scale(1)}to{transform:translate(-50%,-25%) scale(1.1)}}
-    @keyframes mesh-3{from{transform:translate(0,0) scale(1)}to{transform:translate(20%,-40%) scale(.9)}}
     #meshButton circle:nth-child(1){fill:var(--mesh-color1,#7c5cff)}
     #meshButton circle:nth-child(2){fill:var(--mesh-color2,#00d4ff)}
     #meshButton circle:nth-child(3){fill:var(--mesh-color3,#ff5c8a)}
@@ -549,12 +539,16 @@
     .mesh-color-code{font-variant-numeric:tabular-nums}
     .mesh-enable-row{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--text);cursor:pointer}
     .mesh-checkbox{width:20px;height:20px;min-height:20px;flex:0 0 20px;padding:0;accent-color:var(--ok)}
-    @media(max-width:480px){.mesh-blob{width:calc(70% * var(--mesh-size,1));filter:blur(40px)}}
-    body[data-mesh-shape="cloud"] .mesh-blob--blue{border-radius:62% 38% 70% 30% / 32% 65% 35% 68%;aspect-ratio:1.3}
-    body[data-mesh-shape="cloud"] .mesh-blob--green{border-radius:35% 65% 28% 72% / 62% 35% 65% 38%;aspect-ratio:.85}
-    body[data-mesh-shape="cloud"] .mesh-blob--purple{border-radius:72% 28% 58% 42% / 38% 72% 28% 62%;aspect-ratio:1.2}
-    body[data-mesh-shape="cloud"] .mesh-blob--amber{border-radius:38% 62% 70% 30% / 60% 28% 72% 40%;aspect-ratio:1.15}
-    body[data-mesh-shape="cloud"] .mesh-blob--mint{border-radius:68% 32% 35% 65% / 42% 70% 30% 58%;aspect-ratio:.9}
+    @media(max-width:480px){.mesh-blob{width:calc(70% * var(--mesh-size,1));filter:blur(calc(var(--mesh-blur,50) * .7px))}}
+    body[data-mesh-shape="cloud"] .mesh-blob{background:transparent;border-radius:0;aspect-ratio:1.5}
+    body[data-mesh-shape="cloud"] .mesh-blob::before{content:"";position:absolute;inset:-12%;background:var(--blob-color);-webkit-mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20160%22%3E%3Cpath%20fill%3D%22white%22%20d%3D%22M33%20128C3%20130-5%20102%2017%2088C-4%2057%2022%2029%2049%2043C46%2012%2085-1%20105%2027C130-9%20174%209%20169%2045C202%2021%20231%2048%20215%2074C254%2086%20240%20130%20210%20126C215%20155%20172%20169%20151%20142C127%20171%2092%20158%2087%20133C62%20158%2035%20153%2033%20128Z%22%2F%3E%3C%2Fsvg%3E");mask-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20160%22%3E%3Cpath%20fill%3D%22white%22%20d%3D%22M33%20128C3%20130-5%20102%2017%2088C-4%2057%2022%2029%2049%2043C46%2012%2085-1%20105%2027C130-9%20174%209%20169%2045C202%2021%20231%2048%20215%2074C254%2086%20240%20130%20210%20126C215%20155%20172%20169%20151%20142C127%20171%2092%20158%2087%20133C62%20158%2035%20153%2033%20128Z%22%2F%3E%3C%2Fsvg%3E");-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+    body[data-mesh-shape="cloud"] .mesh-blob--blue::before{transform:rotate(-18deg)}
+    body[data-mesh-shape="cloud"] .mesh-blob--green{aspect-ratio:.8}
+    body[data-mesh-shape="cloud"] .mesh-blob--green::before{transform:rotate(35deg)}
+    body[data-mesh-shape="cloud"] .mesh-blob--purple::before{transform:rotate(14deg) scaleY(.85)}
+    body[data-mesh-shape="cloud"] .mesh-blob--amber::before{transform:rotate(-35deg)}
+    body[data-mesh-shape="cloud"] .mesh-blob--mint::before{transform:rotate(70deg)}
+    .mesh-auto-active .mesh-blob{top:0;left:0;right:auto;bottom:auto;transform:translate3d(var(--mesh-auto-x,0px),var(--mesh-auto-y,0px),0)}
     .mesh-tilt-active .mesh-blob{animation:none;transform:translate3d(var(--mesh-tilt-x,0px),var(--mesh-tilt-y,0px),0)}
     .mesh-tilt-active .mesh-blob--blue{top:3%;left:2%}
     .mesh-tilt-active .mesh-blob--green{bottom:8%;right:3%}
@@ -571,17 +565,66 @@
     .mesh-tilt-status{font-size:13px;color:var(--muted);line-height:1.45}
     .mesh-enabled .step-control,.mesh-enabled .materials{background:rgba(23,26,33,.22)}
     .mesh-enabled .materials tr,.liquid-glass .materials tr{background:transparent}
-    .liquid-glass .section-number,.liquid-glass .step-control,.liquid-glass .result,.liquid-glass .materials{
-      background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,0) 65%),rgba(23,26,33,var(--glass-alpha,.35));
-      -webkit-backdrop-filter:blur(var(--glass-frost,12px)) saturate(150%);
-      backdrop-filter:blur(var(--glass-frost,12px)) saturate(150%);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.06),0 6px 18px rgba(0,0,0,.12);
+    .liquid-glass .section-number,.liquid-glass .step-control,.liquid-glass .result,.liquid-glass .materials,.glass-preview-sample{
+      background:linear-gradient(135deg,rgba(255,255,255,var(--glass-shine,.08)),rgba(255,255,255,0) var(--glass-spread,65%)),rgba(23,26,33,var(--glass-alpha,.35));
+      -webkit-backdrop-filter:var(--glass-optics,blur(0px)) blur(var(--glass-frost,12px)) saturate(var(--glass-saturation,150%));
+      backdrop-filter:var(--glass-optics,blur(0px)) blur(var(--glass-frost,12px)) saturate(var(--glass-saturation,150%));
+      box-shadow:inset 0 var(--glass-rim,1px) var(--glass-rim-blur,0px) rgba(255,255,255,var(--glass-rim-alpha,.25)),inset 0 -1px var(--glass-rim-blur,0px) rgba(255,255,255,.06),inset var(--glass-fringe,0px) 0 var(--glass-rim-blur,0px) rgba(100,190,255,var(--glass-chroma,0)),inset calc(-1 * var(--glass-fringe,0px)) 0 var(--glass-rim-blur,0px) rgba(255,120,170,var(--glass-chroma,0)),0 var(--glass-shadow-y,6px) var(--glass-shadow-blur,18px) rgba(0,0,0,var(--glass-shadow-alpha,.12));
     }
     .liquid-glass .materials{border-radius:8px}
     .liquid-glass .step-control:focus-within{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 3px rgba(79,140,255,.15)}
+
+    .app{padding-top:0}
+    .page-header{position:sticky;top:0;z-index:40;padding:calc(12px + env(safe-area-inset-top,0px)) 6px 12px;isolation:isolate;background:transparent;border:0}
+    .page-header::before{content:"";position:absolute;inset:0 0 -64px;z-index:-1;pointer-events:none;background:rgba(15,17,21,.84);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 80px),rgba(0,0,0,.94) calc(100% - 64px),rgba(0,0,0,.72) calc(100% - 48px),rgba(0,0,0,.4) calc(100% - 32px),rgba(0,0,0,.12) calc(100% - 16px),transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 80px),rgba(0,0,0,.94) calc(100% - 64px),rgba(0,0,0,.72) calc(100% - 48px),rgba(0,0,0,.4) calc(100% - 32px),rgba(0,0,0,.12) calc(100% - 16px),transparent 100%)}
+    .page-header:not(.is-scrolled)::before{bottom:0;background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none;-webkit-mask-image:none;mask-image:none}
+    .page-header h1{font-size:20px;margin-left:6px}
+    html{scroll-padding-top:130px}
+    .mesh-count-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;color:var(--text);padding:8px 0}
+    .mesh-count-control{display:grid;grid-template-columns:44px 42px 44px;align-items:center;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.03);overflow:hidden;flex-shrink:0}
+    .mesh-count-control button{min-width:44px;height:44px;border:0;background:rgba(255,255,255,.03);color:var(--text);font-size:21px}
+    .mesh-count-control button:disabled{opacity:.3;cursor:default}
+    .mesh-count-control output{text-align:center;font-size:16px;font-variant-numeric:tabular-nums}
+    .mesh-count-control button:focus-visible{outline-offset:-3px}
+    .mesh-color-row[data-inactive="true"]{opacity:.4}
+    .mesh-color-row{transition:opacity .15s}
+    .glass-effects-title{margin:14px 0 8px;color:var(--text);font-size:14px;font-weight:600}
+    @media(min-width:901px){
+      .materials th{padding:12px 12px;white-space:normal;letter-spacing:normal}
+      .materials td{padding:14px 12px}
+      .materials th:first-child,.materials td:first-child{padding-left:14px}
+      .materials th:last-child,.materials td:last-child{padding-right:14px}
+      .materials col:nth-child(1){width:18%}
+      .materials col:nth-child(2){width:31%}
+      .materials col:nth-child(3){width:34%}
+      .materials col:nth-child(4){width:17%}
+    }
+
+    .info-header{z-index:5}
+    .glass-preview{position:sticky;top:var(--info-header-height,69px);z-index:3;background:var(--card);padding:8px 0 10px;margin:6px 0 12px}
+    .glass-preview-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;color:var(--text)}
+    .glass-preview-heading strong{font-size:14px}
+    .glass-preview-reset{min-height:44px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:rgba(255,255,255,.04);color:var(--muted);font-size:12px}
+    .glass-preview-stage{position:relative;isolation:isolate;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:12px;padding:16px 12px;min-height:116px;border-radius:10px;overflow:hidden;background:#153c53}
+    .glass-preview-art{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+    .glass-preview-reference,.glass-preview-sample{min-width:0;min-height:52px;border:1px solid rgba(255,255,255,.7);border-radius:12px;padding:10px 6px;color:#fff;font-size:14px;font-weight:600;text-shadow:0 1px 3px #001c30}
+    .glass-preview-reference{background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+    .glass-preview-caption{margin:5px 0 0!important;font-size:12px;line-height:1.4;color:var(--muted)}
+    @media(max-height:500px){.glass-preview{padding:4px 0}.glass-preview-stage{min-height:72px;padding:8px 10px}.glass-preview-caption{display:none}.glass-preview-reference,.glass-preview-sample{min-height:44px}}
   </style>
 </head>
 <body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs>
+  <filter id="glassOptics" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+    <feImage id="glassLensMap" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lens"/>
+    <feDisplacementMap id="glassRefractionMap" in="SourceGraphic" in2="lens" scale="0" xChannelSelector="R" yChannelSelector="G" result="refracted"/>
+    <feColorMatrix in="refracted" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"/>
+    <feOffset id="glassRedOffset" in="red" dx="0" dy="0" result="redShift"/>
+    <feColorMatrix in="refracted" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="cyan"/>
+    <feOffset id="glassCyanOffset" in="cyan" dx="0" dy="0" result="cyanShift"/>
+    <feBlend in="redShift" in2="cyanShift" mode="screen"/>
+  </filter>
+</defs></svg>
 <noscript><p>Для расчётов включите JavaScript в настройках браузера.</p></noscript>
 <main class="app">
   <header class="page-header">
@@ -710,6 +753,7 @@
       </div></details>
       <details class="help" id="mesh-settings"><summary>Настройки фона</summary><div class="help-content mesh-settings">
         <label class="mesh-enable-row"><input class="mesh-checkbox" id="meshEnabled" type="checkbox">Анимированный фон</label>
+        <div class="mesh-count-row"><span id="meshCount-label">Количество пятен</span><div class="mesh-count-control" role="group" aria-labelledby="meshCount-label"><button type="button" id="meshCountMinus" aria-label="Уменьшить количество пятен">−</button><output id="meshCount" aria-live="polite" aria-labelledby="meshCount-label">5</output><button type="button" id="meshCountPlus" aria-label="Увеличить количество пятен">+</button></div></div>
         <label class="mesh-color-row" for="meshBase"><span>Базовый фон</span><input class="mesh-color-input" type="color" id="meshBase" value="#08080f"><output class="mesh-color-code" id="meshBase-code">#08080f</output></label>
         <label class="mesh-color-row" for="meshColor1"><span>Пятно 1</span><input class="mesh-color-input" type="color" id="meshColor1" value="#7c5cff"><output class="mesh-color-code" id="meshColor1-code">#7c5cff</output></label>
         <label class="mesh-color-row" for="meshColor2"><span>Пятно 2</span><input class="mesh-color-input" type="color" id="meshColor2" value="#00d4ff"><output class="mesh-color-code" id="meshColor2-code">#00d4ff</output></label>
@@ -717,12 +761,12 @@
         <label class="mesh-color-row" for="meshColor4"><span>Пятно 4</span><input class="mesh-color-input" type="color" id="meshColor4" value="#ffb84d"><output class="mesh-color-code" id="meshColor4-code">#ffb84d</output></label>
         <label class="mesh-color-row" for="meshColor5"><span>Пятно 5</span><input class="mesh-color-input" type="color" id="meshColor5" value="#35d07f"><output class="mesh-color-code" id="meshColor5-code">#35d07f</output></label>
         <div class="mesh-control-group">
-          <label class="mesh-slider-label" for="meshCount">Количество пятен<output id="meshCount-value" for="meshCount">5</output></label>
-          <input class="mesh-range" id="meshCount" type="range" min="1" max="5" step="1" value="5">
           <label class="mesh-slider-label" for="meshSize">Размер пятен<output id="meshSize-value" for="meshSize">100 %</output></label>
           <input class="mesh-range" id="meshSize" type="range" min="60" max="180" step="5" value="100">
           <label class="mesh-slider-label" for="meshSpeed">Скорость движения<output id="meshSpeed-value" for="meshSpeed">1×</output></label>
           <input class="mesh-range" id="meshSpeed" type="range" min="25" max="300" step="5" value="100">
+          <label class="mesh-slider-label" for="meshBlobBlur">Размытие пятен<output id="meshBlobBlur-value" for="meshBlobBlur">50 %</output></label>
+          <input class="mesh-range" id="meshBlobBlur" type="range" min="0" max="100" step="1" value="50">
           <label class="mesh-shape-row" for="meshShape">Форма пятен<select class="mesh-select" id="meshShape"><option value="round">Круг</option><option value="cloud">Облако</option></select></label>
         </div>
         <div class="mesh-control-group" id="meshTiltPanel" hidden>
@@ -732,10 +776,38 @@
         </div>
         <div class="mesh-control-group">
           <label class="mesh-enable-row"><input class="mesh-checkbox" id="meshGlass" type="checkbox">Liquid Glass</label>
+          <div class="glass-preview" aria-label="Пример настройки стекла">
+            <div class="glass-preview-heading"><strong>Пример стекла</strong><button type="button" class="glass-preview-reset" id="glassZero">Обнулить эффекты</button></div>
+            <div class="glass-preview-stage">
+              <svg class="glass-preview-art" viewBox="0 0 600 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                <defs><linearGradient id="previewSky" x2="1" y2="1"><stop stop-color="#164963"/><stop offset=".52" stop-color="#148b91"/><stop offset="1" stop-color="#263577"/></linearGradient><pattern id="previewGrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#d3f9ee" stroke-opacity=".65" stroke-width="1"/></pattern><pattern id="previewStripes" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><rect width="6" height="12" fill="#ffe78b"/><rect x="6" width="6" height="12" fill="#bf5e42"/></pattern></defs>
+                <rect width="600" height="200" fill="url(#previewSky)"/><rect x="350" y="-20" width="135" height="260" fill="url(#previewStripes)" transform="rotate(-16 415 100)"/>
+                <circle cx="100" cy="102" r="75" fill="#f37b48"/><g fill="none" stroke="#ffe7ac" stroke-width="3"><circle cx="100" cy="102" r="57"/><circle cx="100" cy="102" r="40"/><circle cx="100" cy="102" r="23"/></g>
+                <rect width="600" height="200" fill="url(#previewGrid)"/><path d="M-20 170Q120 10 270 128T620 28" fill="none" stroke="#fff" stroke-width="5"/><path d="M-20 184Q120 24 270 142T620 42" fill="none" stroke="#ffce62" stroke-width="3"/>
+                <g fill="#e0fff4"><circle cx="236" cy="48" r="7"/><circle cx="257" cy="48" r="4"/><circle cx="276" cy="48" r="2"/><rect x="490" y="130" width="65" height="7"/><rect x="490" y="145" width="45" height="4"/></g>
+              </svg>
+              <button type="button" class="glass-preview-reference" tabindex="-1" aria-label="Образец без эффектов стекла">Без эффектов</button>
+              <button type="button" class="glass-preview-sample" id="glassPreviewSample" tabindex="-1" aria-label="Образец с текущими настройками стекла">Ваше стекло</button>
+            </div>
+            <p class="glass-preview-caption">Слева — прозрачное стекло без эффектов. Справа — ваши настройки.</p>
+          </div>
+
           <label class="mesh-slider-label" for="meshTransparency">Прозрачность стекла<output id="meshTransparency-value" for="meshTransparency">65 %</output></label>
           <input class="mesh-range" id="meshTransparency" type="range" min="0" max="100" step="5" value="65">
           <label class="mesh-slider-label" for="meshFrost">Матовость стекла<output id="meshFrost-value" for="meshFrost">12 px</output></label>
           <input class="mesh-range" id="meshFrost" type="range" min="0" max="30" step="1" value="12">
+          <p class="glass-effects-title">Оптические эффекты</p>
+          <label class="mesh-slider-label" for="meshRefraction">Преломление<output id="meshRefraction-value" for="meshRefraction">25</output></label>
+          <input class="mesh-range" id="meshRefraction" type="range" min="0" max="100" step="1" value="25">
+          <label class="mesh-slider-label" for="meshDepth">Глубина<output id="meshDepth-value" for="meshDepth">20</output></label>
+          <input class="mesh-range" id="meshDepth" type="range" min="0" max="100" step="1" value="20">
+          <label class="mesh-slider-label" for="meshDispersion">Дисперсия<output id="meshDispersion-value" for="meshDispersion">10</output></label>
+          <input class="mesh-range" id="meshDispersion" type="range" min="0" max="100" step="1" value="10">
+          <label class="mesh-slider-label" for="meshBlur">Размытие<output id="meshBlur-value" for="meshBlur">0</output></label>
+          <input class="mesh-range" id="meshBlur" type="range" min="0" max="100" step="1" value="0">
+          <label class="mesh-slider-label" for="meshSplay">Вытягивание краёв<output id="meshSplay-value" for="meshSplay">25</output></label>
+          <input class="mesh-range" id="meshSplay" type="range" min="0" max="100" step="1" value="25">
+
         </div>
         <p id="mesh-save-status">Настройки сохраняются в этом браузере.</p>
       </div></details>
@@ -1017,16 +1089,16 @@ for (const key of Object.keys(DEFAULTS)) {
    ============================================================================ */
 const meshButton = $('meshButton');
 const meshStorageKey = 'braid-calculator.mesh-settings.v1';
-const meshSettings = {enabled:false,base:'#08080f',color1:'#7c5cff',color2:'#00d4ff',color3:'#ff5c8a',color4:'#ffb84d',color5:'#35d07f',count:5,size:100,speed:100,shape:'round',tilt:false,glass:false,transparency:65,frost:12};
+const meshSettings = {enabled:false,base:'#08080f',color1:'#7c5cff',color2:'#00d4ff',color3:'#ff5c8a',color4:'#ffb84d',color5:'#35d07f',count:5,blobBlur:50,size:100,speed:100,shape:'round',tilt:false,glass:false,transparency:65,frost:12,refraction:25,depth:20,dispersion:10,blur:0,splay:25};
 const meshColorFields = {base:'meshBase',color1:'meshColor1',color2:'meshColor2',color3:'meshColor3',color4:'meshColor4',color5:'meshColor5'};
-const meshRanges = {count:['meshCount',1,5],size:['meshSize',60,180],speed:['meshSpeed',25,300],transparency:['meshTransparency',0,100],frost:['meshFrost',0,30]};
+const meshRanges = {blobBlur:['meshBlobBlur',0,100],size:['meshSize',60,180],speed:['meshSpeed',25,300],transparency:['meshTransparency',0,100],frost:['meshFrost',0,30],refraction:['meshRefraction',0,100],depth:['meshDepth',0,100],dispersion:['meshDispersion',0,100],blur:['meshBlur',0,100],splay:['meshSplay',0,100]};
 try {
   const saved = JSON.parse(localStorage.getItem(meshStorageKey));
   if (saved && typeof saved === 'object') {
     for (const key of ['enabled','tilt','glass']) if (typeof saved[key] === 'boolean') meshSettings[key] = saved[key];
     for (const key of Object.keys(meshColorFields)) if (typeof saved[key] === 'string' && /^#[0-9a-f]{6}$/i.test(saved[key])) meshSettings[key] = saved[key].toLowerCase();
     for (const [key,[,min,max]] of Object.entries(meshRanges)) if (typeof saved[key] === 'number' && Number.isFinite(saved[key])) meshSettings[key] = Math.max(min,Math.min(max,saved[key]));
-    meshSettings.count = Math.round(meshSettings.count);
+    if (typeof saved.count === 'number' && Number.isFinite(saved.count)) meshSettings.count = Math.max(1,Math.min(5,Math.round(saved.count)));
     if (['round','cloud'].includes(saved.shape)) meshSettings.shape = saved.shape;
   }
 } catch (_) {}
@@ -1034,12 +1106,112 @@ const meshMobile = Boolean((navigator.userAgentData && navigator.userAgentData.m
 const meshOrientation = window.DeviceOrientationEvent;
 const meshNeedsPermission = Boolean(meshOrientation && typeof meshOrientation.requestPermission === 'function');
 let meshPermission = meshNeedsPermission ? 'prompt' : 'granted';
+let meshAutoPermissionTried = false, meshRestoreFailed = false;
 let meshListening = false, meshPermissionPending = false, meshEpoch = 0, meshRaf = 0, meshWaitTimer = 0;
 let meshNeutral = null, meshTarget = {x:0,y:0}, meshLastFrame = 0;
 const meshPositions = Array.from({length:5},() => ({x:0,y:0}));
 const meshBlobs = [...document.querySelectorAll('.mesh-blob')];
 const meshCanvas = document.querySelector('.mesh-background');
+let meshAutoFrame = 0, meshAutoLastTime = 0, meshPageSuspended = false;
+let meshAutoWidth = 0, meshAutoHeight = 0;
+const meshAutoPoints = meshBlobs.map((_,index) => {
+  const angle = ([37,143,231,315,65][index]+Math.random()*18-9)*Math.PI/180;
+  return {x:0,y:0,vx:Math.cos(angle),vy:Math.sin(angle),width:0,height:0,minX:0,maxX:0,minY:0,maxY:0,ready:false};
+});
+function measureMeshAutoBounds() {
+  const box = meshCanvas.getBoundingClientRect();
+  if (!box.width || !box.height) return;
+  for (let index=0;index<meshBlobs.length;index++) {
+    if (meshBlobs[index].hidden) continue;
+    const point = meshAutoPoints[index];
+    point.width = meshBlobs[index].offsetWidth;point.height = meshBlobs[index].offsetHeight;
+    const radiusX = Math.min(point.width/2,box.width*.35);
+    const radiusY = Math.min(point.height/2,box.height*.35);
+    point.minX=radiusX;point.maxX=box.width-radiusX;
+    point.minY=radiusY;point.maxY=box.height-radiusY;
+    if (!point.ready) {
+      point.x=point.minX+(point.maxX-point.minX)*[.1,.8,.5,.9,.25][index];
+      point.y=point.minY+(point.maxY-point.minY)*[.15,.8,.45,.2,.9][index];
+      point.ready=true;
+    } else if (meshAutoWidth && meshAutoHeight) {
+      point.x*=box.width/meshAutoWidth;point.y*=box.height/meshAutoHeight;
+    }
+    point.x=Math.max(point.minX,Math.min(point.maxX,point.x));
+    point.y=Math.max(point.minY,Math.min(point.maxY,point.y));
+  }
+  meshAutoWidth=box.width;meshAutoHeight=box.height;
+}
+function advanceMeshAuto(dt) {
+  const baseSpeed = Math.hypot(meshAutoWidth,meshAutoHeight)/26*(meshSettings.speed/100);
+  meshAutoPoints.forEach((point,index) => {
+    if (meshBlobs[index].hidden || !point.ready) return;
+    const distance = baseSpeed*(.8+index*.11)*dt;
+    point.x+=point.vx*distance;point.y+=point.vy*distance;
+    let edgeX=0,edgeY=0;
+    if (point.x<=point.minX) {point.x=point.minX;edgeX=1;}
+    else if (point.x>=point.maxX) {point.x=point.maxX;edgeX=-1;}
+    if (point.y<=point.minY) {point.y=point.minY;edgeY=1;}
+    else if (point.y>=point.maxY) {point.y=point.maxY;edgeY=-1;}
+    if (edgeX || edgeY) {
+      const reflectedX=edgeX ? edgeX*Math.abs(point.vx) : point.vx;
+      const reflectedY=edgeY ? edgeY*Math.abs(point.vy) : point.vy;
+      const angle=Math.atan2(reflectedY,reflectedX)+(Math.random()-.5)*Math.PI/5;
+      let vx=Math.cos(angle),vy=Math.sin(angle);
+      vx=(edgeX || Math.sign(vx) || 1)*Math.max(.25,Math.abs(vx));
+      vy=(edgeY || Math.sign(vy) || 1)*Math.max(.25,Math.abs(vy));
+      const length=Math.hypot(vx,vy);point.vx=vx/length;point.vy=vy/length;
+    }
+  });
+}
+function paintMeshAuto() {
+  meshAutoPoints.forEach((point,index) => {
+    if (meshBlobs[index].hidden || !point.ready) return;
+    meshBlobs[index].style.setProperty('--mesh-auto-x',(point.x-point.width/2).toFixed(2)+'px');
+    meshBlobs[index].style.setProperty('--mesh-auto-y',(point.y-point.height/2).toFixed(2)+'px');
+  });
+}
+function meshAutoAllowed() {return meshSettings.enabled && !document.hidden && !meshPageSuspended && !document.body.classList.contains('mesh-tilt-active');}
+function tickMeshAuto(time) {
+  meshAutoFrame=0;
+  if (!meshAutoAllowed()) {meshAutoLastTime=0;return;}
+  const dt=meshAutoLastTime ? Math.min(.05,Math.max(0,(time-meshAutoLastTime)/1000)) : 0;
+  meshAutoLastTime=time;
+  advanceMeshAuto(dt);paintMeshAuto();
+  meshAutoFrame=requestAnimationFrame(tickMeshAuto);
+}
+function syncMeshAutoMotion() {
+  const enabled=meshAutoAllowed();
+  document.body.classList.toggle('mesh-auto-active',enabled);
+  if (!enabled) {cancelAnimationFrame(meshAutoFrame);meshAutoFrame=0;meshAutoLastTime=0;return;}
+  measureMeshAutoBounds();paintMeshAuto();
+  if (!meshAutoFrame) meshAutoFrame=requestAnimationFrame(tickMeshAuto);
+}
+
 $('meshTiltPanel').hidden = !meshMobile;
+
+let meshViewportFrame = 0;
+function syncMeshViewport() {
+  meshViewportFrame = 0;
+  document.querySelector('.page-header').classList.toggle('is-scrolled',window.scrollY > 4);
+  if (!meshSettings.enabled) return;
+  const box = meshCanvas.closest('.card').getBoundingClientRect();
+  const height = meshCanvas.getBoundingClientRect().height || window.innerHeight;
+  const top = Math.max(0,Math.min(height,box.top));
+  const bottom = Math.max(0,Math.min(height-top,height-box.bottom));
+  meshCanvas.style.setProperty('--mesh-left',box.left+'px');
+  meshCanvas.style.setProperty('--mesh-width',box.width+'px');
+  meshCanvas.style.setProperty('--mesh-clip-top',top+'px');
+  meshCanvas.style.setProperty('--mesh-clip-bottom',bottom+'px');
+  meshCanvas.style.setProperty('--mesh-radius-top',box.top>0 ? '14px' : '0px');
+  meshCanvas.style.setProperty('--mesh-radius-bottom',box.bottom<height ? '14px' : '0px');
+  measureMeshAutoBounds();paintMeshAuto();
+}
+function scheduleMeshViewport() {if (!meshViewportFrame) meshViewportFrame=requestAnimationFrame(syncMeshViewport);}
+window.addEventListener('scroll',scheduleMeshViewport,{passive:true});
+window.addEventListener('resize',scheduleMeshViewport,{passive:true});
+if (window.visualViewport) window.visualViewport.addEventListener('resize',scheduleMeshViewport,{passive:true});
+if (typeof ResizeObserver === 'function') new ResizeObserver(scheduleMeshViewport).observe(meshCanvas.closest('.card'));
+
 function meshTiltStatus(text,retry=false) {
   if ($('meshTiltStatus').textContent !== text) $('meshTiltStatus').textContent = text;
   $('meshTiltPermission').hidden = !retry;
@@ -1059,6 +1231,7 @@ function stopMeshTilt() {
     meshBlobs[index].style.removeProperty('--mesh-tilt-x');
     meshBlobs[index].style.removeProperty('--mesh-tilt-y');
   });
+  syncMeshAutoMotion();
 }
 function meshScreenVector(beta,gamma,base,angle) {
   const delta = (value,origin) => ((value-origin+540)%360)-180;
@@ -1069,9 +1242,12 @@ function meshScreenVector(beta,gamma,base,angle) {
 }
 function onMeshOrientation(event) {
   if (!meshWantsTilt() || !Number.isFinite(event.beta) || !Number.isFinite(event.gamma)) return;
+  meshPermission = 'granted';
+  meshRestoreFailed = false;
   if (!meshNeutral) meshNeutral = {beta:event.beta,gamma:event.gamma};
   clearTimeout(meshWaitTimer);meshWaitTimer = 0;
   document.body.classList.add('mesh-tilt-active');
+  syncMeshAutoMotion();
   const angle = (window.screen.orientation && window.screen.orientation.angle) || window.orientation || 0;
   meshTarget = meshScreenVector(event.beta,event.gamma,meshNeutral,angle);
   meshTiltStatus('Управление наклоном включено. Начальное положение телефона принято за нейтральное.');
@@ -1105,27 +1281,78 @@ async function startMeshTilt(userGesture=false) {
   }
   if (!window.isSecureContext) {stopMeshTilt();meshTiltStatus('Для датчиков откройте приложение по HTTPS. Сейчас работает автоанимация.');return;}
   if (!meshOrientation) {stopMeshTilt();meshTiltStatus('Браузер не поддерживает датчики наклона. Работает автоанимация.');return;}
+  if (userGesture && meshListening && meshPermission !== 'granted') stopMeshTilt();
   if (meshListening || meshPermissionPending) return;
+  if (!userGesture && meshRestoreFailed) {meshTiltStatus('Выбор перетекания сохранён. Нажмите «Подключить датчики», чтобы возобновить его.',true);return;}
   const epoch = ++meshEpoch;
-  if (meshNeedsPermission && meshPermission !== 'granted') {
-    if (!userGesture) {meshTiltStatus('Нажмите «Подключить датчики», чтобы разрешить управление наклоном.',true);return;}
+  if (meshNeedsPermission && meshPermission !== 'granted' && (userGesture || !meshAutoPermissionTried)) {
+    meshAutoPermissionTried = true;
     meshPermissionPending = true;
-    meshTiltStatus('Ожидаем разрешение на датчики…');
-    try {meshPermission = await meshOrientation.requestPermission();} catch (_) {meshPermission = 'denied';}
+    meshTiltStatus(userGesture ? 'Ожидаем разрешение на датчики…' : 'Восстанавливаем управление наклоном…');
+    try {meshPermission = await meshOrientation.requestPermission();}
+    catch (_) {meshPermission = userGesture ? 'denied' : 'prompt';}
     meshPermissionPending = false;
     if (epoch !== meshEpoch || !meshWantsTilt()) {void startMeshTilt(false);return;}
-    if (meshPermission !== 'granted') {meshTiltStatus('Доступ к датчикам не разрешён. Работает автоанимация.',true);return;}
+    if (meshPermission === 'denied') {
+      meshRestoreFailed = true;
+      meshTiltStatus('Выбор перетекания сохранён, но доступ к датчикам не разрешён. Работает автоанимация.',true);
+      return;
+    }
   }
+  meshRestoreFailed = false;
   if (!meshWantsTilt()) return;
   meshNeutral = null;
   meshListening = true;
   window.addEventListener('deviceorientation',onMeshOrientation,{passive:true});
-  meshTiltStatus('Ожидаем датчики. Немного наклоните телефон.');
+  meshTiltStatus(meshPermission === 'granted' ? 'Ожидаем датчики. Немного наклоните телефон.' : 'Выбор перетекания сохранён. Для доступа нажмите «Подключить датчики».',meshPermission !== 'granted');
   meshWaitTimer = setTimeout(() => {
     stopMeshTilt();
-    meshTiltStatus('Датчики не передали данные. Работает автоанимация; можно повторить подключение.',true);
-  },3500);
+    meshRestoreFailed = true;
+    meshTiltStatus('Выбор перетекания сохранён. Датчики пока недоступны — нажмите «Подключить датчики».',true);
+  },5000);
 }
+let glassMapSplay = null;
+const glassOpticsSupported = Boolean(window.CSS && CSS.supports('backdrop-filter','url("#glassOptics")'));
+function applyGlassOptics() {
+  const style = document.body.style;
+  const {refraction,depth,dispersion,blur,splay,frost,glass} = meshSettings;
+  style.setProperty('--glass-frost',(frost+blur*.3).toFixed(2)+'px');
+  style.setProperty('--glass-shine',String(refraction*.0016));
+  style.setProperty('--glass-spread',(40+splay*.5)+'%');
+  style.setProperty('--glass-saturation',(100+refraction*.8)+'%');
+  style.setProperty('--glass-rim',(depth*.035)+'px');
+  style.setProperty('--glass-rim-blur',(splay*.06)+'px');
+  style.setProperty('--glass-rim-alpha',String(depth*.0042));
+  style.setProperty('--glass-shadow-y',(depth*.12)+'px');
+  style.setProperty('--glass-shadow-blur',(depth*.32)+'px');
+  style.setProperty('--glass-shadow-alpha',String(depth*.0026));
+  style.setProperty('--glass-fringe',(dispersion*.035)+'px');
+  style.setProperty('--glass-chroma',String(dispersion*.003));
+  $('glassRefractionMap').setAttribute('scale',(refraction*(.08+depth*.002)).toFixed(2));
+  $('glassRedOffset').setAttribute('dx',(dispersion*.018).toFixed(2));
+  $('glassCyanOffset').setAttribute('dx',(-dispersion*.018).toFixed(2));
+  if (!glassOpticsSupported) {style.removeProperty('--glass-optics');return;}
+  if (glassMapSplay !== splay) {
+    const canvas = document.createElement('canvas');canvas.width=128;canvas.height=64;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {style.removeProperty('--glass-optics');return;}
+    const pixels = ctx.createImageData(canvas.width,canvas.height);
+    const band = .06+splay*.0044;
+    for (let y=0;y<canvas.height;y++) for (let x=0;x<canvas.width;x++) {
+      const nx=(x/(canvas.width-1)-.5)*2,ny=(y/(canvas.height-1)-.5)*2;
+      const edge=Math.max(Math.abs(nx),Math.abs(ny));
+      const bend=Math.sin(Math.max(0,1-(1-edge)/band)*Math.PI/2)*110;
+      const length=Math.hypot(nx,ny)||1,index=(y*canvas.width+x)*4;
+      pixels.data[index]=128+nx/length*bend;pixels.data[index+1]=128+ny/length*bend;
+      pixels.data[index+2]=128;pixels.data[index+3]=255;
+    }
+    ctx.putImageData(pixels,0,0);
+    $('glassLensMap').setAttribute('href',canvas.toDataURL());
+    glassMapSplay=splay;
+  }
+  style.setProperty('--glass-optics','url("#glassOptics")');
+}
+
 function applyMeshSettings() {
   const body = document.body;
   body.classList.toggle('mesh-enabled',meshSettings.enabled);
@@ -1133,7 +1360,9 @@ function applyMeshSettings() {
   body.dataset.meshShape = meshSettings.shape;
   meshBlobs.forEach((blob,index) => {
     blob.hidden = index >= meshSettings.count;
-    $('meshColor'+(index+1)).closest('.mesh-color-row').hidden = blob.hidden;
+    const colorField = $('meshColor'+(index+1));
+    colorField.disabled = blob.hidden;
+    colorField.closest('.mesh-color-row').dataset.inactive = String(blob.hidden);
   });
   if (meshListening && document.body.classList.contains('mesh-tilt-active') && !meshRaf) meshRaf = requestAnimationFrame(moveMeshByTilt);
   meshButton.setAttribute('aria-pressed',String(meshSettings.enabled));
@@ -1143,18 +1372,23 @@ function applyMeshSettings() {
   $('meshTilt').checked = meshSettings.tilt;
   $('meshGlass').checked = meshSettings.glass;
   $('meshShape').value = meshSettings.shape;
+  $('meshCount').value = String(meshSettings.count);
+  $('meshCountMinus').disabled = meshSettings.count <= 1;
+  $('meshCountPlus').disabled = meshSettings.count >= 5;
   for (const [key,id] of Object.entries(meshColorFields)) {
     body.style.setProperty('--mesh-'+key,meshSettings[key]);
     $(id).value = meshSettings[key];$(id+'-code').textContent = meshSettings[key];
   }
   for (const [key,[id]] of Object.entries(meshRanges)) {
     $(id).value = String(meshSettings[key]);
-    $(id+'-value').textContent = key === 'speed' ? (meshSettings[key]/100).toLocaleString('ru-RU')+'×' : meshSettings[key]+(key === 'count' ? '' : key === 'frost' ? ' px' : ' %');
+    $(id+'-value').textContent = key === 'speed' ? (meshSettings[key]/100).toLocaleString('ru-RU')+'×' : meshSettings[key]+(key === 'frost' ? ' px' : ['size','transparency','blobBlur'].includes(key) ? ' %' : '');
   }
   body.style.setProperty('--mesh-size',String(meshSettings.size/100));
-  for (const [index,duration] of [12,14,16,18,20].entries()) body.style.setProperty('--mesh-duration'+(index+1),duration/(meshSettings.speed/100)+'s');
+  body.style.setProperty('--mesh-blur',String(meshSettings.blobBlur));
+  syncMeshViewport();
+  syncMeshAutoMotion();
   body.style.setProperty('--glass-alpha',String(1-meshSettings.transparency/100));
-  body.style.setProperty('--glass-frost',meshSettings.frost+'px');
+  applyGlassOptics();
   void startMeshTilt(false);
 }
 function saveMeshSettings() {
@@ -1176,8 +1410,14 @@ for (const [key,id] of Object.entries(meshColorFields)) $(id).addEventListener('
 });
 for (const [key,[id,min,max]] of Object.entries(meshRanges)) $(id).addEventListener('input',event => {
   const value = Number(event.target.value);
-  if (Number.isFinite(value)) updateMeshSetting(key,Math.max(min,Math.min(max,key === 'count' ? Math.round(value) : value)));
+  if (Number.isFinite(value)) updateMeshSetting(key,Math.max(min,Math.min(max,value)));
 });
+$('glassZero').addEventListener('click',() => {
+  Object.assign(meshSettings,{transparency:100,frost:0,refraction:0,depth:0,dispersion:0,blur:0,splay:0});
+  applyMeshSettings();saveMeshSettings();
+});
+$('meshCountMinus').addEventListener('click',() => updateMeshSetting('count',Math.max(1,meshSettings.count-1)));
+$('meshCountPlus').addEventListener('click',() => updateMeshSetting('count',Math.min(5,meshSettings.count+1)));
 $('meshTilt').addEventListener('change',event => {
   meshSettings.tilt = event.target.checked;
   saveMeshSettings();
@@ -1186,13 +1426,16 @@ $('meshTilt').addEventListener('change',event => {
 $('meshTiltPermission').addEventListener('click',() => {void startMeshTilt(true);});
 window.addEventListener('orientationchange',() => {meshNeutral = null;});
 if (window.screen.orientation && typeof window.screen.orientation.addEventListener === 'function') window.screen.orientation.addEventListener('change',() => {meshNeutral = null;});
-document.addEventListener('visibilitychange',() => {if (document.hidden) stopMeshTilt();else void startMeshTilt(false);});
-window.addEventListener('pagehide',stopMeshTilt);
-window.addEventListener('pageshow',() => {void startMeshTilt(false);});
+document.addEventListener('visibilitychange',() => {if (document.hidden) stopMeshTilt();else {syncMeshAutoMotion();void startMeshTilt(false);}});
+window.addEventListener('pagehide',() => {meshPageSuspended=true;stopMeshTilt();});
+window.addEventListener('pageshow',() => {meshPageSuspended=false;syncMeshAutoMotion();void startMeshTilt(false);});
 applyMeshSettings();
 const infoDialog = $('infoDialog');
 const infoButton = $('catalogButton');
 const infoCloseButton = $('infoClose');
+const infoHeader = infoDialog.querySelector('.info-header');
+function syncInfoHeader() {infoDialog.style.setProperty('--info-header-height',infoHeader.getBoundingClientRect().height+'px');}
+if (typeof ResizeObserver === 'function') new ResizeObserver(syncInfoHeader).observe(infoHeader);
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let infoCloseTimer;
 function flashButton(button,className,event) {
@@ -1203,7 +1446,7 @@ function flashButton(button,className,event) {
 }
 infoButton.addEventListener('click',event => {
   flashButton(infoButton,'is-info-active',event);
-  if (!infoDialog.open) infoDialog.showModal();
+  if (!infoDialog.open) {infoDialog.showModal();syncInfoHeader();}
 });
 infoButton.addEventListener('animationend',event => {
   if (event.target === infoButton && event.animationName === 'info-border-flash')
@@ -1219,6 +1462,8 @@ infoDialog.addEventListener('close',() => {
   clearTimeout(infoCloseTimer);
   infoCloseTimer = null;
   infoCloseButton.classList.remove('is-closing');
+  collapseInfoDetails();
+  infoDialog.scrollTop = 0;
 });
 infoDialog.addEventListener('click',event => {
   if (event.target !== infoDialog) return;
@@ -1232,7 +1477,20 @@ infoDialog.addEventListener('click',event => {
 const explanationDetails = [...document.querySelectorAll('details.help')];
 let requestedDetail = explanationDetails.find(detail => detail.open) || null;
 let detailsTransitionRunning = false;
+let detailsGeneration = 0;
+function collapseInfoDetails() {
+  detailsGeneration++;
+  if (requestedDetail && infoDialog.contains(requestedDetail)) requestedDetail = null;
+  for (const detail of infoDialog.querySelectorAll('details.help')) {
+    for (const animation of detail.getAnimations({subtree:true})) animation.cancel();
+    detail.open = false;
+    detail.style.removeProperty('overflow');
+    detail.style.removeProperty('height');
+  }
+}
 async function animateDetail(detail,expand) {
+  const generation = detailsGeneration;
+  if (expand && infoDialog.contains(detail) && !infoDialog.open) return;
   if (detail.open === expand) return;
   if (reducedMotion.matches || !detail.getClientRects().length || typeof detail.animate !== 'function') {
     detail.open = expand;
@@ -1254,7 +1512,7 @@ async function animateDetail(detail,expand) {
     {duration:320,easing:'ease-in-out',fill:'forwards'}
   ) : null;
   try {await animation.finished;} catch (_) { /* Завершить в запрошенном состоянии. */ }
-  detail.open = expand;
+  if (generation === detailsGeneration) detail.open = expand;
   animation.cancel();
   if (fade) fade.cancel();
   detail.style.removeProperty('overflow');
